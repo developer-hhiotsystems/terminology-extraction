@@ -1,0 +1,147 @@
+===============================================================================
+PUSH TO GITHUB - QUICK GUIDE
+===============================================================================
+
+Repository: developer-hhiotsystems/terminology-extraction
+Status: ✓ Git initialized, ✓ 47 files committed
+
+===============================================================================
+STEP 1: CREATE GITHUB REPOSITORY
+===============================================================================
+
+Visit: https://github.com/new
+
+Settings:
+  - Repository name: terminology-extraction
+  - Description: Glossary extraction and validation application
+  - Visibility: Public or Private (your choice)
+  - ❌ DO NOT add README, .gitignore, or license
+
+Click "Create repository"
+
+===============================================================================
+STEP 2: PUSH YOUR CODE
+===============================================================================
+
+Copy and run these commands:
+
+cd "C:\Users\devel\Coding Projects\Glossary APP"
+
+git remote add origin https://github.com/developer-hhiotsystems/terminology-extraction.git
+
+git push -u origin master
+
+When prompted for credentials:
+  - Username: developer-hhiotsystems
+  - Password: [Use Personal Access Token]
+
+===============================================================================
+GET PERSONAL ACCESS TOKEN (If needed)
+===============================================================================
+
+1. Go to: https://github.com/settings/tokens
+2. Click "Generate new token (classic)"
+3. Name: "Terminology Extraction Dev"
+4. Select: ✓ repo (full control)
+5. Click "Generate token"
+6. COPY THE TOKEN (you won't see it again!)
+7. Use this token as your password when pushing
+
+===============================================================================
+STEP 3: VERIFY ON GITHUB
+===============================================================================
+
+Visit: https://github.com/developer-hhiotsystems/terminology-extraction
+
+You should see:
+  ✓ README.md displayed
+  ✓ 47 files
+  ✓ Initial commit message
+
+===============================================================================
+SETUP ON SECOND COMPUTER
+===============================================================================
+
+1. Clone repository:
+   git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+   cd terminology-extraction
+
+2. Install Python packages:
+   python -m venv venv
+   .\venv\Scripts\activate
+   pip install -r requirements-core.txt
+
+3. Install Node packages:
+   npm install
+
+4. Copy environment file:
+   copy .env.example .env
+
+5. Verify setup:
+   python setup-check.py
+
+6. Test backend:
+   .\venv\Scripts\activate
+   python src\backend\app.py
+
+7. Test frontend (new terminal):
+   npm start
+
+===============================================================================
+WHAT GETS SYNCED
+===============================================================================
+
+Included (via Git):
+  ✓ All source code (src/)
+  ✓ All documentation (docs/)
+  ✓ All scripts (scripts/)
+  ✓ Configuration templates (.env.example)
+  ✓ Python requirements (requirements*.txt)
+  ✓ Node configuration (package.json)
+  ✓ Tests (tests/)
+
+Excluded (.gitignore):
+  ✗ venv/ - Recreate on each computer
+  ✗ node_modules/ - Run npm install
+  ✗ .env - Your secrets (copy manually)
+  ✗ data/ - Database and uploads (local only)
+  ✗ *.db - SQLite files (local only)
+
+===============================================================================
+DAILY WORKFLOW
+===============================================================================
+
+First Computer (Main):
+  git add .
+  git commit -m "Description of changes"
+  git push
+
+Second Computer (Testing):
+  git pull
+  npm install (if package.json changed)
+  pip install -r requirements-core.txt (if requirements changed)
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+Problem: Git push asks for password repeatedly
+Solution: Use Personal Access Token (see above)
+
+Problem: Repository not found
+Solution: Verify repository exists at:
+  https://github.com/developer-hhiotsystems/terminology-extraction
+
+Problem: Permission denied
+Solution: Check you're logged in as developer-hhiotsystems
+
+===============================================================================
+NEED HELP?
+===============================================================================
+
+Full guide: docs/GITHUB-SETUP.md
+Questions: Check README.md or documentation in docs/
+
+===============================================================================
+
+Ready to push? Run the commands from STEP 2 above!
