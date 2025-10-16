@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+*.egg-info/
+dist/
+build/
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# Testing
+.coverage
+.pytest_cache/
+htmlcov/
+.mutmut-cache
+coverage/
+cypress/videos/
+cypress/screenshots/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Data & Uploads
+data/uploads/*
+!data/uploads/.gitkeep
+data/iate/*
+!data/iate/.gitkeep
+
+# Backups
+backups/sqlite/*
+!backups/sqlite/.gitkeep
+backups/neo4j/*
+!backups/neo4j/.gitkeep
+
+# Databases
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Build outputs
+build/
+dist/
+*.pyc

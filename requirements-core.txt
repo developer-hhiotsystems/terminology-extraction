@@ -1,0 +1,23 @@
+# Core FastAPI dependencies (no compilation required)
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+python-multipart==0.0.6
+
+# Database
+sqlalchemy==2.0.23
+neo4j==5.14.0
+
+# PDF Processing
+pdfplumber==0.10.3
+pytesseract==0.3.10
+
+# Translation
+deepl==1.19.1
+
+# Testing
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+
+# Development
+python-dotenv==1.0.0
