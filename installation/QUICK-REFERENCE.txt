@@ -1,0 +1,263 @@
+================================================================================
+  QUICK REFERENCE CARD
+================================================================================
+
+Keep this handy during installation!
+
+================================================================================
+  ESSENTIAL COMMANDS
+================================================================================
+
+Clone Repository:
+    git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+    cd terminology-extraction
+
+Run Setup:
+    .\setup-windows.ps1
+
+Activate Virtual Environment:
+    .\venv\Scripts\activate
+
+Start Backend:
+    python src\backend\app.py
+
+Start Frontend (new terminal):
+    npm start
+
+Run Tests:
+    pytest tests/ -v
+
+Check Setup Status:
+    python setup-check.py
+
+================================================================================
+  IMPORTANT URLS
+================================================================================
+
+Backend Health Check:
+    http://localhost:8000/health
+
+Backend API Docs:
+    http://localhost:8000/docs
+
+Frontend Application:
+    http://localhost:3000
+
+================================================================================
+  VS CODE SHORTCUTS
+================================================================================
+
+Open Terminal:              Ctrl+`
+New Terminal:               Ctrl+Shift+`
+Command Palette:            Ctrl+Shift+P
+Extensions Panel:           Ctrl+Shift+X
+Settings:                   Ctrl+,
+Format Document:            Shift+Alt+F
+Go to File:                 Ctrl+P
+Search in Files:            Ctrl+Shift+F
+
+Select Python Interpreter:
+    Ctrl+Shift+P → "Python: Select Interpreter"
+
+Reload Window:
+    Ctrl+Shift+P → "Developer: Reload Window"
+
+================================================================================
+  TROUBLESHOOTING COMMANDS
+================================================================================
+
+Check Python Version:
+    python --version
+
+Check Node Version:
+    node --version
+
+Check Git Version:
+    git --version
+
+List Python Packages:
+    .\venv\Scripts\pip list
+
+List Node Packages:
+    npm list --depth=0
+
+Find Process on Port:
+    netstat -ano | findstr :8000
+    netstat -ano | findstr :3000
+
+Kill Process:
+    taskkill /PID [number] /F
+
+PowerShell Execution Policy:
+    Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Clear npm Cache:
+    npm cache clean --force
+
+Reinstall Python Packages:
+    .\venv\Scripts\pip install -r requirements-core.txt
+
+Reinstall Node Packages:
+    npm install
+
+================================================================================
+  GIT COMMANDS
+================================================================================
+
+Pull Latest Changes:
+    git pull origin master
+
+Check Status:
+    git status
+
+View Changes:
+    git diff
+
+View Remote:
+    git remote -v
+
+View Log:
+    git log --oneline -10
+
+================================================================================
+  FILE LOCATIONS
+================================================================================
+
+Setup Script:           .\setup-windows.ps1
+Error Report:           .\setup-error-report.md
+Configuration:          .\.env
+Database:               .\data\glossary.db
+Backend Code:           .\src\backend\
+Frontend Code:          .\src\frontend\
+Tests:                  .\tests\
+Virtual Environment:    .\venv\
+Node Modules:           .\node_modules\
+
+Documentation:
+    Main Guide:         .\installation\README.txt
+    Checklist:          .\installation\CHECKLIST.txt
+    Quick Start:        .\QUICK-START.md
+    Troubleshooting:    .\TROUBLESHOOTING.md
+    Company Setup:      .\docs\COMPANY-COMPUTER-SETUP.md
+    VS Code Setup:      .\docs\VSCODE-SETUP.md
+    No-Docker Info:     .\docs\NO-DOCKER-SETUP.md
+
+================================================================================
+  EXPECTED RESULTS
+================================================================================
+
+Setup Script:
+    [1/8] ✓ Prerequisites
+    [2/8] ✓ Virtual environment
+    [3/8] ✓ Python packages (41)
+    [4/8] ✓ Node packages (1,764)
+    [5/8] ✓ .env file
+    [6/8] ✓ Data directories
+    [7/8] ✓ Verification
+    [8/8] ✓ Complete!
+
+Health Check (http://localhost:8000/health):
+    {"status": "healthy"}
+
+Tests (pytest tests/ -v):
+    6 passed, 1 skipped
+
+VS Code Extensions:
+    12 installed (Python, Pylance, ESLint, Prettier, React Snippets, etc.)
+
+Terminal Prompt:
+    (venv) PS C:\...\terminology-extraction>
+
+================================================================================
+  SYSTEM REQUIREMENTS
+================================================================================
+
+✓ Windows 10/11
+✓ Python 3.10+
+✓ Node.js 18+
+✓ Git 2.x+
+✓ VS Code
+✓ 2 GB free disk space
+✓ Internet connection (initial setup)
+
+✗ Docker NOT needed
+✗ Neo4j NOT needed
+✗ Admin rights NOT needed (usually)
+
+================================================================================
+  CONTACT INFORMATION
+================================================================================
+
+GitHub Repository:
+    https://github.com/developer-hhiotsystems/terminology-extraction
+
+Submit Issues:
+    https://github.com/developer-hhiotsystems/terminology-extraction/issues
+
+Email:
+    developer.hh-iot-systems@outlook.com
+
+When requesting help, include:
+    - setup-error-report.md (if setup failed)
+    - Output of: python setup-check.py
+    - Error messages (full text)
+    - System info (OS, Python version, Node version)
+
+================================================================================
+  INSTALLATION TIME
+================================================================================
+
+Expected Duration:
+    Clone repository:       1 minute
+    Run setup script:       3-5 minutes
+    Install VS Code ext:    2 minutes
+    Test backend:           30 seconds
+    Test frontend:          1 minute
+    Run tests:              30 seconds
+
+Total: 8-10 minutes (with fast internet)
+
+Behind corporate proxy: Add 5-10 minutes
+
+================================================================================
+  SUCCESS INDICATORS
+================================================================================
+
+You'll know installation succeeded when:
+
+✓ Setup script shows "Setup complete!" (green)
+✓ No red error messages
+✓ (venv) appears in terminal prompt
+✓ Backend starts and health check returns {"status": "healthy"}
+✓ Frontend loads in browser at http://localhost:3000
+✓ Tests run and show: 6 passed, 1 skipped
+✓ VS Code shows 12 extensions installed
+✓ Python interpreter selected in VS Code (bottom-left)
+
+Any red text or errors? Check TROUBLESHOOTING.md
+
+================================================================================
+  DAILY USAGE
+================================================================================
+
+Morning (Company Computer):
+    git pull origin master        # Get latest changes
+    .\venv\Scripts\activate       # Activate environment
+    python src\backend\app.py     # Start backend
+
+Test Changes:
+    npm start                     # Start frontend (new terminal)
+    pytest tests/ -v              # Run tests
+
+Report Issues:
+    Document in setup-error-report.md format
+    Email or submit GitHub issue
+
+================================================================================
+
+Print this page and keep it at your desk!
+
+Last Updated: 2025-10-16
+Version: 1.0.0
+
+================================================================================

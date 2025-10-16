@@ -1,0 +1,303 @@
+================================================================================
+  INSTALLATION CHECKLIST - Print and Follow
+================================================================================
+
+Project: Terminology Extraction System
+For: Company Computer Testing
+
+================================================================================
+  PRE-INSTALLATION
+================================================================================
+
+[ ] Python 3.10+ installed
+    Check: python --version
+    Download: https://www.python.org/downloads/
+
+[ ] Node.js 18+ installed
+    Check: node --version
+    Download: https://nodejs.org/
+
+[ ] Git installed
+    Check: git --version
+    Download: https://git-scm.com/downloads
+
+[ ] VS Code installed
+    Download: https://code.visualstudio.com/
+
+[ ] Internet connection available
+
+[ ] Not behind firewall (or proxy configured)
+
+================================================================================
+  STEP 1: CLONE REPOSITORY
+================================================================================
+
+[ ] Open VS Code
+
+[ ] Open terminal (Ctrl+`)
+
+[ ] Run command:
+    git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+
+[ ] Change directory:
+    cd terminology-extraction
+
+[ ] Repository cloned successfully
+
+================================================================================
+  STEP 2: AUTOMATED SETUP
+================================================================================
+
+[ ] Run setup script:
+    .\setup-windows.ps1
+
+[ ] Wait 3-5 minutes for completion
+
+[ ] Check for green "Setup complete!" message
+
+[ ] If error occurred, check: setup-error-report.md
+
+Setup should show:
+    [1/8] ✓ Prerequisites checked
+    [2/8] ✓ Virtual environment created
+    [3/8] ✓ Python packages installed (41 packages)
+    [4/8] ✓ Node packages installed (1,764 packages)
+    [5/8] ✓ .env file created
+    [6/8] ✓ Data directories created
+    [7/8] ✓ Setup verified
+    [8/8] ✓ Complete!
+
+================================================================================
+  STEP 3: VS CODE EXTENSIONS
+================================================================================
+
+[ ] Notification appeared: "This workspace has extension recommendations"
+
+[ ] Clicked: "Install All"
+
+[ ] Wait for extensions to install
+
+[ ] All extensions show green checkmarks
+
+Extensions installed:
+    [ ] Python
+    [ ] Pylance
+    [ ] ESLint
+    [ ] Prettier
+    [ ] React Snippets
+    [ ] GitLens
+    [ ] Path Intellisense
+    [ ] Code Spell Checker
+    [ ] IntelliCode
+    [ ] Test Explorer
+    [ ] Python Test Adapter
+    [ ] EditorConfig
+
+================================================================================
+  STEP 4: PYTHON INTERPRETER
+================================================================================
+
+[ ] Click Python version in bottom-left corner
+    OR
+    Press Ctrl+Shift+P → "Python: Select Interpreter"
+
+[ ] Selected: ./venv/Scripts/python.exe
+
+[ ] Terminal shows (venv) prefix
+
+[ ] Bottom-left shows correct interpreter path
+
+================================================================================
+  STEP 5: TEST BACKEND
+================================================================================
+
+[ ] Activate virtual environment:
+    .\venv\Scripts\activate
+
+[ ] Start backend:
+    python src\backend\app.py
+
+[ ] Server started successfully
+
+[ ] Open browser: http://localhost:8000/health
+
+[ ] Saw: {"status": "healthy"}
+
+[ ] Backend working correctly
+
+[ ] Stopped server (Ctrl+C)
+
+================================================================================
+  STEP 6: TEST FRONTEND
+================================================================================
+
+[ ] Open new terminal (Ctrl+Shift+`)
+
+[ ] Start frontend:
+    npm start
+
+[ ] Browser opened automatically to: http://localhost:3000
+
+[ ] Page loaded successfully
+
+[ ] Dark theme visible
+
+[ ] Navigation working
+
+[ ] No console errors (F12 → Console)
+
+[ ] Frontend working correctly
+
+[ ] Stopped server (Ctrl+C)
+
+================================================================================
+  STEP 7: RUN TESTS
+================================================================================
+
+[ ] In terminal with venv activated:
+    pytest tests/ -v
+
+[ ] Tests ran successfully
+
+[ ] Result: 6 passed, 1 skipped
+
+[ ] No failures
+
+================================================================================
+  VERIFICATION
+================================================================================
+
+Check all these:
+
+[ ] venv/ folder exists
+[ ] node_modules/ folder exists
+[ ] data/ folder exists
+[ ] .env file exists
+[ ] Python interpreter selected in VS Code
+[ ] (venv) shows in terminal
+[ ] Backend starts without errors
+[ ] Frontend starts without errors
+[ ] Tests pass
+[ ] No Docker installed or needed
+[ ] All 12 VS Code extensions installed
+
+================================================================================
+  TROUBLESHOOTING STEPS (IF NEEDED)
+================================================================================
+
+If setup failed:
+
+[ ] Read: setup-error-report.md (auto-generated)
+
+[ ] Check: TROUBLESHOOTING.md
+
+[ ] Run diagnostic:
+    python setup-check.py
+
+[ ] Review error messages
+
+[ ] Try solutions from TROUBLESHOOTING.md
+
+Common Issues:
+
+Problem: "Cannot run scripts"
+[ ] Run: Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Problem: "Python not found"
+[ ] Install Python, check "Add to PATH"
+[ ] Restart terminal
+
+Problem: "Port in use"
+[ ] Kill process: netstat -ano | findstr :8000
+[ ] Then: taskkill /PID [number] /F
+
+Problem: Behind proxy
+[ ] Configure npm: npm config set proxy http://proxy:port
+[ ] Configure pip: pip install --proxy http://proxy:port
+
+Problem: Extensions not working
+[ ] Reload window: Ctrl+Shift+P → "Developer: Reload Window"
+
+================================================================================
+  SUCCESS CRITERIA
+================================================================================
+
+Installation is successful if ALL these work:
+
+✓ Backend starts: python src\backend\app.py
+✓ Health check: http://localhost:8000/health shows {"status": "healthy"}
+✓ Frontend starts: npm start
+✓ UI loads: http://localhost:3000 shows application
+✓ Tests pass: pytest tests/ -v shows 6 passed, 1 skipped
+✓ No errors in console
+✓ (venv) shows in terminal
+✓ All VS Code extensions active
+
+================================================================================
+  POST-INSTALLATION
+================================================================================
+
+[ ] Verified all success criteria above
+
+[ ] Tested uploading a file (optional)
+
+[ ] Checked glossary page loads (optional)
+
+[ ] Documented any issues found
+
+[ ] Ready to report back to development team
+
+================================================================================
+  GETTING HELP
+================================================================================
+
+If you need assistance:
+
+1. Check documentation:
+   [ ] TROUBLESHOOTING.md
+   [ ] docs/COMPANY-COMPUTER-SETUP.md
+   [ ] docs/VSCODE-SETUP.md
+
+2. Run diagnostics:
+   [ ] python setup-check.py
+
+3. Check error report:
+   [ ] setup-error-report.md (if setup failed)
+
+4. Contact:
+   [ ] GitHub: https://github.com/developer-hhiotsystems/terminology-extraction/issues
+   [ ] Email: developer.hh-iot-systems@outlook.com
+   [ ] Include: setup-error-report.md file
+
+================================================================================
+  NOTES
+================================================================================
+
+Date tested: ________________
+
+Time taken: ________________
+
+Issues encountered:
+_________________________________________________________________________
+_________________________________________________________________________
+_________________________________________________________________________
+
+Solutions applied:
+_________________________________________________________________________
+_________________________________________________________________________
+_________________________________________________________________________
+
+Overall status: [ ] SUCCESS  [ ] PARTIAL  [ ] FAILED
+
+Additional comments:
+_________________________________________________________________________
+_________________________________________________________________________
+_________________________________________________________________________
+
+================================================================================
+
+Tester name: ________________
+Date: ________________
+Signature: ________________
+
+================================================================================

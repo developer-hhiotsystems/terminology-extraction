@@ -1,0 +1,301 @@
+================================================================================
+  START HERE - Installation Guide
+================================================================================
+
+Welcome to the Terminology Extraction System installation!
+
+Choose your guide based on your needs:
+
+================================================================================
+  📖 INSTALLATION GUIDES
+================================================================================
+
+1. README.txt                    ← Full installation guide (START HERE!)
+   - Complete step-by-step instructions
+   - System requirements
+   - Troubleshooting included
+   - File structure overview
+   - 10-15 minute read
+
+2. CHECKLIST.txt                 ← Printable checklist (PRINT THIS!)
+   - Step-by-step checkboxes
+   - Print and follow along
+   - Success criteria
+   - Notes section
+   - Perfect for first-time setup
+
+3. QUICK-REFERENCE.txt           ← Command reference card (KEEP HANDY!)
+   - Essential commands
+   - Keyboard shortcuts
+   - URLs and ports
+   - Troubleshooting commands
+   - Print and keep at desk
+
+================================================================================
+  🚀 QUICK START (Experienced Users)
+================================================================================
+
+If you just want the commands:
+
+    git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+    cd terminology-extraction
+    .\setup-windows.ps1
+
+    # Then in VS Code:
+    # - Install recommended extensions
+    # - Select Python interpreter: ./venv/Scripts/python.exe
+
+Done! See QUICK-REFERENCE.txt for daily commands.
+
+================================================================================
+  📚 WHICH GUIDE SHOULD I USE?
+================================================================================
+
+First time installing?
+    → Read: README.txt (full guide)
+    → Print: CHECKLIST.txt (follow along)
+
+Installing on company computer?
+    → Read: README.txt first
+    → Print: CHECKLIST.txt to follow
+    → Keep: QUICK-REFERENCE.txt handy
+    → Also see: ..\docs\COMPANY-COMPUTER-SETUP.md
+
+Just need commands?
+    → Use: QUICK-REFERENCE.txt
+
+Need to troubleshoot?
+    → Check: ..\TROUBLESHOOTING.md
+    → Or: ..\docs\COMPANY-COMPUTER-SETUP.md
+
+Want VS Code extension info?
+    → See: ..\docs\VSCODE-SETUP.md
+    → Or: ..\docs\EXTENSIONS-SUMMARY.md
+
+Questions about Docker?
+    → Read: ..\docs\NO-DOCKER-SETUP.md
+    → (Spoiler: You don't need Docker!)
+
+================================================================================
+  ⏱️ INSTALLATION TIME
+================================================================================
+
+Total time: 8-10 minutes
+
+Breakdown:
+    Reading README.txt:         3 minutes
+    Running setup script:       3-5 minutes
+    Installing VS Code ext:     2 minutes
+    Testing:                    2 minutes
+
+Behind corporate proxy: Add 5-10 minutes for slower downloads
+
+================================================================================
+  ✅ BEFORE YOU START
+================================================================================
+
+Make sure you have:
+
+    [ ] Python 3.10+ installed
+    [ ] Node.js 18+ installed
+    [ ] Git installed
+    [ ] VS Code installed
+    [ ] Internet connection
+    [ ] 2 GB free disk space
+
+Don't have these? See README.txt "System Requirements" section.
+
+================================================================================
+  🎯 INSTALLATION STEPS OVERVIEW
+================================================================================
+
+1. Clone repository from GitHub
+2. Run automated setup script (.\setup-windows.ps1)
+3. Install VS Code extensions (click "Install All")
+4. Select Python interpreter (./venv/Scripts/python.exe)
+5. Test backend (python src\backend\app.py)
+6. Test frontend (npm start)
+7. Run tests (pytest tests/ -v)
+
+Details for each step: See README.txt
+
+================================================================================
+  🐛 IF SOMETHING GOES WRONG
+================================================================================
+
+The setup script automatically generates error reports!
+
+If setup fails, you'll see:
+    setup-error-report.md (in project root)
+
+This file contains:
+    - Exact error messages
+    - System information
+    - Setup log
+    - Suggested solutions
+
+Also check:
+    ..\TROUBLESHOOTING.md (common issues and solutions)
+
+Still stuck?
+    Email: developer.hh-iot-systems@outlook.com
+    GitHub: https://github.com/developer-hhiotsystems/terminology-extraction/issues
+
+================================================================================
+  📁 INSTALLATION FOLDER CONTENTS
+================================================================================
+
+installation/
+├── START-HERE.txt         ← You are here! (guide to guides)
+├── README.txt             ← Full installation guide
+├── CHECKLIST.txt          ← Printable step-by-step checklist
+└── QUICK-REFERENCE.txt    ← Command reference card
+
+Print all three .txt files for easiest installation experience!
+
+================================================================================
+  🎓 RECOMMENDED APPROACH
+================================================================================
+
+For smoothest installation:
+
+1. Print these files:
+   - CHECKLIST.txt (follow step-by-step)
+   - QUICK-REFERENCE.txt (command reference)
+
+2. Open these files on second screen/device:
+   - README.txt (detailed instructions)
+
+3. During installation:
+   - Check off items in CHECKLIST.txt
+   - Use QUICK-REFERENCE.txt for commands
+   - Refer to README.txt for details
+
+4. If issues occur:
+   - Check setup-error-report.md (auto-generated)
+   - Check ..\TROUBLESHOOTING.md
+   - Use contact info in README.txt
+
+================================================================================
+  💼 COMPANY COMPUTER SPECIFIC
+================================================================================
+
+Installing on restricted company computer?
+
+Additional resources:
+    ..\docs\COMPANY-COMPUTER-SETUP.md     (company-specific issues)
+    ..\docs\NO-DOCKER-SETUP.md            (why Docker isn't needed)
+    ..\TROUBLESHOOTING.md                 (proxy, firewall, etc.)
+
+Common company issues:
+    - PowerShell execution policy: See TROUBLESHOOTING.md
+    - Corporate proxy: See COMPANY-COMPUTER-SETUP.md
+    - Port conflicts: See TROUBLESHOOTING.md
+    - Limited permissions: See COMPANY-COMPUTER-SETUP.md
+
+================================================================================
+  ✅ SUCCESS CRITERIA
+================================================================================
+
+Installation is complete when:
+
+    ✓ Setup script completes without errors
+    ✓ Backend starts: python src\backend\app.py
+    ✓ Health check works: http://localhost:8000/health
+    ✓ Frontend starts: npm start
+    ✓ UI loads: http://localhost:3000
+    ✓ Tests pass: pytest tests/ -v (6 passed, 1 skipped)
+    ✓ VS Code shows 12 extensions installed
+    ✓ Terminal shows (venv) prefix
+
+All ✓ checked? Installation successful!
+
+================================================================================
+  🚀 AFTER INSTALLATION
+================================================================================
+
+What to do next:
+
+1. Test the application:
+   - Upload a PDF file
+   - Check glossary page
+   - Test translation features
+   - Verify IATE validation
+
+2. Explore the code:
+   - Backend: src\backend\
+   - Frontend: src\frontend\
+   - Tests: tests\
+
+3. Run development workflow:
+   - Make changes
+   - Test locally
+   - Commit to Git
+   - Push to GitHub
+
+4. Daily usage:
+   - Pull latest: git pull origin master
+   - Start backend: python src\backend\app.py
+   - Start frontend: npm start
+   - Run tests: pytest tests/ -v
+
+See QUICK-REFERENCE.txt for daily commands.
+
+================================================================================
+  📞 CONTACT & SUPPORT
+================================================================================
+
+Repository:
+    https://github.com/developer-hhiotsystems/terminology-extraction
+
+Issues:
+    https://github.com/developer-hhiotsystems/terminology-extraction/issues
+
+Email:
+    developer.hh-iot-systems@outlook.com
+
+When asking for help, include:
+    - setup-error-report.md (if setup failed)
+    - Output of: python setup-check.py
+    - Your system info (OS, Python version, Node version)
+    - What you were trying to do
+    - Exact error message
+
+================================================================================
+  📚 ALL DOCUMENTATION
+================================================================================
+
+Installation Guides (this folder):
+    - START-HERE.txt              (this file)
+    - README.txt                  (full guide)
+    - CHECKLIST.txt               (printable checklist)
+    - QUICK-REFERENCE.txt         (command reference)
+
+Quick References (project root):
+    - QUICK-START.md              (5-minute guide)
+    - TROUBLESHOOTING.md          (common issues)
+    - README.md                   (project overview)
+
+Detailed Guides (docs folder):
+    - docs/COMPANY-COMPUTER-SETUP.md    (company environment)
+    - docs/VSCODE-SETUP.md              (VS Code extensions)
+    - docs/EXTENSIONS-SUMMARY.md        (extensions list)
+    - docs/NO-DOCKER-SETUP.md           (no-Docker architecture)
+    - docs/GITHUB-SETUP.md              (Git/GitHub)
+
+================================================================================
+
+Ready to start?
+
+→ Open README.txt for full installation instructions
+→ Print CHECKLIST.txt to follow along
+→ Keep QUICK-REFERENCE.txt handy for commands
+
+Good luck! 🚀
+
+================================================================================
+
+Last Updated: 2025-10-16
+Version: 1.0.0
+
+================================================================================
