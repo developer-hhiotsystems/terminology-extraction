@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+    // Python Development
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+
+    // JavaScript/React Development
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "dsznajder.es7-react-js-snippets",
+
+    // Testing
+    "hbenl.vscode-test-explorer",
+    "littlefoxteam.vscode-python-test-adapter",
+
+    // Git
+    "eamodio.gitlens",
+
+    // Utilities
+    "ms-vscode.vscode-json",
+    "visualstudioexptteam.vscodeintellicode",
+    "editorconfig.editorconfig",
+
+    // Optional but helpful
+    "christian-kohler.path-intellisense",
+    "streetsidesoftware.code-spell-checker"
+  ]
+}
