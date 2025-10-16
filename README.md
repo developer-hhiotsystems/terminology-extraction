@@ -4,6 +4,14 @@
 **Version**: 1.0.0
 **Last Updated**: October 16, 2025
 
+> **🚀 New to this project?** Start here: **[START-HERE.md](START-HERE.md)**
+>
+> **💼 Setting up on company computer?** Follow: **[VSCODE-FOOLPROOF-GUIDE.md](VSCODE-FOOLPROOF-GUIDE.md)**
+>
+> **⚡ Need quick reference?** Use: **[QUICK-REFERENCE-CARD.md](QUICK-REFERENCE-CARD.md)**
+
+---
+
 ## Overview
 
 A comprehensive glossary extraction and validation application that automatically extracts terminology from PDF documents, validates against IATE (Inter-Active Terminology for Europe), and provides interactive graph-based exploration.
@@ -145,15 +153,32 @@ Glossary APP/
 
 ## Documentation
 
+### Setup Guides (Start Here!)
+
+| Document | Best For | Time |
+|----------|----------|------|
+| **[START-HERE.md](START-HERE.md)** ⭐ | Master index - choose your guide | 2 min |
+| **[VSCODE-FOOLPROOF-GUIDE.md](VSCODE-FOOLPROOF-GUIDE.md)** | Step-by-step setup (beginners) | 20-30 min |
+| **[QUICK-START.md](QUICK-START.md)** | Quick setup (intermediate) | 10-15 min |
+| **[QUICK-REFERENCE-CARD.md](QUICK-REFERENCE-CARD.md)** | Commands only (experts) | 5-10 min |
+| **[TROUBLESHOOTING.md](TROUBLESHOOTING.md)** | Error solutions | As needed |
+
+### VS Code Setup
+
+| Document | Purpose |
+|----------|---------|
+| [docs/VSCODE-SETUP.md](docs/VSCODE-SETUP.md) | Complete VS Code guide |
+| [docs/EXTENSIONS-SUMMARY.md](docs/EXTENSIONS-SUMMARY.md) | Extension reference |
+| [docs/COMPANY-COMPUTER-SETUP.md](docs/COMPANY-COMPUTER-SETUP.md) | Company environment |
+
+### Technical Documentation
+
 | Document | Purpose |
 |----------|---------|
 | [PRT-v2.2.md](docs/PRT-v2.2.md) | Product requirements |
 | [IMPLEMENTATION-STRATEGY-v1.1.md](docs/IMPLEMENTATION-STRATEGY-v1.1.md) | 12-week roadmap |
-| [CODEBASE-SETUP.md](docs/CODEBASE-SETUP.md) | Installation guide |
-| [SETUP-SUMMARY.md](docs/SETUP-SUMMARY.md) | Setup status |
+| [docs/NO-DOCKER-SETUP.md](docs/NO-DOCKER-SETUP.md) | No-Docker architecture |
 | [REMAINING-SETUP-TASKS.md](docs/REMAINING-SETUP-TASKS.md) | Phase 2 prerequisites |
-| [READINESS-CHECKLIST.md](docs/READINESS-CHECKLIST.md) | Phase readiness |
-| [SETUP-COMPLETE.md](docs/SETUP-COMPLETE.md) | Final setup guide |
 
 ## Technology Stack
 
