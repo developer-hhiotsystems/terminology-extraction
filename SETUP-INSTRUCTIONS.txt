@@ -1,0 +1,100 @@
+===============================================================================
+AUTOMATED SETUP - QUICK START
+===============================================================================
+
+Two options to run automated setup:
+
+===============================================================================
+OPTION 1: PowerShell Script (Recommended)
+===============================================================================
+
+Right-click on:  setup-windows.ps1
+Choose: "Run with PowerShell"
+
+Or in PowerShell/Terminal:
+  .\setup-windows.ps1
+
+If you get execution policy error:
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+  .\setup-windows.ps1
+
+===============================================================================
+OPTION 2: Batch Script
+===============================================================================
+
+Double-click:  setup-windows.bat
+
+Or in Command Prompt:
+  setup-windows.bat
+
+===============================================================================
+WHAT THE SCRIPT DOES
+===============================================================================
+
+[1/8] Checks prerequisites (Python, Node.js, Git)
+[2/8] Creates Python virtual environment
+[3/8] Installs 41 Python packages
+[4/8] Installs 1,764 Node packages
+[5/8] Creates .env configuration file
+[6/8] Creates data directories
+[7/8] Runs verification (setup-check.py)
+[8/8] Shows next steps
+
+Time: 8-12 minutes
+
+===============================================================================
+AFTER SETUP COMPLETES
+===============================================================================
+
+Test Backend (Terminal 1):
+  .\venv\Scripts\activate
+  python src\backend\app.py
+  Visit: http://localhost:8000/health
+
+Test Frontend (Terminal 2):
+  npm start
+  Opens: http://localhost:3000
+
+===============================================================================
+ON COMPANY COMPUTER
+===============================================================================
+
+1. Clone repository:
+   - Open VS Code
+   - Ctrl+Shift+P → Git: Clone
+   - Paste: https://github.com/developer-hhiotsystems/terminology-extraction.git
+
+2. Run setup script:
+   - Right-click setup-windows.ps1
+   - Choose "Run with PowerShell"
+
+3. Wait 8-12 minutes
+
+4. Test!
+
+===============================================================================
+TROUBLESHOOTING
+===============================================================================
+
+Script fails?
+  - Check you have Python 3.10+ installed
+  - Check you have Node.js 18+ installed
+  - Check you have internet connection
+  - Try running commands manually (see docs/COMPANY-COMPUTER-SETUP.md)
+
+PowerShell won't run script?
+  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Behind corporate proxy?
+  npm config set proxy http://proxy.company.com:8080
+  npm config set https-proxy http://proxy.company.com:8080
+  Then run setup script again
+
+===============================================================================
+MANUAL SETUP
+===============================================================================
+
+If automated script doesn't work, follow manual steps in:
+  docs/COMPANY-COMPUTER-SETUP.md
+
+===============================================================================
