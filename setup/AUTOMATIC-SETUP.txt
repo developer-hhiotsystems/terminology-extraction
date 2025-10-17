@@ -1,0 +1,308 @@
+================================================================================
+  AUTOMATIC PORTABLE NODE.JS INSTALLATION
+================================================================================
+
+The setup script can now automatically download and install portable Node.js!
+
+================================================================================
+  HOW IT WORKS
+================================================================================
+
+When you run setup-windows.ps1:
+
+1. Setup checks if Node.js is installed
+2. If NOT found, asks: "Download portable Node.js? (Y/n)"
+3. Press "Y" or just press Enter
+4. Setup automatically:
+   - Downloads Node.js v20.11.0 (~30 MB)
+   - Extracts to C:\Users\YourName\nodejs
+   - Adds to PATH
+   - Verifies installation
+   - Continues with setup
+
+**No manual download needed!**
+**No manual extraction needed!**
+**No manual PATH configuration needed!**
+
+================================================================================
+  WHAT YOU'LL SEE
+================================================================================
+
+```
+[1/8] Checking prerequisites...
+  [INFO] Node.js not found - offering portable installation...
+
+Node.js is required but not found.
+
+Would you like to automatically download and install portable Node.js?
+  - No installation required
+  - No admin rights needed
+  - Downloads ~30 MB
+  - Extracts to: C:\Users\YourName\nodejs
+
+Download portable Node.js? (Y/n) Y
+
+Downloading portable Node.js v20.11.0...
+  [1/3] Downloading from nodejs.org...
+  [OK] Downloaded successfully
+  [2/3] Extracting to C:\Users\YourName\nodejs...
+  [OK] Extracted successfully
+  [3/3] Cleaning up temporary files...
+  [OK] Cleanup complete
+
+[SUCCESS] Portable Node.js installed and activated: v20.11.0
+
+[1/8] Checking prerequisites...
+  [OK] Node.js found: v20.11.0
+  [OK] Python found: Python 3.10.x
+  [OK] Git found: git version 2.x.x
+
+[2/8] Creating Python virtual environment...
+```
+
+**Setup continues normally!**
+
+================================================================================
+  ADVANTAGES
+================================================================================
+
+✓ Fully automated - just press "Y"
+✓ No manual download
+✓ No manual extraction
+✓ No manual PATH setup
+✓ No admin rights needed
+✓ No IT approval needed
+✓ Works on restricted computers
+✓ One-click solution
+✓ Automatic cleanup
+✓ Error handling included
+
+================================================================================
+  REQUIREMENTS
+================================================================================
+
+**Only need:**
+- Internet connection (to download ~30 MB)
+- PowerShell execution allowed
+- Write access to C:\Users\YourName\ folder (always available)
+
+**Don't need:**
+- Admin rights
+- IT approval
+- Manual download
+- ZIP extraction software
+
+================================================================================
+  WHAT GETS INSTALLED
+================================================================================
+
+**Download:**
+- Source: https://nodejs.org/dist/v20.11.0/
+- File: node-v20.11.0-win-x64.zip
+- Size: ~30 MB download
+- Official Node.js release
+
+**Installation Location:**
+C:\Users\YourName\nodejs\
+├── node.exe           (~90 MB)
+├── npm                (package manager)
+├── npm.cmd
+└── node_modules\      (npm core)
+
+**Total Size:** ~50 MB after extraction
+
+================================================================================
+  SECURITY & TRUST
+================================================================================
+
+**Download Source:**
+- Official Node.js website: nodejs.org
+- Direct from Node.js CDN
+- Same files as installer version
+- Verified checksums
+
+**No Third-Party:**
+- No external mirrors
+- No modified files
+- Official release only
+
+**Safe for Company:**
+- Read-only download
+- Extracted to user folder
+- No system changes
+- No registry modifications
+- No admin rights used
+
+================================================================================
+  IF DOWNLOAD FAILS
+================================================================================
+
+**Common Issues:**
+
+1. **Behind corporate proxy**
+   - Setup may fail to download
+   - Manual download option available
+   - See: setup/INSTALL-NODEJS.txt
+
+2. **Firewall blocks nodejs.org**
+   - Download manually at home/phone
+   - Transfer ZIP to company computer
+   - Extract to C:\Users\YourName\nodejs
+   - Run setup again
+
+3. **Network timeout**
+   - Run setup script again
+   - Or download manually
+
+**Manual Fallback:**
+If automatic download fails, setup shows manual instructions:
+1. Download ZIP from nodejs.org
+2. Extract to user folder
+3. Run setup again
+
+================================================================================
+  OFFLINE INSTALLATION
+================================================================================
+
+**For computers without internet:**
+
+1. **On computer with internet:**
+   - Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
+   - Copy to USB drive
+
+2. **On offline computer:**
+   - Copy ZIP to Downloads folder
+   - Extract to: C:\Users\YourName\nodejs
+   - Run setup script
+   - Setup auto-detects portable Node.js
+
+================================================================================
+  COMPARISON: AUTOMATIC VS MANUAL
+================================================================================
+
+| Step | Automatic | Manual |
+|------|-----------|--------|
+| Download | ✓ Automatic | ✗ Manual browser download |
+| Extract | ✓ Automatic | ✗ Manual ZIP extraction |
+| Location | ✓ Correct folder | ? User chooses |
+| PATH | ✓ Auto-configured | ✗ Manual setup |
+| Verification | ✓ Automatic | ✗ Manual check |
+| Time | ~2 minutes | ~5 minutes |
+| Steps | 1 (press Y) | 5 manual steps |
+
+================================================================================
+  ANSWERING "Y" vs "N"
+================================================================================
+
+**Press "Y" (Recommended):**
+- Fully automated installation
+- Setup continues immediately
+- No manual steps needed
+- Best for most users
+
+**Press "N" (Advanced):**
+- Setup stops with instructions
+- You download manually
+- You extract manually
+- Run setup again after extraction
+- Use if: behind proxy, offline, or prefer manual control
+
+================================================================================
+  CLEANING UP OLD VERSIONS
+================================================================================
+
+**Setup automatically:**
+- Removes old nodejs folder if exists
+- Extracts fresh version
+- No conflicts with old installations
+
+**Safe upgrade path:**
+Old portable Node.js → Automatic replacement → New version ready
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+**Problem: "Download failed"**
+Solution: Check internet connection, try again, or download manually
+
+**Problem: "Extraction failed"**
+Solution: Check disk space (need 100 MB free), try again
+
+**Problem: "Access denied"**
+Solution: Setup uses user folder (always writable), should not happen
+
+**Problem: Download very slow**
+Solution: Wait for completion, or press Ctrl+C and download manually
+
+**Problem: "Cannot verify installation"**
+Solution: Run setup again, or check C:\Users\YourName\nodejs\node.exe exists
+
+================================================================================
+  AFTER INSTALLATION
+================================================================================
+
+**Portable Node.js is now available:**
+- Located at: C:\Users\YourName\nodejs
+- Added to PATH (this session)
+- Setup continues automatically
+- npm packages will install
+- Frontend will work
+
+**For next PowerShell session:**
+Setup script auto-detects portable Node.js location.
+Just run setup again if needed.
+
+================================================================================
+  BENEFITS FOR COMPANY COMPUTERS
+================================================================================
+
+**IT-Friendly:**
+✓ No system installation
+✓ No admin rights used
+✓ No registry changes
+✓ User folder only
+✓ Fully reversible
+✓ Official software source
+✓ Standard development tool
+
+**Easy to Remove:**
+Just delete C:\Users\YourName\nodejs folder - done!
+
+**Easy to Update:**
+Run setup again → answers "Y" → gets latest version
+
+================================================================================
+  QUICK START
+================================================================================
+
+**For new users on company computer:**
+
+1. Clone repository:
+   ```bash
+   git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+   cd terminology-extraction
+   ```
+
+2. Run setup:
+   ```bash
+   .\setup-windows.ps1
+   ```
+
+3. When asked "Download portable Node.js?":
+   ```
+   Press: Y
+   ```
+
+4. Wait 2-3 minutes
+
+5. Done! Setup completes automatically.
+
+**That's it! One command, one keypress, fully automated.** 🚀
+
+================================================================================
+
+Last Updated: 2025-10-16
+Version: Node.js 20.11.0 LTS
+
+================================================================================

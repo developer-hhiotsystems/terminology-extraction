@@ -150,9 +150,90 @@ try {
     }
 
     if (-not $nodeFound) {
-        Log-Error "Prerequisites" "Node.js not found. See setup/INSTALL-NODEJS.txt for portable installation (no admin required)"
-        $report = Generate-ErrorReport
-        $report += @"
+        Log-Step "  [INFO] Node.js not found - offering portable installation..." "Yellow"
+
+        # Ask user if they want automatic portable Node.js installation
+        Write-Host ""
+        Write-Host "Node.js is required but not found." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "Would you like to automatically download and install portable Node.js?" -ForegroundColor Cyan
+        Write-Host "  - No installation required" -ForegroundColor Gray
+        Write-Host "  - No admin rights needed" -ForegroundColor Gray
+        Write-Host "  - Downloads ~30 MB" -ForegroundColor Gray
+        Write-Host "  - Extracts to: $env:USERPROFILE\nodejs" -ForegroundColor Gray
+        Write-Host ""
+        $response = Read-Host "Download portable Node.js? (Y/n)"
+
+        if ($response -eq "" -or $response -eq "Y" -or $response -eq "y") {
+            Write-Host ""
+            Log-Step "Downloading portable Node.js v20.11.0..." "Cyan"
+
+            $nodeUrl = "https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip"
+            $zipPath = "$env:TEMP\node-portable.zip"
+            $extractPath = "$env:USERPROFILE\nodejs"
+
+            try {
+                # Download
+                Log-Step "  [1/3] Downloading from nodejs.org..." "Cyan"
+                $ProgressPreference = 'SilentlyContinue'
+                Invoke-WebRequest -Uri $nodeUrl -OutFile $zipPath -UseBasicParsing
+                Log-Step "  [OK] Downloaded successfully" "Green"
+
+                # Extract
+                Log-Step "  [2/3] Extracting to $extractPath..." "Cyan"
+
+                # Remove old nodejs folder if exists
+                if (Test-Path $extractPath) {
+                    Remove-Item -Path $extractPath -Recurse -Force
+                }
+
+                # Extract ZIP
+                Expand-Archive -Path $zipPath -DestinationPath "$env:TEMP\node-extract" -Force
+
+                # Move contents (ZIP contains node-v20.11.0-win-x64 folder)
+                $extractedFolder = Get-ChildItem "$env:TEMP\node-extract" | Select-Object -First 1
+                Move-Item -Path $extractedFolder.FullName -Destination $extractPath -Force
+
+                Log-Step "  [OK] Extracted successfully" "Green"
+
+                # Clean up
+                Log-Step "  [3/3] Cleaning up temporary files..." "Cyan"
+                Remove-Item -Path $zipPath -Force -ErrorAction SilentlyContinue
+                Remove-Item -Path "$env:TEMP\node-extract" -Recurse -Force -ErrorAction SilentlyContinue
+                Log-Step "  [OK] Cleanup complete" "Green"
+
+                # Add to PATH
+                $env:Path += ";$extractPath"
+
+                # Verify
+                $nodeVersion = node --version 2>&1
+                if ($LASTEXITCODE -eq 0) {
+                    Write-Host ""
+                    Log-Step "[SUCCESS] Portable Node.js installed and activated: $nodeVersion" "Green"
+                    Write-Host ""
+                    $nodeFound = $true
+                } else {
+                    throw "Node.js verification failed after extraction"
+                }
+
+            } catch {
+                Write-Host ""
+                Log-Step "[ERROR] Automatic installation failed: $($_.Exception.Message)" "Red"
+                Write-Host ""
+                Write-Host "Please install manually:" -ForegroundColor Yellow
+                Write-Host "  1. Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip" -ForegroundColor White
+                Write-Host "  2. Extract to: $env:USERPROFILE\nodejs" -ForegroundColor White
+                Write-Host "  3. Run this script again" -ForegroundColor White
+                Write-Host ""
+                Write-Host "See setup/INSTALL-NODEJS.txt for detailed instructions." -ForegroundColor Gray
+                Write-Host ""
+                exit 1
+            }
+        } else {
+            Write-Host ""
+            Log-Error "Prerequisites" "Node.js not found. See setup/INSTALL-NODEJS.txt for manual installation"
+            $report = Generate-ErrorReport
+            $report += @"
 
 ================================================================================
 PORTABLE NODE.JS SOLUTION (No Installation Required)
@@ -160,36 +241,36 @@ PORTABLE NODE.JS SOLUTION (No Installation Required)
 
 Node.js was not found. You have two options:
 
-Option 1: Install Node.js (Requires Admin/IT Approval)
-------------------------------------------------------
-Download: https://nodejs.org/ (LTS version)
-See: setup/INSTALL-NODEJS.txt for instructions
-
-Option 2: Use Portable Node.js (No Admin Required) ⭐ RECOMMENDED
+Option 1: Run Setup Again and Choose "Y" for Automatic Download
 ----------------------------------------------------------------
+The setup script can automatically download and install portable Node.js.
+Just run: .\setup-windows.ps1
+And press "Y" when asked.
+
+Option 2: Manual Installation
+------------------------------
 1. Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
 2. Extract to: $env:USERPROFILE\nodejs
 3. Run this script again - it will auto-detect!
 
-The setup script checks these locations automatically:
-- $env:USERPROFILE\nodejs
-- $env:USERPROFILE\portable\nodejs
-- C:\portable\nodejs
-- .\nodejs (project folder)
-
-After extracting portable Node.js to any of these locations,
-just run setup-windows.ps1 again!
+Option 3: Install Node.js (Requires Admin/IT Approval)
+-------------------------------------------------------
+Download: https://nodejs.org/ (LTS version)
+See: setup/INSTALL-NODEJS.txt for instructions
 
 For detailed instructions: See setup/INSTALL-NODEJS.txt
 
 "@
-        Set-Content -Path "setup-error-report.md" -Value $report
-        Write-Host "`nError report saved: setup-error-report.md" -ForegroundColor Yellow
-        Write-Host "`n[SOLUTION] Use Portable Node.js (No Installation):" -ForegroundColor Cyan
-        Write-Host "  1. Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip" -ForegroundColor White
-        Write-Host "  2. Extract to: $env:USERPROFILE\nodejs" -ForegroundColor White
-        Write-Host "  3. Run this script again`n" -ForegroundColor White
-        Write-Host "See setup/INSTALL-NODEJS.txt for detailed instructions.`n" -ForegroundColor Gray
+            Set-Content -Path "setup-error-report.md" -Value $report
+            Write-Host "Error report saved: setup-error-report.md" -ForegroundColor Yellow
+            Write-Host ""
+            exit 1
+        }
+    }
+
+    if (-not $nodeFound) {
+        # Should not reach here, but just in case
+        Log-Error "Prerequisites" "Node.js installation failed"
         exit 1
     }
 }
