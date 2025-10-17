@@ -17,20 +17,25 @@ from dotenv import load_dotenv
 
 from src.backend.database import get_db, initialize_database, check_database_connection
 from src.backend.config import config
-from src.backend.routers import glossary, documents
+from src.backend.routers import glossary, documents, admin
 
 # Load environment variables
 load_dotenv()
 
 app = FastAPI(
     title="Glossary Extraction & Validation API",
-    version="1.0.0",
+    version="2.0.0",
     description="API for extracting terminology from PDFs and validating against IATE"
 )
 
-# Include routers
+# Include routers (order matters for route resolution)
+print(f"Loading glossary router: {glossary.router}")
 app.include_router(glossary.router)
+print(f"Loading documents router: {documents.router}")
 app.include_router(documents.router)
+print(f"Loading admin router: {admin.router}")
+app.include_router(admin.router)  # Admin operations
+print(f"All routers loaded. Total routes: {len(app.routes)}")
 
 # CORS middleware configuration
 app.add_middleware(
