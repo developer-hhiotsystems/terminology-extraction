@@ -17,7 +17,7 @@ from dotenv import load_dotenv
 
 from src.backend.database import get_db, initialize_database, check_database_connection
 from src.backend.config import config
-from src.backend.routers import glossary
+from src.backend.routers import glossary, documents
 
 # Load environment variables
 load_dotenv()
@@ -30,6 +30,7 @@ app = FastAPI(
 
 # Include routers
 app.include_router(glossary.router)
+app.include_router(documents.router)
 
 # CORS middleware configuration
 app.add_middleware(

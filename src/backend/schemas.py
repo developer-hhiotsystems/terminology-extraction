@@ -78,3 +78,58 @@ class ErrorResponse(BaseModel):
 class MessageResponse(BaseModel):
     """Schema for simple message responses"""
     message: str
+
+
+# Document Upload Schemas
+
+class DocumentUploadResponse(BaseModel):
+    """Schema for document upload response"""
+    id: int
+    filename: str
+    file_path: str
+    file_size: int
+    upload_status: str
+    uploaded_at: datetime
+    processing_metadata: Optional[dict] = None
+
+    model_config = {"from_attributes": True}
+
+
+class DocumentProcessRequest(BaseModel):
+    """Schema for document processing request"""
+    extract_terms: bool = Field(default=True, description="Extract terms using NLP")
+    auto_validate: bool = Field(default=False, description="Auto-validate extracted terms")
+    language: str = Field(default="en", pattern="^(de|en)$", description="Document language")
+    source: str = Field(default="internal", description="Source classification")
+
+    @field_validator('source')
+    @classmethod
+    def validate_source(cls, v):
+        """Validate source if provided"""
+        allowed_sources = ['internal', 'NAMUR', 'DIN', 'ASME', 'IEC', 'IATE']
+        if v not in allowed_sources:
+            raise ValueError(f"Source must be one of: {', '.join(allowed_sources)}")
+        return v
+
+
+class DocumentProcessResponse(BaseModel):
+    """Schema for document processing response"""
+    document_id: int
+    status: str
+    extracted_text_length: int
+    terms_extracted: int
+    terms_saved: int
+    processing_time_seconds: float
+    errors: Optional[List[str]] = None
+
+
+class DocumentListResponse(BaseModel):
+    """Schema for document list response"""
+    id: int
+    filename: str
+    file_size: int
+    upload_status: str
+    uploaded_at: datetime
+    processed_at: Optional[datetime] = None
+
+    model_config = {"from_attributes": True}
