@@ -1,10 +1,11 @@
 # Core FastAPI dependencies (no compilation required)
-fastapi==0.104.1
+fastapi>=0.119.0
 uvicorn[standard]==0.24.0
 python-multipart==0.0.6
+httpx>=0.28.0
 
 # Database
-sqlalchemy==2.0.23
+sqlalchemy>=2.0.35  # Python 3.13 compatible
 neo4j==5.14.0
 
 # PDF Processing
