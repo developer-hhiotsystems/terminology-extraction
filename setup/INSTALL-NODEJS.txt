@@ -1,0 +1,230 @@
+================================================================================
+  HOW TO INSTALL NODE.JS
+================================================================================
+
+If setup failed with "Node.js not found", follow these steps:
+
+================================================================================
+  STEP 1: DOWNLOAD NODE.JS
+================================================================================
+
+**Official Website:**
+https://nodejs.org/
+
+**Which Version?**
+Download: LTS (Long Term Support) - Left button
+Current version: 18.x or 20.x
+
+**Direct Download Link:**
+Windows 64-bit: https://nodejs.org/dist/v20.11.0/node-v20.11.0-x64.msi
+
+================================================================================
+  STEP 2: INSTALL NODE.JS
+================================================================================
+
+**Run the installer (node-vXX.XX.X-x64.msi):**
+
+1. Double-click the .msi file
+2. Click "Next"
+3. Accept license agreement → "Next"
+4. Choose installation location (default is fine) → "Next"
+5. **IMPORTANT:** Check "Automatically install necessary tools"
+6. Click "Next"
+7. Click "Install"
+8. Wait for installation (2-3 minutes)
+9. Click "Finish"
+
+================================================================================
+  STEP 3: VERIFY INSTALLATION
+================================================================================
+
+**Open NEW PowerShell window** (important - must be new!):
+
+1. Press Windows key
+2. Type: PowerShell
+3. Press Enter
+
+**Check Node.js:**
+```powershell
+node --version
+```
+
+**Should show:**
+```
+v20.11.0
+```
+(or similar version number)
+
+**Check npm:**
+```powershell
+npm --version
+```
+
+**Should show:**
+```
+10.2.4
+```
+(or similar version number)
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+Problem: "node is not recognized as an internal or external command"
+
+**Solution 1: Restart Computer**
+Most common fix - Node.js needs restart to add to PATH
+
+**Solution 2: Check PATH Environment Variable**
+
+1. Press Windows key
+2. Type: "environment variables"
+3. Click: "Edit the system environment variables"
+4. Click: "Environment Variables" button
+5. Under "System variables", find "Path"
+6. Click "Edit"
+7. Look for these entries:
+   - C:\Program Files\nodejs\
+   - C:\Users\YourName\AppData\Roaming\npm
+
+**If missing:**
+8. Click "New"
+9. Add: C:\Program Files\nodejs\
+10. Click "OK" on all windows
+11. **Restart PowerShell**
+
+**Solution 3: Reinstall Node.js**
+1. Uninstall Node.js (Control Panel → Programs)
+2. Download fresh installer
+3. Run installer again
+4. **Check "Add to PATH" during installation**
+5. Restart computer
+
+================================================================================
+  STEP 4: RUN SETUP AGAIN
+================================================================================
+
+After Node.js is installed and verified:
+
+1. Open PowerShell
+2. Navigate to project:
+   ```powershell
+   cd terminology-extraction
+   ```
+3. Run setup script:
+   ```powershell
+   .\setup-windows.ps1
+   ```
+
+Setup should now complete successfully!
+
+================================================================================
+  ALTERNATIVE: PORTABLE NODE.JS (NO ADMIN RIGHTS)
+================================================================================
+
+If you cannot install software on company computer:
+
+**Download Portable Node.js:**
+https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
+
+**Setup:**
+1. Extract to: C:\portable\nodejs\
+2. Add to PATH temporarily in PowerShell:
+   ```powershell
+   $env:Path += ";C:\portable\nodejs"
+   ```
+3. Verify:
+   ```powershell
+   node --version
+   ```
+4. Run setup script
+
+**Note:** Path is temporary - need to add each PowerShell session
+
+================================================================================
+  BEHIND CORPORATE PROXY
+================================================================================
+
+If download is blocked or slow:
+
+**Configure npm proxy:**
+```powershell
+npm config set proxy http://proxy.company.com:8080
+npm config set https-proxy http://proxy.company.com:8080
+```
+
+**Check proxy settings:**
+```powershell
+npm config get proxy
+npm config get https-proxy
+```
+
+================================================================================
+  COMPANY COMPUTER REQUIREMENTS
+================================================================================
+
+**Check with IT if you need:**
+- Admin rights to install
+- Software approval
+- Specific Node.js version required
+- Proxy configuration
+
+**Node.js is generally approved because:**
+- Industry standard
+- No security risk
+- Used by many enterprise applications
+- Free and open source
+
+================================================================================
+  AFTER SUCCESSFUL INSTALLATION
+================================================================================
+
+**Verify both Python AND Node.js:**
+
+```powershell
+python --version
+node --version
+npm --version
+```
+
+**All three should work!**
+
+Then run:
+```powershell
+.\setup-windows.ps1
+```
+
+================================================================================
+  WHAT NODE.JS INSTALLS
+================================================================================
+
+**node** - JavaScript runtime
+**npm** - Package manager (installs with Node.js)
+**npx** - Package runner (installs with Node.js)
+
+**Size:** ~50 MB installed
+**Location:** C:\Program Files\nodejs\
+
+================================================================================
+  NEED MORE HELP?
+================================================================================
+
+**Official Docs:**
+https://nodejs.org/en/download/package-manager
+
+**Video Tutorial:**
+Search YouTube: "Install Node.js Windows"
+
+**Contact:**
+Email: developer.hh-iot-systems@outlook.com
+Include:
+- Error message
+- Windows version
+- Company/personal computer
+- Admin rights (yes/no)
+
+================================================================================
+
+Last Updated: 2025-10-16
+
+================================================================================

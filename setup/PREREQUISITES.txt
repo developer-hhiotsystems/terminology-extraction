@@ -1,0 +1,282 @@
+================================================================================
+  PREREQUISITES CHECKLIST
+================================================================================
+
+Before running setup, ensure you have these installed:
+
+================================================================================
+  REQUIRED SOFTWARE
+================================================================================
+
+[ ] Python 3.10 or higher
+[ ] Node.js 18 or higher
+[ ] Git 2.x or higher
+[ ] VS Code (recommended)
+
+================================================================================
+  1. PYTHON 3.10+
+================================================================================
+
+**Check if installed:**
+```powershell
+python --version
+```
+
+**Should show:** Python 3.10.x or higher
+
+**If not installed:**
+Download: https://www.python.org/downloads/
+File: Windows installer (64-bit)
+Size: ~25 MB
+
+**IMPORTANT During Installation:**
+✅ CHECK: "Add Python to PATH"
+✅ CHECK: "Install pip"
+
+**After install, verify:**
+```powershell
+python --version
+pip --version
+```
+
+**More help:** See setup/INSTALL-PYTHON.txt
+
+================================================================================
+  2. NODE.JS 18+
+================================================================================
+
+**Check if installed:**
+```powershell
+node --version
+npm --version
+```
+
+**Should show:**
+- Node: v18.x or v20.x
+- npm: 9.x or 10.x
+
+**If not installed:**
+Download: https://nodejs.org/
+Choose: LTS (Long Term Support)
+Size: ~50 MB
+
+**IMPORTANT During Installation:**
+✅ CHECK: "Automatically install necessary tools"
+✅ Restart computer after installation
+
+**After install, verify:**
+```powershell
+node --version
+npm --version
+```
+
+**More help:** See setup/INSTALL-NODEJS.txt
+
+================================================================================
+  3. GIT 2.x
+================================================================================
+
+**Check if installed:**
+```powershell
+git --version
+```
+
+**Should show:** git version 2.x.x
+
+**If not installed:**
+Download: https://git-scm.com/downloads
+File: Windows installer
+Size: ~50 MB
+
+**Installation:**
+Use all default options
+
+**After install, verify:**
+```powershell
+git --version
+```
+
+**Configure Git:**
+```powershell
+git config --global user.name "Your Name"
+git config --global user.email "your.email@company.com"
+```
+
+================================================================================
+  4. VS CODE (RECOMMENDED)
+================================================================================
+
+**Check if installed:**
+Look for "Visual Studio Code" in Start menu
+
+**If not installed:**
+Download: https://code.visualstudio.com/
+File: Windows installer
+Size: ~90 MB
+
+**Installation:**
+Use all default options
+✅ CHECK: "Add to PATH"
+✅ CHECK: "Create desktop icon"
+
+**Verify:**
+```powershell
+code --version
+```
+
+================================================================================
+  OPTIONAL SOFTWARE
+================================================================================
+
+NOT required for setup, completely optional:
+
+[ ] Docker Desktop (Phase 2 only - NOT NEEDED!)
+[ ] Neo4j Desktop (Phase 2 only - optional)
+
+**SQLite is used by default - no Docker needed!**
+
+================================================================================
+  SYSTEM REQUIREMENTS
+================================================================================
+
+**Operating System:**
+- Windows 10 or Windows 11
+- 64-bit
+
+**Disk Space:**
+- 2 GB free space minimum
+- 5 GB recommended (for dependencies)
+
+**Memory:**
+- 4 GB RAM minimum
+- 8 GB recommended
+
+**Internet:**
+- Required for initial setup (downloading packages)
+- Approximately 500 MB download during setup
+
+================================================================================
+  VERIFICATION SCRIPT
+================================================================================
+
+**Quick check all prerequisites:**
+
+After installing everything, run:
+```powershell
+python setup-check.py
+```
+
+This will check:
+✅ Python version
+✅ Node.js version
+✅ Git version
+✅ Python packages
+✅ npm packages
+✅ Directory structure
+
+================================================================================
+  INSTALLATION ORDER
+================================================================================
+
+Recommended order:
+
+1. **Python** (10 minutes)
+   - Download → Install → Verify
+   - Restart terminal
+
+2. **Node.js** (10 minutes)
+   - Download → Install → Restart computer → Verify
+
+3. **Git** (5 minutes)
+   - Download → Install → Configure → Verify
+
+4. **VS Code** (5 minutes)
+   - Download → Install → Verify
+
+**Total time:** 30 minutes
+
+================================================================================
+  COMPANY COMPUTER CONSIDERATIONS
+================================================================================
+
+**Do you have admin rights?**
+- YES: Install normally
+- NO: Ask IT to install or use portable versions
+
+**Behind corporate firewall?**
+- May need proxy configuration
+- See: docs/COMPANY-COMPUTER-SETUP.md
+
+**Software approval needed?**
+All software is free, open source, and widely used:
+- Python: Industry standard
+- Node.js: Used by many companies
+- Git: Version control standard
+- VS Code: Microsoft product
+
+**Present to IT:**
+"These are standard development tools, no security concerns"
+
+================================================================================
+  AFTER ALL PREREQUISITES INSTALLED
+================================================================================
+
+**Verify everything:**
+```powershell
+python --version
+node --version
+npm --version
+git --version
+code --version
+```
+
+**All should return version numbers!**
+
+**Then run setup:**
+```powershell
+git clone https://github.com/developer-hhiotsystems/terminology-extraction.git
+cd terminology-extraction
+.\setup-windows.ps1
+```
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+**"Command not found" errors:**
+→ Restart terminal/computer
+→ Software needs to be added to PATH
+→ See individual install guides
+
+**Installation fails:**
+→ Check you have admin rights
+→ Disable antivirus temporarily
+→ Check disk space
+
+**Behind proxy:**
+→ Configure proxy for npm/pip
+→ See: docs/COMPANY-COMPUTER-SETUP.md
+
+**Need help:**
+→ Check: docs/TROUBLESHOOTING.md
+→ Email: developer.hh-iot-systems@outlook.com
+
+================================================================================
+  QUICK REFERENCE
+================================================================================
+
+**Python:**    https://www.python.org/downloads/
+**Node.js:**   https://nodejs.org/
+**Git:**       https://git-scm.com/downloads
+**VS Code:**   https://code.visualstudio.com/
+
+**Setup fails? See specific install guides:**
+- setup/INSTALL-PYTHON.txt
+- setup/INSTALL-NODEJS.txt
+- setup/INSTALL-GIT.txt
+
+================================================================================
+
+Last Updated: 2025-10-16
+
+================================================================================
