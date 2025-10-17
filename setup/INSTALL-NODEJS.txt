@@ -119,27 +119,71 @@ After Node.js is installed and verified:
 Setup should now complete successfully!
 
 ================================================================================
-  ALTERNATIVE: PORTABLE NODE.JS (NO ADMIN RIGHTS)
+  PORTABLE NODE.JS (NO ADMIN RIGHTS REQUIRED) ⭐ RECOMMENDED FOR COMPANY
 ================================================================================
 
-If you cannot install software on company computer:
+If you cannot install software on company computer, use portable version!
 
 **Download Portable Node.js:**
 https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
 
-**Setup:**
-1. Extract to: C:\portable\nodejs\
-2. Add to PATH temporarily in PowerShell:
-   ```powershell
-   $env:Path += ";C:\portable\nodejs"
-   ```
-3. Verify:
-   ```powershell
-   node --version
-   ```
-4. Run setup script
+**Quick Setup (3 steps):**
 
-**Note:** Path is temporary - need to add each PowerShell session
+1. **Download the ZIP file** (link above)
+
+2. **Extract to one of these locations:**
+   - %USERPROFILE%\nodejs              (Recommended: C:\Users\YourName\nodejs)
+   - %USERPROFILE%\portable\nodejs
+   - C:\portable\nodejs
+   - [project]\nodejs
+
+3. **Run setup script again:**
+   ```powershell
+   .\setup-windows.ps1
+   ```
+
+**That's it!** The setup script will automatically detect portable Node.js
+in these locations and add it to PATH. No manual PATH configuration needed!
+
+**What happens:**
+- Setup script checks common portable locations
+- Finds your portable Node.js
+- Automatically adds to PATH
+- Continues with installation
+- Shows "[OK] Portable Node.js activated: v20.11.0"
+
+**Advantages:**
+✓ No installation required
+✓ No admin rights needed
+✓ No IT approval needed
+✓ Works on restricted computers
+✓ Auto-detected by setup script
+✓ Clean and portable
+
+**Folder structure after extract:**
+```
+C:\Users\YourName\nodejs\
+├── node.exe           ← Node.js executable
+├── npm                ← Package manager
+├── npm.cmd
+└── node_modules\      ← npm dependencies
+```
+
+**Verify it works:**
+```powershell
+# Setup script adds to PATH automatically, or add manually:
+$env:Path += ";$env:USERPROFILE\nodejs"
+
+# Check version
+node --version
+npm --version
+```
+
+**Should show:**
+```
+v20.11.0
+10.2.4
+```
 
 ================================================================================
   BEHIND CORPORATE PROXY

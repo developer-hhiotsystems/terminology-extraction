@@ -1,0 +1,232 @@
+================================================================================
+  PORTABLE NODE.JS - QUICK START (NO INSTALLATION)
+================================================================================
+
+For company computers where you CANNOT install software.
+
+================================================================================
+  3-STEP SETUP (5 MINUTES)
+================================================================================
+
+STEP 1: Download
+----------------
+Link: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
+Size: ~30 MB
+Save to: Downloads folder
+
+STEP 2: Extract
+---------------
+1. Find the downloaded ZIP file
+2. Right-click → "Extract All..."
+3. Extract to: C:\Users\YourName\nodejs
+   (Replace YourName with your Windows username)
+4. Click "Extract"
+
+STEP 3: Run Setup
+-----------------
+Open PowerShell in project folder:
+```powershell
+cd terminology-extraction
+.\setup-windows.ps1
+```
+
+**Done!** Setup will auto-detect portable Node.js and continue.
+
+================================================================================
+  WHAT YOU'LL SEE
+================================================================================
+
+When setup runs, you'll see:
+
+```
+[1/8] Checking prerequisites...
+  [INFO] Found portable Node.js at: C:\Users\YourName\nodejs
+  [OK] Portable Node.js activated: v20.11.0
+  [OK] Python found: Python 3.10.x
+  [OK] Git found: git version 2.x.x
+```
+
+Then setup continues normally!
+
+================================================================================
+  WHERE TO EXTRACT (CHOOSE ONE)
+================================================================================
+
+Setup script automatically checks these locations:
+
+Option 1: User folder (RECOMMENDED)
+   C:\Users\YourName\nodejs
+
+Option 2: User portable folder
+   C:\Users\YourName\portable\nodejs
+
+Option 3: System portable folder
+   C:\portable\nodejs
+
+Option 4: Project folder
+   C:\...\terminology-extraction\nodejs
+
+**Use Option 1 (user folder) - easiest and works for all projects!**
+
+================================================================================
+  VERIFICATION
+================================================================================
+
+After extracting, verify manually (optional):
+
+```powershell
+# Add to PATH
+$env:Path += ";C:\Users\YourName\nodejs"
+
+# Check
+node --version
+npm --version
+```
+
+Should show:
+```
+v20.11.0
+10.2.4
+```
+
+**Or just run setup script - it does this automatically!**
+
+================================================================================
+  TROUBLESHOOTING
+================================================================================
+
+Problem: Setup still says "Node.js not found"
+Solution: Check extraction location
+
+```powershell
+# Check if node.exe exists
+Test-Path "$env:USERPROFILE\nodejs\node.exe"
+```
+
+Should show: True
+
+If False, re-extract to correct location.
+
+Problem: ZIP won't extract
+Solution: Use 7-Zip or WinRAR if Windows built-in extractor fails
+
+Problem: "Access denied" when extracting
+Solution: Extract to your user folder (C:\Users\YourName\) - no admin needed
+
+================================================================================
+  DAILY USAGE
+================================================================================
+
+**Good news:** Once extracted, you don't need to do anything!
+
+The setup script automatically finds and uses portable Node.js.
+
+**For manual use:**
+```powershell
+# Add to PATH (do this once per PowerShell session)
+$env:Path += ";$env:USERPROFILE\nodejs"
+
+# Then use npm/node normally
+npm install
+npm start
+node script.js
+```
+
+================================================================================
+  ADVANTAGES
+================================================================================
+
+✓ No installation required
+✓ No admin rights needed
+✓ No IT approval needed
+✓ Works on locked-down computers
+✓ Auto-detected by setup script
+✓ Can be on USB drive (portable across computers)
+✓ Easy to update (just replace files)
+✓ Clean uninstall (just delete folder)
+
+================================================================================
+  FILE SIZE
+================================================================================
+
+**Download:** ~30 MB (ZIP)
+**Extracted:** ~50 MB (folder)
+**After npm install:** ~550 MB (with project dependencies)
+
+Total space needed: ~600 MB
+
+================================================================================
+  UPDATES
+================================================================================
+
+To update portable Node.js later:
+
+1. Download new version ZIP
+2. Delete old nodejs folder
+3. Extract new version to same location
+4. Done! Setup script uses new version automatically
+
+================================================================================
+  COMPARISON
+================================================================================
+
+| Feature | Installed Node.js | Portable Node.js |
+|---------|-------------------|------------------|
+| Admin rights | Required | Not required |
+| IT approval | Usually required | Not required |
+| System PATH | Permanent | Temporary/Auto |
+| Size | Same | Same |
+| Speed | Same | Same |
+| Updates | Installer | Replace files |
+| Multiple versions | Complex | Easy (different folders) |
+
+================================================================================
+  DIRECT DOWNLOAD LINKS
+================================================================================
+
+**Latest LTS (Recommended):**
+https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
+
+**Alternative versions:**
+Node.js 18 LTS: https://nodejs.org/dist/v18.19.0/node-v18.19.0-win-x64.zip
+
+**All versions:**
+https://nodejs.org/dist/
+
+================================================================================
+  SUCCESS INDICATORS
+================================================================================
+
+You'll know it worked when:
+
+✓ Setup script shows: "[OK] Portable Node.js activated"
+✓ No "Node.js not found" error
+✓ Setup continues to install npm packages
+✓ Frontend starts with: npm start
+
+================================================================================
+  NEED HELP?
+================================================================================
+
+Still having issues?
+
+1. Check extraction location: C:\Users\YourName\nodejs\node.exe should exist
+2. Run setup script - it gives helpful error messages
+3. Check: setup-error-report.md (auto-generated)
+4. Email: developer.hh-iot-systems@outlook.com with error report
+
+================================================================================
+
+**Quick Summary:**
+1. Download ZIP from nodejs.org
+2. Extract to C:\Users\YourName\nodejs
+3. Run .\setup-windows.ps1
+
+**Setup script handles the rest automatically!** 🚀
+
+================================================================================
+
+Last Updated: 2025-10-16
+Version: Node.js 20.11.0 LTS
+
+================================================================================

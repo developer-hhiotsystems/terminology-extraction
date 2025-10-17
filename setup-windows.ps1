@@ -125,12 +125,73 @@ try {
         throw "Node command failed"
     }
 } catch {
-    Log-Error "Prerequisites" "Node.js not found. Please install Node.js 18+ from https://nodejs.org/"
-    $report = Generate-ErrorReport
-    Set-Content -Path "setup-error-report.md" -Value $report
-    Write-Host "`nError report saved: setup-error-report.md" -ForegroundColor Yellow
-    Write-Host "Please install Node.js and try again.`n" -ForegroundColor Yellow
-    exit 1
+    # Check for portable Node.js in common locations
+    $portablePaths = @(
+        "$env:USERPROFILE\nodejs",
+        "$env:USERPROFILE\portable\nodejs",
+        "C:\portable\nodejs",
+        "$PSScriptRoot\nodejs"
+    )
+
+    $nodeFound = $false
+    foreach ($path in $portablePaths) {
+        if (Test-Path "$path\node.exe") {
+            Log-Step "  [INFO] Found portable Node.js at: $path" "Cyan"
+            $env:Path += ";$path"
+
+            # Verify it works
+            $nodeVersion = node --version 2>&1
+            if ($LASTEXITCODE -eq 0) {
+                Log-Step "  [OK] Portable Node.js activated: $nodeVersion" "Green"
+                $nodeFound = $true
+                break
+            }
+        }
+    }
+
+    if (-not $nodeFound) {
+        Log-Error "Prerequisites" "Node.js not found. See setup/INSTALL-NODEJS.txt for portable installation (no admin required)"
+        $report = Generate-ErrorReport
+        $report += @"
+
+================================================================================
+PORTABLE NODE.JS SOLUTION (No Installation Required)
+================================================================================
+
+Node.js was not found. You have two options:
+
+Option 1: Install Node.js (Requires Admin/IT Approval)
+------------------------------------------------------
+Download: https://nodejs.org/ (LTS version)
+See: setup/INSTALL-NODEJS.txt for instructions
+
+Option 2: Use Portable Node.js (No Admin Required) ⭐ RECOMMENDED
+----------------------------------------------------------------
+1. Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip
+2. Extract to: $env:USERPROFILE\nodejs
+3. Run this script again - it will auto-detect!
+
+The setup script checks these locations automatically:
+- $env:USERPROFILE\nodejs
+- $env:USERPROFILE\portable\nodejs
+- C:\portable\nodejs
+- .\nodejs (project folder)
+
+After extracting portable Node.js to any of these locations,
+just run setup-windows.ps1 again!
+
+For detailed instructions: See setup/INSTALL-NODEJS.txt
+
+"@
+        Set-Content -Path "setup-error-report.md" -Value $report
+        Write-Host "`nError report saved: setup-error-report.md" -ForegroundColor Yellow
+        Write-Host "`n[SOLUTION] Use Portable Node.js (No Installation):" -ForegroundColor Cyan
+        Write-Host "  1. Download: https://nodejs.org/dist/v20.11.0/node-v20.11.0-win-x64.zip" -ForegroundColor White
+        Write-Host "  2. Extract to: $env:USERPROFILE\nodejs" -ForegroundColor White
+        Write-Host "  3. Run this script again`n" -ForegroundColor White
+        Write-Host "See setup/INSTALL-NODEJS.txt for detailed instructions.`n" -ForegroundColor Gray
+        exit 1
+    }
 }
 
 # Check Git
