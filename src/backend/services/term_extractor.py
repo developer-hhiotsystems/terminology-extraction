@@ -316,19 +316,146 @@ class TermExtractor:
 
         return sentence
 
-    def generate_definition(self, term: str, context: str, complete_sentence: str = "", page_numbers: Optional[List[int]] = None) -> str:
+    def _extract_definition_from_context(self, term: str, text: str, complete_sentence: str = "") -> Optional[Dict[str, any]]:
         """
-        Generate a basic definition from context
-        (Placeholder for future ML-based definition generation)
+        Use NLP patterns to intelligently extract definitions from text
+
+        Phase 2: NLP-based definition extraction using linguistic patterns
+
+        Looks for:
+        - Definitional verbs: "term is...", "term means...", "term refers to..."
+        - Appositive phrases: "term, definition, ..."
+        - Parenthetical definitions: "term (definition)"
+        - Colon-based definitions: "term: definition"
+
+        Args:
+            term: The term to find definition for
+            text: Full text to search
+            complete_sentence: The sentence containing the term
+
+        Returns:
+            Dict with 'definition', 'confidence', 'pattern' or None if not found
+        """
+        if not text:
+            return None
+
+        term_lower = term.lower()
+        candidates = []
+
+        # Pattern 1: Definitional verbs - "Term is/means/refers to..."
+        definitional_patterns = [
+            (r'\b' + re.escape(term_lower) + r'\s+is\s+(?:the\s+)?(.+?)(?:[.!?]|$)', 0.95, 'is-definition'),
+            (r'\b' + re.escape(term_lower) + r'\s+are\s+(?:the\s+)?(.+?)(?:[.!?]|$)', 0.95, 'are-definition'),
+            (r'\b' + re.escape(term_lower) + r'\s+means\s+(.+?)(?:[.!?]|$)', 0.90, 'means-definition'),
+            (r'\b' + re.escape(term_lower) + r'\s+refers?\s+to\s+(.+?)(?:[.!?]|$)', 0.90, 'refers-to'),
+            (r'\b' + re.escape(term_lower) + r'\s+represents?\s+(.+?)(?:[.!?]|$)', 0.85, 'represents'),
+            (r'\b' + re.escape(term_lower) + r'\s+denotes?\s+(.+?)(?:[.!?]|$)', 0.85, 'denotes'),
+            (r'\b' + re.escape(term_lower) + r'\s+describes?\s+(.+?)(?:[.!?]|$)', 0.80, 'describes'),
+            (r'\b' + re.escape(term_lower) + r'\s+defines?\s+(.+?)(?:[.!?]|$)', 0.90, 'defines'),
+        ]
+
+        text_lower = text.lower()
+
+        for pattern, confidence, pattern_type in definitional_patterns:
+            matches = re.finditer(pattern, text_lower, re.IGNORECASE)
+            for match in matches:
+                definition = match.group(1).strip()
+                # Get the original case version from the text
+                start_pos = match.start(1)
+                end_pos = match.end(1)
+                definition_original = text[start_pos:end_pos].strip()
+
+                # Clean up common artifacts
+                definition_original = definition_original.rstrip('.!?,;:')
+
+                # Skip if definition is too short or just a continuation
+                if len(definition_original) < 10:
+                    continue
+
+                candidates.append({
+                    'definition': definition_original,
+                    'confidence': confidence,
+                    'pattern': pattern_type,
+                    'full_match': match.group(0)
+                })
+
+        # Pattern 2: Parenthetical definitions - "Term (definition)"
+        paren_pattern = r'\b' + re.escape(term) + r'\s*\(([^)]{10,150})\)'
+        paren_matches = re.finditer(paren_pattern, text, re.IGNORECASE)
+        for match in paren_matches:
+            definition = match.group(1).strip()
+            # Skip if it looks like an acronym expansion in wrong direction
+            if not definition.isupper() or len(definition) > 10:
+                candidates.append({
+                    'definition': definition,
+                    'confidence': 0.75,
+                    'pattern': 'parenthetical',
+                    'full_match': match.group(0)
+                })
+
+        # Pattern 3: Colon-based definitions - "Term: definition"
+        colon_pattern = r'\b' + re.escape(term) + r'\s*:\s*(.{10,200})(?:[.!?]|$)'
+        colon_matches = re.finditer(colon_pattern, text, re.IGNORECASE)
+        for match in colon_matches:
+            definition = match.group(1).strip().rstrip('.!?,;:')
+            candidates.append({
+                'definition': definition,
+                'confidence': 0.85,
+                'pattern': 'colon-definition',
+                'full_match': match.group(0)
+            })
+
+        # Pattern 4: Appositive phrases with spaCy (if available)
+        if self.nlp and SPACY_AVAILABLE:
+            try:
+                doc = self.nlp(complete_sentence if complete_sentence else text[:1000])
+
+                for token in doc:
+                    # Find the term's token
+                    if token.text.lower() == term.split()[0].lower():
+                        # Look for appositive children
+                        for child in token.children:
+                            if child.dep_ in ['appos', 'attr']:  # Appositive or attribute
+                                # Extract the appositive subtree
+                                appos_tokens = [t.text for t in child.subtree]
+                                definition = ' '.join(appos_tokens)
+
+                                if len(definition) >= 10:
+                                    candidates.append({
+                                        'definition': definition,
+                                        'confidence': 0.88,
+                                        'pattern': 'appositive-spacy',
+                                        'full_match': definition
+                                    })
+            except Exception as e:
+                logger.debug(f"spaCy appositive extraction failed: {e}")
+
+        # Return highest confidence candidate
+        if candidates:
+            best = max(candidates, key=lambda x: x['confidence'])
+
+            # Only return if confidence is above threshold
+            if best['confidence'] >= 0.75:
+                logger.info(f"NLP definition found for '{term}': pattern={best['pattern']}, confidence={best['confidence']:.2f}")
+                return best
+
+        return None
+
+    def generate_definition(self, term: str, context: str, complete_sentence: str = "", page_numbers: Optional[List[int]] = None, full_text: str = "") -> str:
+        """
+        Generate definition using NLP patterns (Phase 2) with fallback to context (Phase 1)
+
+        Tries NLP-based definition extraction first, then falls back to complete sentence.
 
         Args:
             term: The term to define
             context: Context where term appears (for backward compatibility)
             complete_sentence: Complete sentence containing the term
             page_numbers: List of page numbers where term appears
+            full_text: Full document text for NLP pattern matching (Phase 2)
 
         Returns:
-            Generated definition
+            Generated definition with page numbers
         """
         # Build page number text if available
         page_text = ""
@@ -340,7 +467,14 @@ class TermExtractor:
             else:
                 page_text = f" (Pages {', '.join(map(str, page_numbers[:3]))}, +{len(page_numbers) - 3} more)"
 
-        # Use complete sentence if available, otherwise fall back to context
+        # Phase 2: Try NLP-based definition extraction
+        if full_text:
+            nlp_result = self._extract_definition_from_context(term, full_text, complete_sentence)
+            if nlp_result:
+                confidence_indicator = "✓" if nlp_result['confidence'] >= 0.9 else "~"
+                return f"Definition{page_text}:\n\n{nlp_result['definition']}\n\n{confidence_indicator} Extracted using {nlp_result['pattern']} pattern"
+
+        # Phase 1 fallback: Use complete sentence if available
         if complete_sentence:
             return f"Term found in context{page_text}:\n\n{complete_sentence}"
         elif context:

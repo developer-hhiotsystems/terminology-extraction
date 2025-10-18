@@ -287,12 +287,13 @@ async def process_document(
             # Save terms to glossary with document references
             for term_data in extracted_terms:
                 try:
-                    # Generate definition from complete sentence or context with page numbers
+                    # Generate definition using NLP patterns (Phase 2) with fallback to context (Phase 1)
                     definition_text = term_extractor.generate_definition(
                         term_data["term"],
                         term_data.get("context", ""),
                         term_data.get("complete_sentence", ""),
-                        term_data.get("pages", [])
+                        term_data.get("pages", []),
+                        full_text=extracted_text  # Pass full text for NLP pattern matching
                     )
 
                     # Check if term already exists
