@@ -47,7 +47,8 @@ class TermExtractor:
         min_term_length: int = 3,
         max_term_length: int = 50,
         min_frequency: int = 2,
-        include_compound: bool = True
+        include_compound: bool = True,
+        pages_data: Optional[List[Dict[str, any]]] = None
     ) -> List[Dict[str, any]]:
         """
         Extract technical terms from text
@@ -58,14 +59,15 @@ class TermExtractor:
             max_term_length: Maximum term length in characters
             min_frequency: Minimum frequency for a term to be included
             include_compound: Include compound terms (multi-word)
+            pages_data: Optional list of page data with page_num and text
 
         Returns:
-            List of dictionaries with term, frequency, and context
+            List of dictionaries with term, frequency, context, and page numbers
         """
         if self.nlp:
-            return self._extract_with_spacy(text, min_term_length, max_term_length, min_frequency, include_compound)
+            return self._extract_with_spacy(text, min_term_length, max_term_length, min_frequency, include_compound, pages_data)
         else:
-            return self._extract_with_patterns(text, min_term_length, max_term_length, min_frequency)
+            return self._extract_with_patterns(text, min_term_length, max_term_length, min_frequency, pages_data)
 
     def _extract_with_spacy(
         self,
@@ -73,7 +75,8 @@ class TermExtractor:
         min_term_length: int,
         max_term_length: int,
         min_frequency: int,
-        include_compound: bool
+        include_compound: bool,
+        pages_data: Optional[List[Dict[str, any]]] = None
     ) -> List[Dict[str, any]]:
         """Extract terms using spaCy NLP"""
         doc = self.nlp(text)
@@ -101,15 +104,22 @@ class TermExtractor:
             if count >= min_frequency:
                 term_freq[term] = count
 
-        # Build result with context
+        # Build result with context, complete sentences, and page numbers
         results = []
         for term, freq in term_freq.most_common():
             # Find first occurrence for context
             context = self._extract_context(text, term)
+            complete_sentence = self._extract_complete_sentence(text, term)
+
+            # Find pages where term appears
+            page_numbers = self._find_term_pages(term, pages_data) if pages_data else []
+
             results.append({
                 "term": term.title(),  # Capitalize for presentation
                 "frequency": freq,
                 "context": context,
+                "complete_sentence": complete_sentence,
+                "pages": page_numbers,
                 "length": len(term)
             })
 
@@ -120,7 +130,8 @@ class TermExtractor:
         text: str,
         min_term_length: int,
         max_term_length: int,
-        min_frequency: int
+        min_frequency: int,
+        pages_data: Optional[List[Dict[str, any]]] = None
     ) -> List[Dict[str, any]]:
         """Extract terms using pattern matching (fallback when spaCy unavailable)"""
 
@@ -145,14 +156,21 @@ class TermExtractor:
             if count >= min_frequency:
                 term_freq[term] = count
 
-        # Build results
+        # Build results with page numbers
         results = []
         for term, freq in term_freq.most_common():
             context = self._extract_context(text, term)
+            complete_sentence = self._extract_complete_sentence(text, term)
+
+            # Find pages where term appears
+            page_numbers = self._find_term_pages(term, pages_data) if pages_data else []
+
             results.append({
                 "term": term,
                 "frequency": freq,
                 "context": context,
+                "complete_sentence": complete_sentence,
+                "pages": page_numbers,
                 "length": len(term)
             })
 
@@ -178,20 +196,107 @@ class TermExtractor:
 
         return context
 
-    def generate_definition(self, term: str, context: str) -> str:
+    def _extract_complete_sentence(self, text: str, term: str) -> str:
+        """
+        Extract complete sentence(s) containing the term
+
+        Args:
+            text: Full text to search
+            term: Term to find
+
+        Returns:
+            Complete sentence(s) containing the term
+        """
+        text_lower = text.lower()
+        term_lower = term.lower()
+
+        pos = text_lower.find(term_lower)
+        if pos == -1:
+            return ""
+
+        # Find sentence boundaries (., !, ?, or newline)
+        # Look backward for sentence start
+        sentence_start = 0
+        for i in range(pos - 1, -1, -1):
+            if text[i] in '.!?\n':
+                sentence_start = i + 1
+                break
+
+        # Look forward for sentence end
+        sentence_end = len(text)
+        for i in range(pos + len(term), len(text)):
+            if text[i] in '.!?':
+                sentence_end = i + 1
+                break
+            elif text[i] == '\n' and i - pos > 50:  # New line after reasonable distance
+                sentence_end = i
+                break
+
+        sentence = text[sentence_start:sentence_end].strip()
+
+        # If sentence is too long (> 300 chars), try to find a better break point
+        if len(sentence) > 300:
+            # Look for semicolon or comma after the term
+            term_end_pos = pos + len(term) - sentence_start
+            for i in range(term_end_pos, min(term_end_pos + 150, len(sentence))):
+                if sentence[i] in '.!?;':
+                    sentence = sentence[:i + 1]
+                    break
+
+        return sentence
+
+    def generate_definition(self, term: str, context: str, complete_sentence: str = "", page_numbers: Optional[List[int]] = None) -> str:
         """
         Generate a basic definition from context
         (Placeholder for future ML-based definition generation)
 
         Args:
             term: The term to define
-            context: Context where term appears
+            context: Context where term appears (for backward compatibility)
+            complete_sentence: Complete sentence containing the term
+            page_numbers: List of page numbers where term appears
 
         Returns:
             Generated definition
         """
-        # Basic implementation: use context as definition
-        if context:
-            return f"Technical term found in context: {context[:200]}"
+        # Build page number text if available
+        page_text = ""
+        if page_numbers and len(page_numbers) > 0:
+            if len(page_numbers) == 1:
+                page_text = f" (Page {page_numbers[0]})"
+            elif len(page_numbers) <= 3:
+                page_text = f" (Pages {', '.join(map(str, page_numbers))})"
+            else:
+                page_text = f" (Pages {', '.join(map(str, page_numbers[:3]))}, +{len(page_numbers) - 3} more)"
+
+        # Use complete sentence if available, otherwise fall back to context
+        if complete_sentence:
+            return f"Term found in context{page_text}:\n\n{complete_sentence}"
+        elif context:
+            return f"Term found in context{page_text}:\n\n{context[:250]}"
         else:
             return f"Technical term: {term}"
+
+    def _find_term_pages(self, term: str, pages_data: Optional[List[Dict[str, any]]]) -> List[int]:
+        """
+        Find which pages contain a given term
+
+        Args:
+            term: The term to search for
+            pages_data: List of dicts with page_num and text
+
+        Returns:
+            List of page numbers where the term appears
+        """
+        if not pages_data:
+            return []
+
+        page_numbers = []
+        term_lower = term.lower()
+
+        for page in pages_data:
+            page_text = page.get("text", "").lower()
+            if term_lower in page_text:
+                page_numbers.append(page.get("page_num"))
+
+        return sorted(page_numbers)

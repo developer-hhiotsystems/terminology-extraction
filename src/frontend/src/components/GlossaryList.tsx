@@ -741,15 +741,36 @@ export default function GlossaryList() {
 
               <div className="entry-definitions">
                 {entry.definitions && entry.definitions.length > 0 ? (
-                  entry.definitions.map((def, idx) => (
-                    <div key={idx} className={`definition-item ${def.is_primary ? 'primary' : ''}`}>
-                      {def.is_primary && <span className="primary-badge">Primary</span>}
-                      <p className="definition-text">{def.text}</p>
-                      {def.source_doc_id && (
-                        <span className="definition-source">Source: Document ID {def.source_doc_id}</span>
-                      )}
-                    </div>
-                  ))
+                  entry.definitions.map((def, idx) => {
+                    // Parse definition text to separate label from content
+                    const parts = def.text.split('\n\n');
+                    const hasStructuredFormat = parts.length >= 2 && parts[0].includes('found in context');
+
+                    return (
+                      <div key={idx} className={`definition-item ${def.is_primary ? 'primary' : ''}`}>
+                        {def.is_primary && <span className="primary-badge">Primary</span>}
+
+                        {hasStructuredFormat ? (
+                          <div className="definition-structured">
+                            <div className="definition-label">{parts[0]}</div>
+                            <div className="definition-context">
+                              {parts.slice(1).join('\n\n')}
+                            </div>
+                          </div>
+                        ) : (
+                          <p className="definition-text">{def.text}</p>
+                        )}
+
+                        <div className="definition-metadata">
+                          {def.source_doc_id && (
+                            <span className="definition-source" title={`Document ID: ${def.source_doc_id}`}>
+                              📄 Doc #{def.source_doc_id}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
                 ) : (
                   <p className="entry-definition">No definition available</p>
                 )}

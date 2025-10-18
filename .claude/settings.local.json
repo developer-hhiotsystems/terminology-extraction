@@ -110,7 +110,15 @@
       "Bash(venvScriptspython.exe -m pip install neo4j)",
       "Bash(cmd /c \"cd /d C:\\Users\\devel\\Coding~ Projects\\Glossary~ APP && venv\\Scripts\\python.exe -m pip install neo4j\")",
       "Bash(cmd /c \"if exist requirements.txt (echo requirements.txt exists) else (echo requirements.txt not found)\")",
-      "Bash(cmd /c \"if exist src\\backend\\requirements.txt (echo backend requirements.txt exists) else (echo backend requirements.txt not found)\")"
+      "Bash(cmd /c \"if exist src\\backend\\requirements.txt (echo backend requirements.txt exists) else (echo backend requirements.txt not found)\")",
+      "Bash(cmd /c \"powershell -Command \"\"(Get-Content ''src\\frontend\\src\\App.css'' | Measure-Object -Line).Lines\"\"\")",
+      "Bash(cmd /c \"cd src\\frontend && npm run dev\")",
+      "Bash(cmd /c \"timeout /t 3 /nobreak >nul && netstat -ano | findstr LISTENING | findstr :9123\")",
+      "Bash(cmd /c \"timeout /t 5 /nobreak >nul && netstat -ano | findstr LISTENING | findstr :9123\")",
+      "Bash(cmd /c \"curl -s http://localhost:9123/health\")",
+      "Bash(cmd /c \"tasklist | findstr python\")",
+      "Bash(cmd /c \"timeout /t 3 /nobreak >nul && curl -s http://localhost:9123/health\")",
+      "Bash(cmd /c \"timeout /t 8 /nobreak >nul && curl -s http://localhost:9123/health\")"
     ],
     "deny": [],
     "ask": []

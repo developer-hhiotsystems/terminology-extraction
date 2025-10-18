@@ -240,9 +240,9 @@ async def process_document(
     terms_saved = 0
 
     try:
-        # Extract text from PDF
+        # Extract text from PDF page-by-page for better tracking
         pdf_extractor = PDFExtractor()
-        extraction_result = pdf_extractor.extract_text(document.file_path)
+        extraction_result = pdf_extractor.extract_text_by_page(document.file_path)
 
         if not extraction_result["success"]:
             errors.append(f"PDF extraction failed: {extraction_result['error']}")
@@ -263,7 +263,9 @@ async def process_document(
                 errors=errors
             )
 
-        extracted_text = extraction_result["text"]
+        # Combine all page texts for term extraction
+        pages_data = extraction_result["pages"]
+        extracted_text = "\n\n".join([page["text"] for page in pages_data])
         extracted_text_length = len(extracted_text)
 
         # Extract terms if requested
@@ -273,7 +275,8 @@ async def process_document(
                 text=extracted_text,
                 min_term_length=3,
                 max_term_length=100,
-                min_frequency=1  # Changed from 2 to 1 to extract terms from shorter documents
+                min_frequency=1,  # Changed from 2 to 1 to extract terms from shorter documents
+                pages_data=pages_data  # Pass page data for page number tracking
             )
 
             terms_extracted = len(extracted_terms)
@@ -281,10 +284,12 @@ async def process_document(
             # Save terms to glossary with document references
             for term_data in extracted_terms:
                 try:
-                    # Generate definition from context
+                    # Generate definition from complete sentence or context with page numbers
                     definition_text = term_extractor.generate_definition(
                         term_data["term"],
-                        term_data.get("context", "")
+                        term_data.get("context", ""),
+                        term_data.get("complete_sentence", ""),
+                        term_data.get("pages", [])
                     )
 
                     # Check if term already exists
@@ -374,7 +379,7 @@ async def process_document(
         document.processed_at = datetime.now()
         document.processing_metadata = {
             **document.processing_metadata,
-            "pages": extraction_result.get("pages", 0),
+            "pages": extraction_result.get("total_pages", 0),
             "text_length": extracted_text_length,
             "terms_extracted": terms_extracted,
             "terms_saved": terms_saved,
