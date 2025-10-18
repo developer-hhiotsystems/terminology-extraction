@@ -25,6 +25,7 @@ from src.backend.schemas import (
 )
 from src.backend.services.pdf_extractor import PDFExtractor
 from src.backend.services.term_extractor import TermExtractor
+from src.backend.services.term_validator import create_strict_validator
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
@@ -270,7 +271,9 @@ async def process_document(
 
         # Extract terms if requested
         if process_request.extract_terms and extracted_text:
-            term_extractor = TermExtractor(language=process_request.language)
+            # Use strict validator for higher quality term extraction
+            strict_validator = create_strict_validator(language=process_request.language)
+            term_extractor = TermExtractor(language=process_request.language, validator=strict_validator)
             extracted_terms = term_extractor.extract_terms(
                 text=extracted_text,
                 min_term_length=3,

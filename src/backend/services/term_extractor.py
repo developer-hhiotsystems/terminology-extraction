@@ -7,6 +7,8 @@ from typing import List, Dict, Set, Optional
 from collections import Counter
 import logging
 
+from .term_validator import TermValidator, ValidationConfig, create_default_validator
+
 logger = logging.getLogger(__name__)
 
 # Will use spaCy when available, fallback to pattern matching for now
@@ -21,15 +23,47 @@ except ImportError:
 class TermExtractor:
     """Service for extracting technical terms from text"""
 
-    def __init__(self, language: str = "en"):
+    @staticmethod
+    def clean_term(term: str) -> str:
+        """
+        Clean and normalize a term to fix formatting issues
+
+        Removes embedded newlines, tabs, carriage returns, and normalizes spaces.
+
+        Args:
+            term: The term to clean
+
+        Returns:
+            Cleaned term with normalized whitespace
+
+        Examples:
+            >>> TermExtractor.clean_term("Plant\\nDesign")
+            "Plant Design"
+            >>> TermExtractor.clean_term("Process  Flow\\tDiagram")
+            "Process Flow Diagram"
+        """
+        if not term:
+            return term
+
+        # Remove embedded newlines, tabs, carriage returns
+        term = re.sub(r'[\n\t\r]+', ' ', term)
+
+        # Normalize multiple spaces to single space
+        term = ' '.join(term.split())
+
+        return term.strip()
+
+    def __init__(self, language: str = "en", validator: Optional[TermValidator] = None):
         """
         Initialize term extractor
 
         Args:
             language: Language code ('en' or 'de')
+            validator: Optional term validator. If not provided, uses default validator.
         """
         self.language = language
         self.nlp = None
+        self.validator = validator or create_default_validator(language)
 
         if SPACY_AVAILABLE:
             try:
@@ -48,7 +82,8 @@ class TermExtractor:
         max_term_length: int = 50,
         min_frequency: int = 2,
         include_compound: bool = True,
-        pages_data: Optional[List[Dict[str, any]]] = None
+        pages_data: Optional[List[Dict[str, any]]] = None,
+        enable_validation: bool = True
     ) -> List[Dict[str, any]]:
         """
         Extract technical terms from text
@@ -60,14 +95,15 @@ class TermExtractor:
             min_frequency: Minimum frequency for a term to be included
             include_compound: Include compound terms (multi-word)
             pages_data: Optional list of page data with page_num and text
+            enable_validation: Enable term validation to filter low-quality terms
 
         Returns:
             List of dictionaries with term, frequency, context, and page numbers
         """
         if self.nlp:
-            return self._extract_with_spacy(text, min_term_length, max_term_length, min_frequency, include_compound, pages_data)
+            return self._extract_with_spacy(text, min_term_length, max_term_length, min_frequency, include_compound, pages_data, enable_validation)
         else:
-            return self._extract_with_patterns(text, min_term_length, max_term_length, min_frequency, pages_data)
+            return self._extract_with_patterns(text, min_term_length, max_term_length, min_frequency, pages_data, enable_validation)
 
     def _extract_with_spacy(
         self,
@@ -76,7 +112,8 @@ class TermExtractor:
         max_term_length: int,
         min_frequency: int,
         include_compound: bool,
-        pages_data: Optional[List[Dict[str, any]]] = None
+        pages_data: Optional[List[Dict[str, any]]] = None,
+        enable_validation: bool = True
     ) -> List[Dict[str, any]]:
         """Extract terms using spaCy NLP"""
         doc = self.nlp(text)
@@ -86,23 +123,39 @@ class TermExtractor:
 
         # Noun phrases
         for chunk in doc.noun_chunks:
-            term = chunk.text.strip()
-            if min_term_length <= len(term) <= max_term_length:
+            term = self.clean_term(chunk.text)
+            if term and min_term_length <= len(term) <= max_term_length:
                 candidates.add(term.lower())
 
         # Named entities (technical terms often appear as entities)
         for ent in doc.ents:
-            term = ent.text.strip()
-            if min_term_length <= len(term) <= max_term_length:
+            term = self.clean_term(ent.text)
+            if term and min_term_length <= len(term) <= max_term_length:
                 candidates.add(term.lower())
 
         # Count frequencies
         term_freq = Counter()
         text_lower = text.lower()
+        rejected_count = 0
+        rejection_reasons = {}
+
         for term in candidates:
             count = text_lower.count(term)
             if count >= min_frequency:
-                term_freq[term] = count
+                # Validate term if validation is enabled
+                if enable_validation:
+                    if self.validator.is_valid_term(term):
+                        term_freq[term] = count
+                    else:
+                        rejected_count += 1
+                        rejection_reasons[term] = self.validator.get_rejection_reason(term)
+                else:
+                    term_freq[term] = count
+
+        # Log validation results
+        if enable_validation and rejected_count > 0:
+            logger.info(f"Validation filtered out {rejected_count} low-quality terms")
+            logger.debug(f"Rejection reasons: {rejection_reasons}")
 
         # Build result with context, complete sentences, and page numbers
         results = []
@@ -131,7 +184,8 @@ class TermExtractor:
         min_term_length: int,
         max_term_length: int,
         min_frequency: int,
-        pages_data: Optional[List[Dict[str, any]]] = None
+        pages_data: Optional[List[Dict[str, any]]] = None,
+        enable_validation: bool = True
     ) -> List[Dict[str, any]]:
         """Extract terms using pattern matching (fallback when spaCy unavailable)"""
 
@@ -146,15 +200,32 @@ class TermExtractor:
         for pattern in patterns:
             matches = re.findall(pattern, text)
             for match in matches:
-                if min_term_length <= len(match) <= max_term_length:
-                    candidates.add(match)
+                cleaned_match = self.clean_term(match)
+                if cleaned_match and min_term_length <= len(cleaned_match) <= max_term_length:
+                    candidates.add(cleaned_match)
 
         # Count frequencies
         term_freq = Counter()
+        rejected_count = 0
+        rejection_reasons = {}
+
         for term in candidates:
             count = text.count(term)
             if count >= min_frequency:
-                term_freq[term] = count
+                # Validate term if validation is enabled
+                if enable_validation:
+                    if self.validator.is_valid_term(term):
+                        term_freq[term] = count
+                    else:
+                        rejected_count += 1
+                        rejection_reasons[term] = self.validator.get_rejection_reason(term)
+                else:
+                    term_freq[term] = count
+
+        # Log validation results
+        if enable_validation and rejected_count > 0:
+            logger.info(f"Validation filtered out {rejected_count} low-quality terms")
+            logger.debug(f"Rejection reasons: {rejection_reasons}")
 
         # Build results with page numbers
         results = []
