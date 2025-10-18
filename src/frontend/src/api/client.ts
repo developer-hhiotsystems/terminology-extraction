@@ -169,6 +169,18 @@ class ApiClient {
     await this.client.delete(`/api/documents/${id}`);
   }
 
+  async updateDocument(
+    id: number,
+    data: {
+      document_number?: string;
+      document_type_id?: number;
+      document_link?: string;
+    }
+  ): Promise<UploadedDocument> {
+    const response = await this.client.put(`/api/documents/${id}`, data);
+    return response.data;
+  }
+
   // Health Check
   async healthCheck(): Promise<any> {
     const response = await this.client.get('/health');

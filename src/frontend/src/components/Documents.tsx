@@ -47,6 +47,13 @@ export default function Documents() {
   const [showLogView, setShowLogView] = useState(false)
   const logViewRef = useRef<HTMLDivElement>(null)
 
+  // Inline editing state
+  const [editingDoc, setEditingDoc] = useState<number | null>(null)
+  const [editValues, setEditValues] = useState<{
+    document_type_id?: number
+    document_link?: string
+  }>({})
+
   const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
 
   // Auto-scroll log view to bottom when new logs are added
@@ -248,6 +255,14 @@ export default function Documents() {
   // === PROCESS FUNCTIONS ===
 
   const handleProcess = async (doc: UploadedDocument) => {
+    // Validation: Check if document type is set
+    if (!doc.document_type_id) {
+      toast.error('Please set a Document Type before processing')
+      addLog('error', `Processing blocked: Document type not set`, doc.id, doc.filename,
+        `You must select a document type before processing. Click the "Type" column to edit.`)
+      return
+    }
+
     if (processingDocs.has(doc.id)) {
       toast.warning('This document is already being processed')
       addLog('warning', `Already processing`, doc.id, doc.filename)
@@ -414,6 +429,43 @@ export default function Documents() {
     } catch (err: any) {
       toast.error('Failed to delete document')
     }
+  }
+
+  // === INLINE EDITING ===
+
+  const startEditing = (doc: UploadedDocument) => {
+    setEditingDoc(doc.id)
+    setEditValues({
+      document_type_id: doc.document_type_id,
+      document_link: doc.document_link || ''
+    })
+  }
+
+  const cancelEditing = () => {
+    setEditingDoc(null)
+    setEditValues({})
+  }
+
+  const saveEditing = async (docId: number) => {
+    try {
+      await apiClient.updateDocument(docId, editValues)
+      toast.success('Document updated successfully')
+      addLog('success', `Document metadata updated`, docId, undefined,
+        `Type ID: ${editValues.document_type_id || 'not set'}, Link: ${editValues.document_link || 'not set'}`)
+      fetchDocuments()
+      setEditingDoc(null)
+      setEditValues({})
+    } catch (err: any) {
+      toast.error('Failed to update document')
+      addLog('error', `Failed to update document metadata`, docId, undefined,
+        err.response?.data?.detail || err.message)
+    }
+  }
+
+  const getDocumentTypeName = (typeId?: number) => {
+    if (!typeId) return '-'
+    const type = documentTypes.find(t => t.id === typeId)
+    return type ? type.label_en : `Type ${typeId}`
   }
 
   // === RENDER ===
@@ -690,6 +742,8 @@ export default function Documents() {
                     </th>
                     <th>Filename</th>
                     <th>Doc #</th>
+                    <th>Type <span className="required-field">*</span></th>
+                    <th>Link</th>
                     <th>Size</th>
                     <th>Status</th>
                     <th>Terms</th>
@@ -713,6 +767,68 @@ export default function Documents() {
                         </Link>
                       </td>
                       <td>{doc.document_number || '-'}</td>
+
+                      {/* Document Type - Editable */}
+                      <td className="editable-cell" onClick={() => editingDoc !== doc.id && startEditing(doc)}>
+                        {editingDoc === doc.id ? (
+                          <select
+                            className="inline-edit-select"
+                            value={editValues.document_type_id || ''}
+                            onChange={(e) => setEditValues(prev => ({
+                              ...prev,
+                              document_type_id: e.target.value ? parseInt(e.target.value) : undefined
+                            }))}
+                            autoFocus
+                          >
+                            <option value="">-- Select Type --</option>
+                            {documentTypes.map(type => (
+                              <option key={type.id} value={type.id}>
+                                {type.label_en}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span className={doc.document_type_id ? 'has-value' : 'no-value'}>
+                            {getDocumentTypeName(doc.document_type_id)}
+                            <span className="edit-hint">✎</span>
+                          </span>
+                        )}
+                      </td>
+
+                      {/* Document Link - Editable */}
+                      <td className="editable-cell" onClick={() => editingDoc !== doc.id && startEditing(doc)}>
+                        {editingDoc === doc.id ? (
+                          <input
+                            type="text"
+                            className="inline-edit-input"
+                            value={editValues.document_link || ''}
+                            onChange={(e) => setEditValues(prev => ({
+                              ...prev,
+                              document_link: e.target.value
+                            }))}
+                            placeholder="http://... or \\\\server\\path"
+                          />
+                        ) : (
+                          <span className={doc.document_link ? 'has-value' : 'no-value'}>
+                            {doc.document_link ? (
+                              <a
+                                href={doc.document_link}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="doc-link"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                {doc.document_link.length > 40
+                                  ? `${doc.document_link.substring(0, 40)}...`
+                                  : doc.document_link}
+                              </a>
+                            ) : (
+                              <span>-<span className="edit-hint">✎</span></span>
+                            )}
+                          </span>
+                        )}
+                      </td>
+
                       <td>{formatFileSize(doc.file_size)}</td>
                       <td>
                         <span className={`status-badge status-${doc.upload_status}`}>
@@ -722,30 +838,57 @@ export default function Documents() {
                       <td>{doc.processing_metadata?.terms_saved || '-'}</td>
                       <td className="date-col">{formatDate(doc.uploaded_at)}</td>
                       <td className="actions-cell">
-                        {doc.upload_status === 'pending' && (
-                          <button
-                            className="btn-process-small"
-                            onClick={() => handleProcess(doc)}
-                            disabled={processingDocs.has(doc.id)}
-                            title="Process document"
-                          >
-                            {processingDocs.has(doc.id) ? '⏳' : '▶️ Process'}
-                          </button>
+                        {editingDoc === doc.id ? (
+                          <>
+                            <button
+                              className="btn-save-small"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                saveEditing(doc.id)
+                              }}
+                              title="Save changes"
+                            >
+                              ✓ Save
+                            </button>
+                            <button
+                              className="btn-cancel-small"
+                              onClick={(e) => {
+                                e.stopPropagation()
+                                cancelEditing()
+                              }}
+                              title="Cancel editing"
+                            >
+                              ✗ Cancel
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            {doc.upload_status === 'pending' && (
+                              <button
+                                className="btn-process-small"
+                                onClick={() => handleProcess(doc)}
+                                disabled={processingDocs.has(doc.id)}
+                                title={!doc.document_type_id ? "Set document type first" : "Process document"}
+                              >
+                                {processingDocs.has(doc.id) ? '⏳' : '▶️ Process'}
+                              </button>
+                            )}
+                            <Link
+                              to={`/documents/${doc.id}`}
+                              className="btn-view-small"
+                              title="View details"
+                            >
+                              View
+                            </Link>
+                            <button
+                              className="btn-delete-small"
+                              onClick={() => handleDelete(doc.id)}
+                              title="Delete document"
+                            >
+                              Delete
+                            </button>
+                          </>
                         )}
-                        <Link
-                          to={`/documents/${doc.id}`}
-                          className="btn-view-small"
-                          title="View details"
-                        >
-                          View
-                        </Link>
-                        <button
-                          className="btn-delete-small"
-                          onClick={() => handleDelete(doc.id)}
-                          title="Delete document"
-                        >
-                          Delete
-                        </button>
                       </td>
                     </tr>
                   ))}
