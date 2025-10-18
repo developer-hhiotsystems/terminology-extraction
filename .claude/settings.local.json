@@ -102,7 +102,15 @@
       "Bash(cmd /c \"venv\\Scripts\\python.exe src\\backend\\app.py\")",
       "Bash(cmd /c \"timeout /t 5 /nobreak\")",
       "Bash(git reset -- nul openapi_temp.json test-app.js test-search.js test-data/ test-screenshots/)",
-      "Bash(del nul)"
+      "Bash(del nul)",
+      "Bash(cmd /c \"if exist .env (echo .env exists) else (echo .env not found)\")",
+      "Bash(.venvScriptspip.exe list)",
+      "Bash(cmd /c \"venv\\Scripts\\pip.exe list | findstr neo4j\")",
+      "Bash(cmd /c \"venv\\Scripts\\pip.exe install neo4j\")",
+      "Bash(venvScriptspython.exe -m pip install neo4j)",
+      "Bash(cmd /c \"cd /d C:\\Users\\devel\\Coding~ Projects\\Glossary~ APP && venv\\Scripts\\python.exe -m pip install neo4j\")",
+      "Bash(cmd /c \"if exist requirements.txt (echo requirements.txt exists) else (echo requirements.txt not found)\")",
+      "Bash(cmd /c \"if exist src\\backend\\requirements.txt (echo backend requirements.txt exists) else (echo backend requirements.txt not found)\")"
     ],
     "deny": [],
     "ask": []

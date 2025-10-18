@@ -18,7 +18,8 @@ from dotenv import load_dotenv
 
 from src.backend.database import get_db, initialize_database, check_database_connection
 from src.backend.config import config
-from src.backend.routers import glossary, documents, admin
+from src.backend.routers import glossary, documents, admin, graph
+from src.backend.services.neo4j_service import get_neo4j_service
 
 # Load environment variables
 load_dotenv()
@@ -36,6 +37,8 @@ print(f"Loading documents router: {documents.router}")
 app.include_router(documents.router)
 print(f"Loading admin router: {admin.router}")
 app.include_router(admin.router)  # Admin operations
+print(f"Loading graph router: {graph.router}")
+app.include_router(graph.router)  # Neo4j knowledge graph
 print(f"All routers loaded. Total routes: {len(app.routes)}")
 
 # CORS middleware configuration
@@ -65,10 +68,18 @@ app.mount("/data", StaticFiles(directory=str(data_dir)), name="data")
 
 @app.on_event("startup")
 async def startup_event():
-    """Initialize database on startup"""
+    """Initialize database and Neo4j on startup"""
     print("Starting Glossary Extraction API...")
     initialize_database()
     print("Database initialized successfully")
+
+    # Initialize Neo4j connection
+    neo4j_service = get_neo4j_service()
+    if neo4j_service.is_connected():
+        neo4j_service.init_schema()
+        print("Neo4j initialized successfully")
+    else:
+        print("Neo4j not available - graph features disabled")
 
 @app.get("/")
 async def root():
@@ -91,8 +102,10 @@ async def health_check(db: Session = Depends(get_db)):
     # Check SQLite connection
     db_status = "connected" if check_database_connection() else "disconnected"
 
-    # Neo4j status (will be implemented in Phase 2)
-    neo4j_status = "not_configured"
+    # Check Neo4j status
+    neo4j_service = get_neo4j_service()
+    neo4j_connected = neo4j_service.is_connected()
+    neo4j_stats = neo4j_service.get_term_statistics() if neo4j_connected else None
 
     return {
         "status": "healthy" if db_status == "connected" else "degraded",
@@ -102,10 +115,11 @@ async def health_check(db: Session = Depends(get_db)):
             "url": config.DATABASE_URL
         },
         "neo4j": {
-            "status": neo4j_status,
-            "message": "Optional - Phase 2 feature"
+            "status": "connected" if neo4j_connected else "not_connected",
+            "message": "Knowledge graph active" if neo4j_connected else "Optional - start Neo4j container to enable",
+            "statistics": neo4j_stats
         },
-        "api_version": "1.0.0",
+        "api_version": "2.0.0",
         "environment": "development" if config.DEBUG else "production"
     }
 
