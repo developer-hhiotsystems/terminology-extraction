@@ -3,8 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import GlossaryList from './components/GlossaryList'
-import DocumentUpload from './components/DocumentUpload'
-import DocumentList from './components/DocumentList'
+import Documents from './components/Documents'
 import DocumentDetail from './components/DocumentDetail'
 import StatsDashboard from './components/StatsDashboard'
 import AdminPanel from './components/AdminPanel'
@@ -64,13 +63,6 @@ function App() {
             Documents
           </Link>
           <Link
-            to="/upload"
-            className={activeTab === 'upload' ? 'active' : ''}
-            onClick={() => setActiveTab('upload')}
-          >
-            New Document
-          </Link>
-          <Link
             to="/statistics"
             className={activeTab === 'statistics' ? 'active' : ''}
             onClick={() => setActiveTab('statistics')}
@@ -89,9 +81,8 @@ function App() {
         <main className="app-main">
           <Routes>
             <Route path="/" element={<GlossaryList />} />
-            <Route path="/upload" element={<DocumentUpload />} />
+            <Route path="/documents" element={<Documents />} />
             <Route path="/documents/:id" element={<DocumentDetail />} />
-            <Route path="/documents" element={<DocumentList />} />
             <Route path="/statistics" element={<StatsDashboard />} />
             <Route path="/admin" element={<AdminPanel />} />
           </Routes>
