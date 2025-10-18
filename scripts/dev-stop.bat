@@ -1,31 +1,55 @@
 @echo off
 REM Stop both Backend and Frontend servers
-REM Does NOT require Administrator privileges
+REM Kills processes by port number for precise targeting
 
 echo ========================================
 echo   Stopping Development Environment
 echo ========================================
 echo.
 
-echo Instructions to stop servers:
-echo.
-echo 1. Close the "Glossary Backend" console window
-echo 2. Close the "Glossary Frontend" console window
-echo.
-echo OR press Ctrl+C in each window
-echo.
-echo If windows are not responding, you can:
-echo - Right-click window title bar ^> Close
-echo - Use Task Manager to end the processes
+REM Function to kill process by port
+REM Kill backend on port 9123
+echo [1/3] Stopping backend (Port 9123)...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :9123 ^| findstr LISTENING') do (
+    echo   - Found process PID: %%a
+    taskkill /F /PID %%a /T >nul 2>&1
+    if %errorlevel% equ 0 (
+        echo   - Backend process %%a stopped
+    )
+)
+
+REM Kill frontend on port 3000
+echo [2/3] Stopping frontend (Port 3000)...
+for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3000 ^| findstr LISTENING') do (
+    echo   - Found process PID: %%a
+    taskkill /F /PID %%a /T >nul 2>&1
+    if %errorlevel% equ 0 (
+        echo   - Frontend process %%a stopped
+    )
+)
+
+REM Verify ports are released
+echo [3/3] Verifying ports are free...
+timeout /t 2 /nobreak >nul
+
+netstat -ano | findstr :9123 >nul 2>&1
+if %errorlevel% equ 0 (
+    echo   - WARNING: Port 9123 still in use
+    echo   - Try running: for /f "tokens=5" %%a in ('netstat -ano ^| findstr :9123') do taskkill /F /PID %%a
+) else (
+    echo   - Port 9123 is now free
+)
+
+netstat -ano | findstr :3000 >nul 2>&1
+if %errorlevel% equ 0 (
+    echo   - WARNING: Port 3000 still in use
+    echo   - Try running: for /f "tokens=5" %%a in ('netstat -ano ^| findstr :3000') do taskkill /F /PID %%a
+) else (
+    echo   - Port 3000 is now free
+)
+
 echo.
 echo ========================================
-echo.
-
-REM Try gentle shutdown without force (no admin needed)
-echo Attempting to close windows...
-taskkill /FI "WINDOWTITLE eq Glossary Backend*" >nul 2>&1
-taskkill /FI "WINDOWTITLE eq Glossary Frontend*" >nul 2>&1
-
-echo.
-echo If servers are still running, please close them manually.
+echo   Development Environment Stopped
+echo ========================================
 echo.

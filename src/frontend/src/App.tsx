@@ -5,19 +5,27 @@ import 'react-toastify/dist/ReactToastify.css'
 import GlossaryList from './components/GlossaryList'
 import DocumentUpload from './components/DocumentUpload'
 import DocumentList from './components/DocumentList'
+import DocumentDetail from './components/DocumentDetail'
 import StatsDashboard from './components/StatsDashboard'
+import AdminPanel from './components/AdminPanel'
 import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp'
+import CommandPalette from './components/CommandPalette'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
 import './App.css'
 
 function App() {
   const [activeTab, setActiveTab] = useState('glossary')
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
+  const [showCommandPalette, setShowCommandPalette] = useState(false)
 
   // Global keyboard shortcuts
   useKeyboardShortcuts({
     onShowHelp: () => setShowShortcutsHelp(true),
-    onCloseModal: () => setShowShortcutsHelp(false),
+    onCloseModal: () => {
+      setShowShortcutsHelp(false)
+      setShowCommandPalette(false)
+    },
+    onCommandPalette: () => setShowCommandPalette(true),
   })
 
   return (
@@ -49,18 +57,18 @@ function App() {
             Glossary
           </Link>
           <Link
-            to="/upload"
-            className={activeTab === 'upload' ? 'active' : ''}
-            onClick={() => setActiveTab('upload')}
-          >
-            Upload PDF
-          </Link>
-          <Link
             to="/documents"
             className={activeTab === 'documents' ? 'active' : ''}
             onClick={() => setActiveTab('documents')}
           >
             Documents
+          </Link>
+          <Link
+            to="/upload"
+            className={activeTab === 'upload' ? 'active' : ''}
+            onClick={() => setActiveTab('upload')}
+          >
+            New Document
           </Link>
           <Link
             to="/statistics"
@@ -69,14 +77,23 @@ function App() {
           >
             Statistics
           </Link>
+          <Link
+            to="/admin"
+            className={activeTab === 'admin' ? 'active' : ''}
+            onClick={() => setActiveTab('admin')}
+          >
+            Admin
+          </Link>
         </nav>
 
         <main className="app-main">
           <Routes>
             <Route path="/" element={<GlossaryList />} />
             <Route path="/upload" element={<DocumentUpload />} />
+            <Route path="/documents/:id" element={<DocumentDetail />} />
             <Route path="/documents" element={<DocumentList />} />
             <Route path="/statistics" element={<StatsDashboard />} />
+            <Route path="/admin" element={<AdminPanel />} />
           </Routes>
         </main>
 
@@ -93,6 +110,10 @@ function App() {
 
         {showShortcutsHelp && (
           <KeyboardShortcutsHelp onClose={() => setShowShortcutsHelp(false)} />
+        )}
+
+        {showCommandPalette && (
+          <CommandPalette onClose={() => setShowCommandPalette(false)} />
         )}
       </div>
     </Router>

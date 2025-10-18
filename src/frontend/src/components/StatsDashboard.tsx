@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import apiClient from '../api/client'
 
@@ -20,6 +21,7 @@ export default function StatsDashboard() {
   const [stats, setStats] = useState<AdminStats | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const navigate = useNavigate()
 
   const fetchStats = async () => {
     try {
@@ -227,16 +229,26 @@ export default function StatsDashboard() {
 
       {/* Validation Status */}
       <div className="status-section">
-        <h3>Validation Status Distribution</h3>
+        <div className="section-header-with-hint">
+          <h3>Validation Status Distribution</h3>
+          <p className="section-hint">Click on a status to filter the glossary</p>
+        </div>
         <div className="status-badges">
           {Object.keys(stats.entries_by_validation_status).length === 0 ? (
             <div className="empty-state-small">No validation data available</div>
           ) : (
             Object.entries(stats.entries_by_validation_status).map(([status, count]) => (
-              <div key={status} className={`status-badge-item ${getStatusBadgeClass(status)}`}>
+              <button
+                key={status}
+                className={`status-badge-item ${getStatusBadgeClass(status)} clickable-badge`}
+                onClick={() => navigate('/', { state: { validationFilter: status } })}
+                title={`View ${count} ${status} entries in glossary`}
+                disabled={count === 0}
+              >
                 <span className="status-name">{status}</span>
                 <span className="status-count">{count}</span>
-              </div>
+                {count > 0 && <span className="badge-arrow">→</span>}
+              </button>
             ))
           )}
         </div>

@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { toast } from 'react-toastify'
 import apiClient from '../api/client'
 import type { GlossaryEntry, GlossaryEntryCreate, GlossaryEntryUpdate } from '../types'
 
@@ -22,9 +23,13 @@ export default function GlossaryEntryForm({ entry, onClose }: Props) {
 
   useEffect(() => {
     if (entry) {
+      // Extract primary definition text or first definition
+      const primaryDef = entry.definitions?.find(d => d.is_primary)
+      const defText = primaryDef?.text || entry.definitions?.[0]?.text || ''
+
       setFormData({
         term: entry.term,
-        definition: entry.definition,
+        definition: defText,
         language: entry.language,
         source: entry.source,
         source_document: entry.source_document || '',
@@ -45,11 +50,17 @@ export default function GlossaryEntryForm({ entry, onClose }: Props) {
         .map((tag) => tag.trim())
         .filter((tag) => tag.length > 0)
 
+      // Convert definition text to definitions array format
+      const definitions = [{
+        text: formData.definition,
+        is_primary: true
+      }]
+
       if (entry) {
         // Update existing entry
         const updateData: GlossaryEntryUpdate = {
           term: formData.term,
-          definition: formData.definition,
+          definitions: definitions,
           language: formData.language,
           source: formData.source,
           source_document: formData.source_document || undefined,
@@ -57,17 +68,19 @@ export default function GlossaryEntryForm({ entry, onClose }: Props) {
           validation_status: formData.validation_status,
         }
         await apiClient.updateGlossaryEntry(entry.id, updateData)
+        toast.success('Entry updated successfully')
       } else {
         // Create new entry
         const createData: GlossaryEntryCreate = {
           term: formData.term,
-          definition: formData.definition,
+          definitions: definitions,
           language: formData.language,
           source: formData.source,
           source_document: formData.source_document || undefined,
           domain_tags: domainTags.length > 0 ? domainTags : undefined,
         }
         await apiClient.createGlossaryEntry(createData)
+        toast.success('Entry created successfully')
       }
 
       onClose()

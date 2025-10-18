@@ -11,6 +11,7 @@ sys.path.insert(0, str(project_root))
 
 from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
@@ -38,13 +39,28 @@ app.include_router(admin.router)  # Admin operations
 print(f"All routers loaded. Total routes: {len(app.routes)}")
 
 # CORS middleware configuration
+# Allow both default port 3000 and alternate port 3001 for development
+allowed_origins = [
+    config.FRONTEND_URL,  # http://localhost:3000
+    "http://localhost:3001",  # Alternate port when 3000 is in use
+    "http://127.0.0.1:3000",
+    "http://127.0.0.1:3001",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[config.FRONTEND_URL],
+    allow_origins=allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+# Mount static files for uploaded documents (PDF viewing)
+# This allows the frontend to access PDFs via HTTP
+data_dir = Path(__file__).parent.parent.parent / "data"
+if not data_dir.exists():
+    data_dir.mkdir(parents=True, exist_ok=True)
+app.mount("/data", StaticFiles(directory=str(data_dir)), name="data")
 
 
 @app.on_event("startup")

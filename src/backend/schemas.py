@@ -3,14 +3,21 @@ Pydantic schemas for request/response validation
 Defines data models for API endpoints
 """
 from pydantic import BaseModel, Field, field_validator
-from typing import Optional, List
+from typing import Optional, List, Dict, Any
 from datetime import datetime
+
+
+class DefinitionObject(BaseModel):
+    """Schema for a single definition object"""
+    text: str = Field(..., min_length=1, description="Definition text")
+    source_doc_id: Optional[int] = Field(None, description="Source document ID")
+    is_primary: bool = Field(default=False, description="Whether this is the primary definition")
 
 
 class GlossaryEntryBase(BaseModel):
     """Base schema for glossary entry with common fields"""
     term: str = Field(..., min_length=1, max_length=255, description="The terminology term")
-    definition: str = Field(..., min_length=1, description="Definition of the term")
+    definitions: List[DefinitionObject] = Field(..., min_items=1, description="Array of definition objects")
     language: str = Field(..., pattern="^(de|en)$", description="Language code: 'de' or 'en'")
     source: str = Field(default="internal", description="Source of the term")
     source_document: Optional[str] = Field(None, max_length=500, description="Source document path")
@@ -34,7 +41,7 @@ class GlossaryEntryCreate(GlossaryEntryBase):
 class GlossaryEntryUpdate(BaseModel):
     """Schema for updating an existing glossary entry (all fields optional)"""
     term: Optional[str] = Field(None, min_length=1, max_length=255)
-    definition: Optional[str] = Field(None, min_length=1)
+    definitions: Optional[List[DefinitionObject]] = Field(None, min_items=1)
     language: Optional[str] = Field(None, pattern="^(de|en)$")
     source: Optional[str] = None
     source_document: Optional[str] = Field(None, max_length=500)
@@ -91,6 +98,9 @@ class DocumentUploadResponse(BaseModel):
     upload_status: str
     uploaded_at: datetime
     processing_metadata: Optional[dict] = None
+    document_number: Optional[str] = None
+    document_type_id: Optional[int] = None
+    document_link: Optional[str] = None
 
     model_config = {"from_attributes": True}
 
@@ -123,6 +133,13 @@ class DocumentProcessResponse(BaseModel):
     errors: Optional[List[str]] = None
 
 
+class DocumentUpdateRequest(BaseModel):
+    """Schema for updating document metadata"""
+    document_number: Optional[str] = Field(None, max_length=100, description="Unique document number")
+    document_type_id: Optional[int] = Field(None, description="Document type ID")
+    document_link: Optional[str] = Field(None, max_length=1000, description="External link (URL, UNC path, file path)")
+
+
 class DocumentListResponse(BaseModel):
     """Schema for document list response"""
     id: int
@@ -131,5 +148,71 @@ class DocumentListResponse(BaseModel):
     upload_status: str
     uploaded_at: datetime
     processed_at: Optional[datetime] = None
+    document_number: Optional[str] = None
+    document_type_id: Optional[int] = None
+    document_link: Optional[str] = None
+
+    model_config = {"from_attributes": True}
+
+
+class BatchUploadResult(BaseModel):
+    """Schema for individual file upload result in batch"""
+    filename: str
+    success: bool
+    document: Optional[DocumentUploadResponse] = None
+    error: Optional[str] = None
+
+
+class BatchUploadResponse(BaseModel):
+    """Schema for batch upload response"""
+    total_files: int
+    successful: int
+    failed: int
+    results: List[BatchUploadResult]
+
+
+# DocumentType Schemas
+
+class DocumentTypeBase(BaseModel):
+    """Base schema for document type"""
+    code: str = Field(..., min_length=1, max_length=50, description="Unique type code")
+    label_en: str = Field(..., min_length=1, max_length=100, description="English label")
+    label_de: str = Field(..., min_length=1, max_length=100, description="German label")
+    description: Optional[str] = Field(None, description="Optional description")
+
+
+class DocumentTypeCreate(DocumentTypeBase):
+    """Schema for creating a new document type"""
+    pass
+
+
+class DocumentTypeUpdate(BaseModel):
+    """Schema for updating a document type (all fields optional)"""
+    code: Optional[str] = Field(None, min_length=1, max_length=50)
+    label_en: Optional[str] = Field(None, min_length=1, max_length=100)
+    label_de: Optional[str] = Field(None, min_length=1, max_length=100)
+    description: Optional[str] = None
+
+
+class DocumentTypeResponse(DocumentTypeBase):
+    """Schema for document type response"""
+    id: int
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+# TermDocumentReference Schemas
+
+class TermDocumentReferenceResponse(BaseModel):
+    """Schema for term-document reference response"""
+    id: int
+    glossary_entry_id: int
+    document_id: int
+    frequency: int
+    page_numbers: Optional[List[int]] = None
+    context_excerpts: Optional[List[str]] = None
+    extraction_confidence: Optional[Dict[str, Any]] = None
+    created_at: datetime
 
     model_config = {"from_attributes": True}

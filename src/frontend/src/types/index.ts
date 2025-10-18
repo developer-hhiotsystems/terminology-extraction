@@ -1,9 +1,15 @@
 // TypeScript types for Glossary App
 
+export interface DefinitionObject {
+  text: string;
+  source_doc_id?: number;
+  is_primary: boolean;
+}
+
 export interface GlossaryEntry {
   id: number;
   term: string;
-  definition: string;
+  definitions: DefinitionObject[];
   language: 'de' | 'en';
   source: 'internal' | 'NAMUR' | 'DIN' | 'ASME' | 'IEC' | 'IATE';
   source_document?: string;
@@ -16,7 +22,7 @@ export interface GlossaryEntry {
 
 export interface GlossaryEntryCreate {
   term: string;
-  definition: string;
+  definitions: DefinitionObject[];
   language: 'de' | 'en';
   source?: string;
   source_document?: string;
@@ -25,7 +31,7 @@ export interface GlossaryEntryCreate {
 
 export interface GlossaryEntryUpdate {
   term?: string;
-  definition?: string;
+  definitions?: DefinitionObject[];
   language?: 'de' | 'en';
   source?: string;
   source_document?: string;
@@ -39,6 +45,9 @@ export interface UploadedDocument {
   filename: string;
   file_path: string;
   file_size: number;
+  document_number?: string;
+  document_type_id?: number;
+  document_link?: string;
   upload_status: 'pending' | 'processing' | 'completed' | 'failed';
   uploaded_at: string;
   processed_at?: string;
@@ -75,4 +84,41 @@ export interface DocumentProcessResponse {
 
 export interface ApiError {
   detail: string;
+}
+
+export interface DocumentType {
+  id: number;
+  code: string;
+  label_en: string;
+  label_de: string;
+  description?: string;
+  created_at: string;
+}
+
+export interface DocumentTypeCreate {
+  code: string;
+  label_en: string;
+  label_de: string;
+  description?: string;
+}
+
+export interface DocumentTypeUpdate {
+  code?: string;
+  label_en?: string;
+  label_de?: string;
+  description?: string;
+}
+
+export interface TermDocumentReference {
+  id: number;
+  glossary_entry_id: number;
+  document_id: number;
+  frequency: number;
+  page_numbers?: number[];
+  context_excerpts?: string[];
+  extraction_confidence?: {
+    overall: number;
+    source: string;
+  };
+  created_at: string;
 }
