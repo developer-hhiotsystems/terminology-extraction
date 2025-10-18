@@ -50,6 +50,7 @@ export default function Documents() {
   // Inline editing state
   const [editingDoc, setEditingDoc] = useState<number | null>(null)
   const [editValues, setEditValues] = useState<{
+    document_number?: string
     document_type_id?: number
     document_link?: string
   }>({})
@@ -436,6 +437,7 @@ export default function Documents() {
   const startEditing = (doc: UploadedDocument) => {
     setEditingDoc(doc.id)
     setEditValues({
+      document_number: doc.document_number || '',
       document_type_id: doc.document_type_id,
       document_link: doc.document_link || ''
     })
@@ -451,7 +453,7 @@ export default function Documents() {
       await apiClient.updateDocument(docId, editValues)
       toast.success('Document updated successfully')
       addLog('success', `Document metadata updated`, docId, undefined,
-        `Type ID: ${editValues.document_type_id || 'not set'}, Link: ${editValues.document_link || 'not set'}`)
+        `Doc #: ${editValues.document_number || 'not set'}, Type ID: ${editValues.document_type_id || 'not set'}, Link: ${editValues.document_link || 'not set'}`)
       fetchDocuments()
       setEditingDoc(null)
       setEditValues({})
@@ -766,7 +768,27 @@ export default function Documents() {
                           {doc.filename}
                         </Link>
                       </td>
-                      <td>{doc.document_number || '-'}</td>
+                      {/* Document Number - Editable */}
+                      <td className="editable-cell" onClick={() => editingDoc !== doc.id && startEditing(doc)}>
+                        {editingDoc === doc.id ? (
+                          <input
+                            type="text"
+                            className="inline-edit-input"
+                            value={editValues.document_number || ''}
+                            onChange={(e) => setEditValues(prev => ({
+                              ...prev,
+                              document_number: e.target.value
+                            }))}
+                            placeholder="e.g., DOC-2024-001"
+                            maxLength={100}
+                          />
+                        ) : (
+                          <span className={doc.document_number ? 'has-value' : 'no-value'}>
+                            {doc.document_number || '-'}
+                            <span className="edit-hint">✎</span>
+                          </span>
+                        )}
+                      </td>
 
                       {/* Document Type - Editable */}
                       <td className="editable-cell" onClick={() => editingDoc !== doc.id && startEditing(doc)}>
