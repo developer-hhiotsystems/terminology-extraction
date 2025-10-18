@@ -52,7 +52,33 @@ SQLite (Primary DB)  →  Sync Service  →  Neo4j (Knowledge Graph)
 
 ## 🚀 Setup Guide
 
-### Step 1: Start Neo4j Container
+### ⚡ OPTION A: Neo4j on Windows (Without Docker) - **RECOMMENDED**
+
+**Full guide:** See `docs/NEO4J_WINDOWS_SETUP.md`
+
+**Quick Start with Neo4j Desktop:**
+
+1. **Download Neo4j Desktop**
+   - Visit: https://neo4j.com/download/
+   - Download and install Neo4j Desktop
+
+2. **Create Database**
+   - Open Neo4j Desktop
+   - Create new project: "Glossary App"
+   - Add Local DBMS: `glossary-dev`
+   - Set password: `devpassword`
+   - Version: Neo4j 5.x
+
+3. **Start Database**
+   - Click "Start" button
+   - Wait for green "Running" status
+   - Connection: `bolt://localhost:7687`
+
+4. **Continue to Step 2 below** (Install Python driver)
+
+---
+
+### OPTION B: Neo4j with Docker (If Available)
 
 ```bash
 # Start Neo4j container
