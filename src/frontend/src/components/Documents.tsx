@@ -4,6 +4,16 @@ import { toast } from 'react-toastify'
 import apiClient from '../api/client'
 import type { UploadedDocument, DocumentType, DocumentProcessRequest } from '../types'
 
+interface LogEntry {
+  id: string
+  timestamp: Date
+  level: 'info' | 'success' | 'warning' | 'error'
+  message: string
+  documentId?: number
+  documentName?: string
+  details?: string
+}
+
 export default function Documents() {
   // Upload state
   const [files, setFiles] = useState<File[]>([])
@@ -32,13 +42,54 @@ export default function Documents() {
   // Section visibility
   const [showUploadSection, setShowUploadSection] = useState(false)
 
+  // Log View state
+  const [logs, setLogs] = useState<LogEntry[]>([])
+  const [showLogView, setShowLogView] = useState(false)
+  const logViewRef = useRef<HTMLDivElement>(null)
+
   const MAX_FILE_SIZE = 50 * 1024 * 1024 // 50MB
+
+  // Auto-scroll log view to bottom when new logs are added
+  useEffect(() => {
+    if (logViewRef.current && showLogView) {
+      logViewRef.current.scrollTop = logViewRef.current.scrollHeight
+    }
+  }, [logs, showLogView])
 
   // Load documents and types
   useEffect(() => {
     fetchDocuments()
     fetchDocumentTypes()
   }, [])
+
+  // Helper function to add log entry
+  const addLog = (
+    level: LogEntry['level'],
+    message: string,
+    documentId?: number,
+    documentName?: string,
+    details?: string
+  ) => {
+    const entry: LogEntry = {
+      id: `${Date.now()}-${Math.random()}`,
+      timestamp: new Date(),
+      level,
+      message,
+      documentId,
+      documentName,
+      details
+    }
+    setLogs(prev => [...prev, entry])
+
+    // Auto-show log view on errors
+    if (level === 'error') {
+      setShowLogView(true)
+    }
+  }
+
+  const clearLogs = () => {
+    setLogs([])
+  }
 
   // Apply filters
   useEffect(() => {
@@ -199,10 +250,12 @@ export default function Documents() {
   const handleProcess = async (doc: UploadedDocument) => {
     if (processingDocs.has(doc.id)) {
       toast.warning('This document is already being processed')
+      addLog('warning', `Already processing`, doc.id, doc.filename)
       return
     }
 
     setProcessingDocs(prev => new Set(prev).add(doc.id))
+    addLog('info', `Starting document processing...`, doc.id, doc.filename)
 
     try {
       const processRequest: DocumentProcessRequest = {
@@ -212,7 +265,13 @@ export default function Documents() {
         source: 'internal'
       }
 
+      addLog('info', `Sending process request to backend`, doc.id, doc.filename,
+        `Parameters: extract_terms=true, language=en, source=internal`)
+
       const result = await apiClient.processDocument(doc.id, processRequest)
+
+      addLog('success', `Successfully processed document`, doc.id, doc.filename,
+        `Terms extracted: ${result.terms_saved}, Processing time: ${result.processing_time || 'N/A'}s`)
 
       toast.success(
         `Processed ${doc.filename}: ${result.terms_saved} terms extracted`,
@@ -221,6 +280,12 @@ export default function Documents() {
 
       fetchDocuments() // Refresh list
     } catch (err: any) {
+      const errorMessage = err.response?.data?.detail || err.message || 'Unknown error'
+      const errorDetails = err.response?.data ? JSON.stringify(err.response.data, null, 2) : err.stack
+
+      addLog('error', `Processing failed`, doc.id, doc.filename,
+        `Error: ${errorMessage}\n\nDetails:\n${errorDetails}`)
+
       toast.error(
         err.response?.data?.detail || `Failed to process ${doc.filename}`
       )
@@ -300,19 +365,31 @@ export default function Documents() {
       return
     }
 
+    setShowLogView(true) // Auto-show log view for bulk operations
+    addLog('info', `Starting bulk processing`, undefined, undefined,
+      `Processing ${pendingDocs.length} documents: ${pendingDocs.map(d => d.filename).join(', ')}`)
+
     toast.info(`Processing ${pendingDocs.length} documents...`)
 
     let successCount = 0
     let failCount = 0
 
-    for (const doc of pendingDocs) {
+    for (let i = 0; i < pendingDocs.length; i++) {
+      const doc = pendingDocs[i]
+      addLog('info', `Processing document ${i + 1}/${pendingDocs.length}`, doc.id, doc.filename)
+
       try {
         await handleProcess(doc)
         successCount++
-      } catch {
+      } catch (err) {
         failCount++
+        addLog('error', `Document ${i + 1}/${pendingDocs.length} failed`, doc.id, doc.filename)
       }
     }
+
+    addLog(failCount === 0 ? 'success' : 'warning',
+      `Bulk processing completed`, undefined, undefined,
+      `Success: ${successCount}, Failed: ${failCount}`)
 
     toast.success(
       `Processed ${successCount} documents. ${failCount > 0 ? `${failCount} failed.` : ''}`,
@@ -343,6 +420,13 @@ export default function Documents() {
 
   const formatDate = (dateString: string) => new Date(dateString).toLocaleString()
   const formatFileSize = (bytes: number) => (bytes / 1024 / 1024).toFixed(2) + ' MB'
+  const formatLogTime = (date: Date) => {
+    const hours = date.getHours().toString().padStart(2, '0')
+    const minutes = date.getMinutes().toString().padStart(2, '0')
+    const seconds = date.getSeconds().toString().padStart(2, '0')
+    const ms = date.getMilliseconds().toString().padStart(3, '0')
+    return `${hours}:${minutes}:${seconds}.${ms}`
+  }
 
   if (loading) return <div className="loading">Loading documents...</div>
 
@@ -452,6 +536,63 @@ export default function Documents() {
                 </button>
               </div>
             </>
+          )}
+        </div>
+      )}
+
+      {/* Log View Section */}
+      {logs.length > 0 && (
+        <div className="log-view-container">
+          <div className="log-view-header">
+            <div className="log-view-title">
+              <span className="log-icon">📋</span>
+              <h3>Processing Log</h3>
+              <span className="log-count">{logs.length} entries</span>
+            </div>
+            <div className="log-view-actions">
+              <button
+                className="btn-secondary-small"
+                onClick={clearLogs}
+                title="Clear all logs"
+              >
+                Clear Logs
+              </button>
+              <button
+                className="btn-secondary-small"
+                onClick={() => setShowLogView(!showLogView)}
+                title={showLogView ? "Collapse log view" : "Expand log view"}
+              >
+                {showLogView ? '▼ Collapse' : '▶ Expand'}
+              </button>
+            </div>
+          </div>
+
+          {showLogView && (
+            <div className="log-view-content" ref={logViewRef}>
+              {logs.map(log => (
+                <div key={log.id} className={`log-entry log-${log.level}`}>
+                  <div className="log-entry-header">
+                    <span className="log-timestamp">{formatLogTime(log.timestamp)}</span>
+                    <span className={`log-level log-level-${log.level}`}>
+                      {log.level.toUpperCase()}
+                    </span>
+                    {log.documentName && (
+                      <span className="log-document">
+                        📄 {log.documentName}
+                        {log.documentId && <span className="log-doc-id"> (ID: {log.documentId})</span>}
+                      </span>
+                    )}
+                  </div>
+                  <div className="log-message">{log.message}</div>
+                  {log.details && (
+                    <details className="log-details">
+                      <summary>Show details</summary>
+                      <pre className="log-details-content">{log.details}</pre>
+                    </details>
+                  )}
+                </div>
+              ))}
+            </div>
           )}
         </div>
       )}
