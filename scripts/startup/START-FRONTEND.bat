@@ -11,7 +11,10 @@ echo           STARTING FRONTEND SERVER
 echo ============================================================================
 echo.
 
-cd /d "%~dp0\src\frontend"
+REM Go to project root (2 levels up from scripts/startup/)
+cd /d "%~dp0"
+cd ..\..
+cd src\frontend
 
 echo.
 echo Starting Vite dev server on port 3000...

@@ -11,7 +11,9 @@ echo           STARTING BACKEND SERVER
 echo ============================================================================
 echo.
 
+REM Go to project root (2 levels up from scripts/startup/)
 cd /d "%~dp0"
+cd ..\..
 
 echo Activating virtual environment...
 call venv\Scripts\activate.bat
