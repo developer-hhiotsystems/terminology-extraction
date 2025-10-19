@@ -1,0 +1,251 @@
+{
+  "timestamp": "2025-10-19T10:31:43.605Z",
+  "summary": {
+    "totalErrors": 16,
+    "totalWarnings": 0,
+    "consoleMessages": 23,
+    "networkErrors": 10,
+    "screenshots": 2
+  },
+  "errors": [
+    {
+      "source": "console",
+      "message": "Failed to load terms for autocomplete: JSHandle@object"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load terms for autocomplete: JSHandle@object"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "test",
+      "test": "glossary",
+      "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'a[href*=\"glossary\"], button:has-text(\"Glossary\")' is not a valid selector."
+    },
+    {
+      "source": "console",
+      "message": "Failed to load terms for autocomplete: JSHandle@object"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load terms for autocomplete: JSHandle@object"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "console",
+      "message": "Failed to load resource: net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "source": "test",
+      "test": "api",
+      "message": "this.page.waitForTimeout is not a function"
+    },
+    {
+      "source": "test",
+      "test": "responsive",
+      "message": "this.page.waitForTimeout is not a function"
+    }
+  ],
+  "warnings": [],
+  "consoleMessages": [
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "timestamp": "2025-10-19T10:31:29.317Z"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "timestamp": "2025-10-19T10:31:29.336Z"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold",
+      "timestamp": "2025-10-19T10:31:29.379Z"
+    },
+    {
+      "type": "warn",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.",
+      "timestamp": "2025-10-19T10:31:29.412Z"
+    },
+    {
+      "type": "warn",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.",
+      "timestamp": "2025-10-19T10:31:29.413Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load terms for autocomplete: JSHandle@object",
+      "timestamp": "2025-10-19T10:31:31.881Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:31.884Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:31.887Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load terms for autocomplete: JSHandle@object",
+      "timestamp": "2025-10-19T10:31:34.280Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:34.281Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:34.281Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:36.634Z"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connecting...",
+      "timestamp": "2025-10-19T10:31:36.817Z"
+    },
+    {
+      "type": "debug",
+      "text": "[vite] connected.",
+      "timestamp": "2025-10-19T10:31:36.880Z"
+    },
+    {
+      "type": "info",
+      "text": "%cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold",
+      "timestamp": "2025-10-19T10:31:36.896Z"
+    },
+    {
+      "type": "warn",
+      "text": "⚠️ React Router Future Flag Warning: React Router will begin wrapping state updates in `React.startTransition` in v7. You can use the `v7_startTransition` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_starttransition.",
+      "timestamp": "2025-10-19T10:31:36.906Z"
+    },
+    {
+      "type": "warn",
+      "text": "⚠️ React Router Future Flag Warning: Relative route resolution within Splat routes is changing in v7. You can use the `v7_relativeSplatPath` future flag to opt-in early. For more information, see https://reactrouter.com/v6/upgrading/future#v7_relativesplatpath.",
+      "timestamp": "2025-10-19T10:31:36.907Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load terms for autocomplete: JSHandle@object",
+      "timestamp": "2025-10-19T10:31:39.230Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:39.230Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:39.230Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load terms for autocomplete: JSHandle@object",
+      "timestamp": "2025-10-19T10:31:41.577Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:41.577Z"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: net::ERR_CONNECTION_REFUSED",
+      "timestamp": "2025-10-19T10:31:41.578Z"
+    }
+  ],
+  "networkErrors": [
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=1000",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=1000",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_ABORTED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=1000",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=1000",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    },
+    {
+      "url": "http://localhost:9123/api/glossary?skip=0&limit=25",
+      "failure": "net::ERR_CONNECTION_REFUSED"
+    }
+  ],
+  "screenshots": [
+    {
+      "name": "01-homepage",
+      "description": "Initial homepage load",
+      "filepath": "test-screenshots\\ui-review\\01-homepage-1760869896293.png"
+    },
+    {
+      "name": "02-navigation",
+      "description": "Navigation elements",
+      "filepath": "test-screenshots\\ui-review\\02-navigation-1760869896586.png"
+    }
+  ]
+}

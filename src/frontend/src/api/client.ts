@@ -237,6 +237,111 @@ class ApiClient {
     return response.data;
   }
 
+  // Relationships Endpoints (Phase C: NLP Extraction & Graph Visualization)
+  async getRelationships(params?: {
+    source_term_id?: number;
+    target_term_id?: number;
+    relation_type?: string;
+    min_confidence?: number;
+    validated?: string;
+    skip?: number;
+    limit?: number;
+  }): Promise<any[]> {
+    const response = await this.client.get('/api/relationships', { params });
+    return response.data;
+  }
+
+  async getRelationship(id: number): Promise<any> {
+    const response = await this.client.get(`/api/relationships/${id}`);
+    return response.data;
+  }
+
+  async createRelationship(data: {
+    source_term_id: number;
+    target_term_id: number;
+    relation_type: string;
+    confidence?: number;
+    evidence?: string;
+    context?: string;
+    extraction_method?: string;
+  }): Promise<any> {
+    const response = await this.client.post('/api/relationships', data);
+    return response.data;
+  }
+
+  async updateRelationship(id: number, data: {
+    relation_type?: string;
+    confidence?: number;
+    evidence?: string;
+    context?: string;
+    validated?: string;
+  }): Promise<any> {
+    const response = await this.client.put(`/api/relationships/${id}`, data);
+    return response.data;
+  }
+
+  async deleteRelationship(id: number): Promise<void> {
+    await this.client.delete(`/api/relationships/${id}`);
+  }
+
+  async getGraphData(params?: {
+    term_id?: number;
+    relation_types?: string[];
+    min_confidence?: number;
+    max_depth?: number;
+    validated_only?: boolean;
+    limit?: number;
+  }): Promise<{
+    nodes: Array<{
+      id: number;
+      label: string;
+      term: string;
+      language: string;
+      definition_count: number;
+      group?: string;
+    }>;
+    edges: Array<{
+      id: string;
+      source: number;
+      target: number;
+      type: string;
+      weight: number;
+      label: string;
+    }>;
+    stats: {
+      node_count: number;
+      edge_count: number;
+      relationship_types: string[];
+      avg_confidence: number;
+    };
+  }> {
+    const response = await this.client.get('/api/relationships/graph/data', { params });
+    return response.data;
+  }
+
+  async extractRelationships(termId: number): Promise<{
+    message: string;
+    relationships_found: number;
+    relationships_created: number;
+    relationships: any[];
+  }> {
+    const response = await this.client.post(`/api/relationships/extract/${termId}`);
+    return response.data;
+  }
+
+  async getRelationshipStats(): Promise<{
+    total_relationships: number;
+    by_type: Record<string, number>;
+    by_validation: Record<string, number>;
+    avg_confidence: number;
+    terms_with_relationships: number;
+    total_terms: number;
+    coverage_percent: number;
+  }> {
+    const response = await this.client.get('/api/relationships/stats/overview');
+    return response.data;
+  }
+
   // Admin Endpoints
   async resetDatabase(): Promise<{ message: string }> {
     const response = await this.client.delete('/api/admin/reset-database');

@@ -137,7 +137,7 @@ export default function GraphVisualization({
       .attr('stroke-width', d => Math.max(1, d.weight * 3))
       .attr('stroke-opacity', 0.6)
       .attr('marker-end', d => `url(#arrow-${d.type})`)
-      .on('mouseenter', (event, d) => setHoveredEdge(d))
+      .on('mouseenter', (_event, d) => setHoveredEdge(d))
       .on('mouseleave', () => setHoveredEdge(null))
       .on('click', (event, d) => {
         event.stopPropagation();
@@ -162,7 +162,7 @@ export default function GraphVisualization({
       .attr('fill', d => getNodeColor(d))
       .attr('stroke', d => d.id === highlightedNodeId ? '#ffc107' : '#fff')
       .attr('stroke-width', d => d.id === highlightedNodeId ? 4 : 2)
-      .on('mouseenter', (event, d) => setHoveredNode(d))
+      .on('mouseenter', (_event, d) => setHoveredNode(d))
       .on('mouseleave', () => setHoveredNode(null))
       .on('click', (event, d) => {
         event.stopPropagation();

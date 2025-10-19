@@ -4,6 +4,11 @@ export interface DefinitionObject {
   text: string;
   source_doc_id?: number;
   is_primary: boolean;
+  // Additional fields for Phase B components
+  language?: 'de' | 'en';
+  definition_text?: string;
+  context?: string;
+  page_number?: number;
 }
 
 export interface GlossaryEntry {
@@ -18,6 +23,11 @@ export interface GlossaryEntry {
   sync_status: 'pending_sync' | 'synced' | 'sync_failed';
   creation_date: string;
   updated_at: string;
+  // Additional fields for Phase B components
+  confidence_score?: number;
+  page_numbers?: number[];
+  created_at?: string;
+  document_type?: string;
 }
 
 export interface GlossaryEntryCreate {
@@ -70,6 +80,7 @@ export interface DocumentProcessRequest {
   auto_validate?: boolean;
   language?: 'de' | 'en';
   source?: string;
+  extract_definitions?: boolean;
 }
 
 export interface DocumentProcessResponse {

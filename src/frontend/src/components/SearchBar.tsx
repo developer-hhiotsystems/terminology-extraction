@@ -75,19 +75,20 @@ export default function SearchBar({
     }
   };
 
-  const getModeIcon = (m: SearchMode) => {
-    switch (m) {
-      case 'phrase':
-        return '"..."';
-      case 'boolean':
-        return 'AND/OR';
-      case 'wildcard':
-        return '*';
-      case 'simple':
-      default:
-        return 'ABC';
-    }
-  };
+  // Helper function for mode icons (currently unused but kept for future use)
+  // const getModeIcon = (m: SearchMode) => {
+  //   switch (m) {
+  //     case 'phrase':
+  //       return '"..."';
+  //     case 'boolean':
+  //       return 'AND/OR';
+  //     case 'wildcard':
+  //       return '*';
+  //     case 'simple':
+  //     default:
+  //       return 'ABC';
+  //   }
+  // };
 
   const getModeTooltip = (m: SearchMode) => {
     switch (m) {

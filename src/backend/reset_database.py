@@ -9,7 +9,7 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent.parent))
 
 from src.backend.database import engine, SessionLocal
-from src.backend.models import Base, drop_db, init_db, seed_document_types
+from src.backend.base_models import Base, drop_db, init_db, seed_document_types
 
 
 def reset_database():

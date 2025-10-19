@@ -13,7 +13,7 @@ import io
 from datetime import datetime
 
 from src.backend.database import get_db
-from src.backend.models import GlossaryEntry
+from src.backend.base_models import GlossaryEntry
 from src.backend.schemas import (
     GlossaryEntryCreate,
     GlossaryEntryUpdate,

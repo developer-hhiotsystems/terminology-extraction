@@ -10,6 +10,12 @@ import AdminPanel from './components/AdminPanel'
 import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp'
 import CommandPalette from './components/CommandPalette'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+// Phase A: FTS5 Search Integration
+import SearchPage from './pages/SearchPage'
+// Phase B: Enhanced UI/UX Components
+import EnhancedGlossaryPage from './pages/EnhancedGlossaryPage'
+// Phase C: Relationship Extraction & Graph Visualization
+import RelationshipExplorer from './components/RelationshipExplorer'
 import './App.css'
 
 function App() {
@@ -56,6 +62,27 @@ function App() {
             Glossary
           </Link>
           <Link
+            to="/search"
+            className={activeTab === 'search' ? 'active' : ''}
+            onClick={() => setActiveTab('search')}
+          >
+            🔍 Search
+          </Link>
+          <Link
+            to="/enhanced-glossary"
+            className={activeTab === 'enhanced' ? 'active' : ''}
+            onClick={() => setActiveTab('enhanced')}
+          >
+            ✨ Enhanced View
+          </Link>
+          <Link
+            to="/relationships"
+            className={activeTab === 'relationships' ? 'active' : ''}
+            onClick={() => setActiveTab('relationships')}
+          >
+            🕸️ Relationships
+          </Link>
+          <Link
             to="/documents"
             className={activeTab === 'documents' ? 'active' : ''}
             onClick={() => setActiveTab('documents')}
@@ -85,6 +112,12 @@ function App() {
             <Route path="/documents/:id" element={<DocumentDetail />} />
             <Route path="/statistics" element={<StatsDashboard />} />
             <Route path="/admin" element={<AdminPanel />} />
+            {/* Phase A: FTS5 Search */}
+            <Route path="/search" element={<SearchPage />} />
+            {/* Phase B: Enhanced Glossary View */}
+            <Route path="/enhanced-glossary" element={<EnhancedGlossaryPage />} />
+            {/* Phase C: Relationship Graph */}
+            <Route path="/relationships" element={<RelationshipExplorer />} />
           </Routes>
         </main>
 

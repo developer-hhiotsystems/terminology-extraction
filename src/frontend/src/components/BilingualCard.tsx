@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import type { GlossaryEntry } from '../types';
 import './BilingualCard.css';
 

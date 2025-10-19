@@ -6,9 +6,10 @@ Supports directed graphs with weighted edges and metadata.
 """
 
 from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text, Index
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import relationship as sqlalchemy_relationship
 from datetime import datetime
-from .base import Base
+# Import Base from base_models.py (renamed to avoid conflict with models/ directory)
+from ..base_models import Base
 
 
 class TermRelationship(Base):
@@ -59,12 +60,12 @@ class TermRelationship(Base):
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False)
 
     # Relationships to glossary entries
-    source_term = relationship(
+    source_term = sqlalchemy_relationship(
         "GlossaryEntry",
         foreign_keys=[source_term_id],
         backref="outgoing_relationships"
     )
-    target_term = relationship(
+    target_term = sqlalchemy_relationship(
         "GlossaryEntry",
         foreign_keys=[target_term_id],
         backref="incoming_relationships"

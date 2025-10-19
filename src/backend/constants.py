@@ -189,8 +189,8 @@ REL_DERIVED_FROM = "DERIVED_FROM"
 # DATABASE CONSTANTS
 # =============================================================================
 
-# Database URLs
-DATABASE_URL_SQLITE = "sqlite:///./data/glossary.db"
+# Database URLs (Updated after cleanup - database now in data/database/)
+DATABASE_URL_SQLITE = "sqlite:///./data/database/glossary.db"
 DATABASE_URL_POSTGRESQL = "postgresql://glossary_user:glossary_password@localhost:5432/glossary"
 
 # Database types

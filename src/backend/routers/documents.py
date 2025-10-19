@@ -22,7 +22,7 @@ from src.backend.constants import (
     MIME_TYPE_PDF
 )
 from src.backend.database import get_db
-from src.backend.models import UploadedDocument, GlossaryEntry, TermDocumentReference
+from src.backend.base_models import UploadedDocument, GlossaryEntry, TermDocumentReference
 from src.backend.schemas import (
     DocumentUploadResponse,
     DocumentProcessRequest,

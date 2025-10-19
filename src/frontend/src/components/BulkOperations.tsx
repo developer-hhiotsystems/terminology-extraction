@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import type { GlossaryEntry } from '../types';
 import apiClient from '../api/client';
 import './BulkOperations.css';
 

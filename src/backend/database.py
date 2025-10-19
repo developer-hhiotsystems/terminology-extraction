@@ -10,7 +10,7 @@ import os
 import logging
 
 from src.backend.config import config
-from src.backend.models import Base, init_db
+from src.backend.base_models import Base, init_db
 
 logger = logging.getLogger(__name__)
 

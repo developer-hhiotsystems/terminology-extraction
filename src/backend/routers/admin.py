@@ -10,7 +10,7 @@ from pathlib import Path
 import shutil
 
 from src.backend.database import get_db
-from src.backend.models import GlossaryEntry, UploadedDocument, DocumentType
+from src.backend.base_models import GlossaryEntry, UploadedDocument, DocumentType
 from src.backend.schemas import (
     MessageResponse,
     DocumentTypeResponse,

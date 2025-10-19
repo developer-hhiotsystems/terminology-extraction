@@ -12,8 +12,8 @@ from pydantic import BaseModel, Field
 from datetime import datetime
 
 from ..database import get_db
-from ..models.relationship import TermRelationship
-from ..models.glossary_entry import GlossaryEntry
+from ..base_models import GlossaryEntry  # GlossaryEntry is in base_models.py (renamed from models.py)
+from ..models.relationship import TermRelationship  # TermRelationship is in models/ directory
 from ..nlp.relationship_extractor import RelationshipExtractor, RelationType
 
 

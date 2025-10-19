@@ -4,7 +4,7 @@ Synchronizes data between SQLite and Neo4j graph database
 """
 from typing import List, Optional
 from sqlalchemy.orm import Session
-from src.backend.models import GlossaryEntry
+from src.backend.base_models import GlossaryEntry
 from src.backend.services.neo4j_service import get_neo4j_service
 import re
 

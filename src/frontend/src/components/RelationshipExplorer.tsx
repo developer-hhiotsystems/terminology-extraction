@@ -3,25 +3,26 @@ import GraphVisualization from './GraphVisualization';
 import apiClient from '../api/client';
 import './RelationshipExplorer.css';
 
-interface GraphNode {
+// Types are inferred from API response - matches GraphVisualization component expectations
+type GraphNode = {
   id: number;
   label: string;
   term: string;
   language: string;
   definition_count: number;
   group?: string;
-}
+};
 
-interface GraphEdge {
+type GraphEdge = {
   id: string;
-  source: number;
-  target: number;
+  source: number | GraphNode; // D3.js modifies this during simulation
+  target: number | GraphNode; // D3.js modifies this during simulation
   type: string;
   weight: number;
   label: string;
-}
+};
 
-interface GraphData {
+type GraphData = {
   nodes: GraphNode[];
   edges: GraphEdge[];
   stats: {
@@ -30,7 +31,7 @@ interface GraphData {
     relationship_types: string[];
     avg_confidence: number;
   };
-}
+};
 
 interface RelationshipExplorerProps {
   initialTermId?: number;
@@ -58,7 +59,7 @@ export default function RelationshipExplorer({
   const [error, setError] = useState<string | null>(null);
 
   // Filters
-  const [selectedTermIds, setSelectedTermIds] = useState<number[]>(initialTermId ? [initialTermId] : []);
+  const [selectedTermIds] = useState<number[]>(initialTermId ? [initialTermId] : []);
   const [selectedRelationTypes, setSelectedRelationTypes] = useState<string[]>([]);
   const [minConfidence, setMinConfidence] = useState(0.5);
   const [maxDepth, setMaxDepth] = useState(2);

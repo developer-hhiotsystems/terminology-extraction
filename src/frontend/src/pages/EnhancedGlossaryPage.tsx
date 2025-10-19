@@ -155,9 +155,10 @@ export default function EnhancedGlossaryPage() {
     }
   };
 
-  const handleViewDetails = (entry: GlossaryEntry) => {
-    setDetailEntry(entry);
-  };
+  // Handler for viewing entry details (kept for future use)
+  // const handleViewDetails = (entry: GlossaryEntry) => {
+  //   setDetailEntry(entry);
+  // };
 
   const handleClearTask = (taskId: string) => {
     setProcessingTasks((prev) => prev.filter((t) => t.id !== taskId));
