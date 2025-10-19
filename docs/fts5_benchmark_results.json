@@ -1,0 +1,87 @@
+{
+  "database_stats": {
+    "total_entries": 3312,
+    "fts5_enabled": true
+  },
+  "benchmark_results": [
+    {
+      "test": "Simple Search: 'control'",
+      "fts5_time_ms": 0.132,
+      "like_time_ms": 1.941,
+      "fts5_results": 19,
+      "like_results": 19,
+      "speedup": 14.72
+    },
+    {
+      "test": "Simple Search: 'temperature'",
+      "fts5_time_ms": 0.188,
+      "like_time_ms": 2.014,
+      "fts5_results": 44,
+      "like_results": 44,
+      "speedup": 10.71
+    },
+    {
+      "test": "Simple Search: 'process'",
+      "fts5_time_ms": 0.525,
+      "like_time_ms": 2.486,
+      "fts5_results": 246,
+      "like_results": 257,
+      "speedup": 4.73
+    },
+    {
+      "test": "Boolean AND: 'temperature AND control'",
+      "fts5_time_ms": 0.209,
+      "like_time_ms": 2.212,
+      "fts5_results": 2,
+      "like_results": 2,
+      "speedup": 10.6
+    },
+    {
+      "test": "Boolean OR: 'sensor OR actuator'",
+      "fts5_time_ms": 0.456,
+      "like_time_ms": 3.081,
+      "fts5_results": 134,
+      "like_results": 138,
+      "speedup": 6.76
+    },
+    {
+      "test": "Wildcard: 'temp*'",
+      "fts5_time_ms": 0.15,
+      "like_time_ms": 2.175,
+      "fts5_results": 48,
+      "like_results": 48,
+      "speedup": 14.53
+    },
+    {
+      "test": "Wildcard: 'cont*'",
+      "fts5_time_ms": 6.578,
+      "like_time_ms": 4.917,
+      "fts5_results": 2977,
+      "like_results": 2977,
+      "speedup": 0.75
+    },
+    {
+      "test": "Filtered: 'temperature' (language=en)",
+      "fts5_time_ms": 0.208,
+      "like_time_ms": 2.567,
+      "fts5_results": 44,
+      "like_results": 44,
+      "speedup": 12.32
+    },
+    {
+      "test": "Complex Boolean: 'process AND (control OR temperature)'",
+      "fts5_time_ms": 0.122,
+      "like_time_ms": 2.425,
+      "fts5_results": 3,
+      "like_results": 0,
+      "speedup": 19.89
+    }
+  ],
+  "summary": {
+    "fts5_avg_ms": 0.952,
+    "like_avg_ms": 2.646,
+    "avg_speedup": 10.56,
+    "median_speedup": 10.71,
+    "max_speedup": 19.89
+  }
+}

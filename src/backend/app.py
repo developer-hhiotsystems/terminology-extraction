@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 from src.backend.database import get_db, initialize_database, check_database_connection
 from src.backend.config import config
-from src.backend.routers import glossary, documents, admin, graph
+from src.backend.routers import glossary, documents, admin, graph, search
 from src.backend.services.neo4j_service import get_neo4j_service
 
 # Load environment variables
@@ -77,6 +77,8 @@ logger.info(f"Loading admin router: {admin.router}")
 app.include_router(admin.router)  # Admin operations
 logger.info(f"Loading graph router: {graph.router}")
 app.include_router(graph.router)  # Neo4j knowledge graph
+logger.info(f"Loading search router: {search.router}")
+app.include_router(search.router)  # FTS5 full-text search
 logger.info(f"All routers loaded. Total routes: {len(app.routes)}")
 
 # CORS middleware configuration

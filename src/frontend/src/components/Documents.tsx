@@ -287,7 +287,7 @@ export default function Documents() {
       const result = await apiClient.processDocument(doc.id, processRequest)
 
       addLog('success', `Successfully processed document`, doc.id, doc.filename,
-        `Terms extracted: ${result.terms_saved}, Processing time: ${result.processing_time || 'N/A'}s`)
+        `Terms extracted: ${result.terms_saved}, Processing time: ${result.processing_time_seconds || 'N/A'}s`)
 
       toast.success(
         `Processed ${doc.filename}: ${result.terms_saved} terms extracted`,

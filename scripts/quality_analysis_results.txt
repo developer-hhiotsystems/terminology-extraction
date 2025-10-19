@@ -1,0 +1,287 @@
+================================================================================
+DATA QUALITY ANALYSIS - SECOND ROUND
+After TermValidator Integration
+================================================================================
+
+2025-10-18 22:53:33,052 INFO sqlalchemy.engine.Engine BEGIN (implicit)
+2025-10-18 22:53:33,055 INFO sqlalchemy.engine.Engine SELECT glossary_entries.id AS glossary_entries_id, glossary_entries.term AS glossary_entries_term, glossary_entries.definitions AS glossary_entries_definitions, glossary_entries.language AS glossary_entries_language, glossary_entries.source AS glossary_entries_source, glossary_entries.source_document AS glossary_entries_source_document, glossary_entries.creation_date AS glossary_entries_creation_date, glossary_entries.updated_at AS glossary_entries_updated_at, glossary_entries.domain_tags AS glossary_entries_domain_tags, glossary_entries.validation_status AS glossary_entries_validation_status, glossary_entries.sync_status AS glossary_entries_sync_status 
+FROM glossary_entries
+2025-10-18 22:53:33,056 INFO sqlalchemy.engine.Engine [generated in 0.00039s] ()
+📊 TOTAL ENTRIES: 4511
+
+📈 QUALITY DISTRIBUTION:
+--------------------------------------------------------------------------------
+✅ EXCELLENT      : 3220 ( 71.4%)
+👍 GOOD           :  686 ( 15.2%)
+⚠️ QUESTIONABLE   :  584 ( 12.9%)
+❌ BAD            :   21 (  0.5%)
+
+🎯 HIGH-QUALITY TERMS: 3906/4511 (86.6%)
+
+================================================================================
+📋 SAMPLE ENTRIES BY CATEGORY
+================================================================================
+
+
+EXCELLENT (3220 total)
+--------------------------------------------------------------------------------
+1. 'Measurement'
+   Definition: [{'text': 'Term found in context (Pages 3, 6, 7, +34 more):\n\nTorque measurements\n2.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: abstract concept suffix
+
+2. 'Et Al'
+   Definition: [{'text': 'Term found in context (Pages 4, 5, 6, +20 more):\n\napplication [Minow et al.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+3. 'Solution'
+   Definition: [{'text': 'Term found in context (Pages 10, 14, 16, +15 more):\n\nof inhomogeneity (tracer, salt solution) until homogeneity is achieved again.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: abstract concept suffix
+
+4. 'Mixing Time'
+   Definition: [{'text': 'Term found in context (Pages 3, 6, 7, +20 more):\n\nGuideline – Experimental determination of mixing time – Decolourisation and sensor method 33\n3.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+5. 'Single-Use Technology'
+   Definition: [{'text': 'Term found in context (Pages 1, 4, 5, +51 more):\n\nEXPERT GROUP SINGLE-USE TECHNOLOGY\nRecommendations\nfor process engineering', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+6. 'Power Input'
+   Definition: [{'text': 'Term found in context (Pages 3, 6, 7, +21 more):\n\nGuideline – Experimental determination of specific power input for bioreactors – 23\nTorque measurements', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+7. 'Biopharmaceutical Manufacturing'
+   Definition: [{'text': 'Term found in context (Pages 4, 5, 6, +49 more):\n\nsingle-use technology in biopharmaceutical manufacturing – working group upstream processing', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+8. 'Working Group Upstream Processing'
+   Definition: [{'text': 'Term found in context (Pages 4, 5, 6, +49 more):\n\nsingle-use technology in biopharmaceutical manufacturing – working group upstream processing\n1.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+9. 'Experimental Determination'
+   Definition: [{'text': 'Term found in context (Pages 3, 7, 10, +34 more):\n\nGuideline – Experimental determination of specific power input for bioreactors – 23', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+10. 'Specific Power Input'
+   Definition: [{'text': 'Term found in context (Pages 3, 6, 7, +21 more):\n\nGuideline – Experimental determination of specific power input for bioreactors – 23\nTorque measurements', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: EXCELLENT: multi-word technical term
+
+   ... and 3210 more
+
+
+GOOD (686 total)
+--------------------------------------------------------------------------------
+1. 'Ing'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 3, +56 more):\n\nEXPERT GROUP SINGLE-USE TECHNOLOGY\nRecommendations\nfor process engineering', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: hyphenated term
+
+2. 'Time'
+   Definition: [{'text': 'Term found in context (Pages 3, 6, 7, +37 more):\n\nGuideline – Experimental determination of mixing time – Decolourisation and sensor method 33\n3.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+3. 'Res'
+   Definition: [{'text': 'Term found in context (Pages 2, 3, 4, +38 more):\n\nPreSens Precision Sensing GmbH, Regensburg (Germany); 6.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: hyphenated term
+
+4. 'Method'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 3, +39 more):\n\nby using experimental methods\n2nd Edition\n\nRecommendations for process engineering characterisation', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+5. 'Reactor'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 3, +42 more):\n\nbioreactors and mixing systems\nby using experimental methods', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+6. 'Process'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 3, +55 more):\n\nfor process engineering\ncharacterisation of single-use\nbioreactors and mixing systems', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+7. 'Bioreactor'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 3, +41 more):\n\nbioreactors and mixing systems\nby using experimental methods', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+8. 'Sensor'
+   Definition: [{'text': 'Term found in context (Pages 3, 7, 9, +33 more):\n\nGuideline – Experimental determination of mixing time – Decolourisation and sensor method 33\n3.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+9. 'Tech'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 4, +53 more):\n\nEXPERT GROUP SINGLE-USE TECHNOLOGY\nRecommendations\nfor process engineering\ncharacterisation of single-use', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+10. 'Ions'
+   Definition: [{'text': 'Term found in context (Pages 1, 2, 4, +34 more):\n\nRecommendations\nfor process engineering\ncharacterisation of single-use', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: GOOD: valid word
+
+   ... and 676 more
+
+
+QUESTIONABLE (584 total)
+--------------------------------------------------------------------------------
+1. 'Cid:31'
+   Definition: [{'text': 'Term found in context (Pages 13, 17, 18, +7 more):\n\nThe parameter is th(cid:31)e time const(cid:30)ant of the sensor and is equivalent to the time at which 63.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+2. '(Cid:31'
+   Definition: [{'text': 'Term found in context (Pages 13, 17, 18, +7 more):\n\nThe parameter is th(cid:31)e time const(cid:30)ant of the sensor and is equivalent to the time at which 63.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+3. '1 L'
+   Definition: [{'text': 'Term found in context (Pages 39, 40, 41, +4 more):\n\nSolution 1: 1 L Iodine / potassium iodide\n» Weigh out 40 g potassium iodide in a beaker,', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+4. '(Cid:30'
+   Definition: [{'text': 'Term found in context (Pages 13, 17, 18, +2 more):\n\nThe parameter is th(cid:31)e time const(cid:30)ant of the sensor and is equivalent to the time at which 63.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+5. 'Cid:30'
+   Definition: [{'text': 'Term found in context (Pages 13, 17, 18, +2 more):\n\nThe parameter is th(cid:31)e time const(cid:30)ant of the sensor and is equivalent to the time at which 63.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+6. 'Löffelholz Et Al.'
+   Definition: [{'text': 'Term found in context (Pages 4, 5, 6, +9 more):\n\n2013], [Löffelholz et al.\n2013a], the focus of the recommendations is on the following aspects:', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains periods (validator: valid)
+
+7. 'Löffelholz Et Al. 2013'
+   Definition: [{'text': 'Term found in context (Pages 5, 8, 9, +7 more):\n\nparameters, which can be classified into three groups according to [Löffelholz et al. 2013a] (Figure 1), are\navailable for the characterisation and scaling of single-use bioreactors and mixing systems.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+8. '2013A'
+   Definition: [{'text': 'Term found in context (Pages 4, 5, 8, +6 more):\n\n2013a], the focus of the recommendations is on the following aspects:', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+9. 'Section 4'
+   Definition: [{'text': 'Term found in context (Pages 5, 12, 13, +4 more):\n\nconcordance between the experimental evaluation method (Section 4) and the underlying theory of mass\ntransfer, as it is also presented in relevant textbooks on the subject.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+10. 'Section 3'
+   Definition: [{'text': 'Term found in context (Pages 10, 11, 34, +2 more):\n\nchange in colour until complete decolourisation of the entire bioreactor volume (see Section 3).', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: QUESTIONABLE: contains numbers (validator: valid)
+
+   ... and 574 more
+
+
+BAD (21 total)
+--------------------------------------------------------------------------------
+1. '2 Π'
+   Definition: [{'text': 'Term found in context (Pages 8, 23, 32):\n\nP 2 π n (M M )\n= · · · − d Eq.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+2. 'Θ95%'
+   Definition: [{'text': 'Term found in context (Pages 10, 22):\n\n(θ95%) is generally specified to be adequate [Kraume 2003], [Liepe et al.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+3. '533–544'
+   Definition: [{'text': 'Term found in context (Page 20):\n\n1967, 9, 533–544\nBüchs, J.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+4. '1065-1076'
+   Definition: [{'text': 'Term found in context (Page 20):\n\n, Chinese Journal of Chemical Engineering 2015, 23 (7), 1065-1076\nBadino, A.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+5. '103(4'
+   Definition: [{'text': 'Term found in context (Page 21):\n\n103(4).', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+6. '1467-1484'
+   Definition: [{'text': 'Term found in context (Page 21):\n\n1981, 23, 1467-1484\nLöffelholz, C.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+7. '3203-3212'
+   Definition: [{'text': 'Term found in context (Page 20):\n\n1996, 51 (12), 3203-3212\n20\n\nsingle-use technology in biopharmaceutical manufacturing – working group upstream processing', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+8. '978-3-89746'
+   Definition: [{'text': 'Term found in context (Page 2):\n\nISBN: 978-3-89746-227-4\nAll rights reserved.', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+9. '133/151'
+   Definition: [{'text': 'Term found in context (Page 21):\n\n1978, 8, 133/151\n21\n\nssiinnggllee--uussee tteecchhnnoollooggyy iinn bbiioopphhaarrmmaacceeuuttiiccaall mmaannuuffaaccttuurriinngg –– wwoorrkkiinngg ggrroouupp uuppssttrreeaamm pprroocceessssiinngg', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+10. '· Θ'
+   Definition: [{'text': 'Term found in context (Page 9):\n\n= n · θ) is a constant in the turbulent range and can be used to compare different mixing systems', 'source_doc_id': 3, 'is_primary': True}]...
+   Source: Single-Use_BioReactors_2020.pdf
+   Analysis: BAD: no letters (validator: valid)
+
+   ... and 11 more
+
+================================================================================
+🔍 TERMVALIDATOR EFFECTIVENESS ASSESSMENT
+================================================================================
+
+✅ Validation Passed: 4500
+❌ Validation Failed: 11
+⚠️  False Positives (good terms rejected): 0
+⚠️  False Negatives (bad terms accepted): 21
+
+📊 VALIDATOR METRICS:
+   Precision: 100.00% (of accepted terms, how many are good?)
+   Recall: 99.47% (of good terms, how many are accepted?)
+   F1 Score: 99.73%
+
+================================================================================
+🔧 SPECIFIC ISSUES FOUND
+================================================================================
+
+❌ 21 BAD entries that should have been filtered:
+   - '2 Π' (BAD: no letters (validator: valid))
+   - 'Θ95%' (BAD: no letters (validator: valid))
+   - '533–544' (BAD: no letters (validator: valid))
+   - '1065-1076' (BAD: no letters (validator: valid))
+   - '103(4' (BAD: no letters (validator: valid))
+
+⚠️  High percentage of questionable entries:
+   - 'Cid:31' (QUESTIONABLE: contains numbers (validator: valid))
+   - '(Cid:31' (QUESTIONABLE: contains numbers (validator: valid))
+   - '1 L' (QUESTIONABLE: contains numbers (validator: valid))
+   - '(Cid:30' (QUESTIONABLE: contains numbers (validator: valid))
+   - 'Cid:30' (QUESTIONABLE: contains numbers (validator: valid))
+
+================================================================================
+💡 RECOMMENDATIONS
+================================================================================
+
+👍 GOOD: Quality is good (85-95%). Some improvements possible.
+
+   1. Strengthen validation rules to catch bad entries (numbers, single chars, stopwords)
+   4. Consider implementing post-processing filters for edge cases
+
+================================================================================
+2025-10-18 22:53:33,355 INFO sqlalchemy.engine.Engine ROLLBACK

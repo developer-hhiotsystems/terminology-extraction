@@ -1,0 +1,297 @@
+/* EnhancedGlossaryPage Styles */
+
+.enhanced-glossary-page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+  padding-bottom: 120px; /* Space for floating toolbar */
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  gap: 2rem;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.page-title {
+  color: var(--text-primary, #e0e0e0);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-description {
+  color: var(--text-secondary, #aaa);
+  font-size: 1rem;
+  margin: 0;
+}
+
+.header-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* View Mode Toggle */
+.view-mode-toggle {
+  display: flex;
+  gap: 0.25rem;
+  background: var(--bg-tertiary, #1a1a1a);
+  border-radius: 8px;
+  padding: 0.25rem;
+}
+
+.mode-button {
+  padding: 0.65rem 1.25rem;
+  background: transparent;
+  color: var(--text-secondary, #aaa);
+  border: none;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.mode-button:hover {
+  background: var(--bg-secondary, #2a2a2a);
+  color: var(--text-primary, #e0e0e0);
+}
+
+.mode-button.active {
+  background: var(--accent-color, #4a9eff);
+  color: white;
+}
+
+/* Upload Button */
+.upload-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-color, #4a9eff);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.upload-button:hover {
+  background: #3a8eef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(74, 158, 255, 0.4);
+}
+
+/* Entries Container */
+.entries-container {
+  margin-top: 2rem;
+}
+
+.entries-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.entries-grid.cards {
+  gap: 1.5rem;
+}
+
+.entries-grid.list {
+  gap: 1rem;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  text-align: center;
+}
+
+.spinner {
+  width: 64px;
+  height: 64px;
+  border: 6px solid var(--border-color, #444);
+  border-top-color: var(--accent-color, #4a9eff);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 1.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.loading-state p {
+  color: var(--text-secondary, #aaa);
+  font-size: 1.1rem;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  text-align: center;
+  background: var(--bg-secondary, #2a2a2a);
+  border: 2px dashed var(--border-color, #444);
+  border-radius: 12px;
+}
+
+.empty-icon {
+  font-size: 5rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-state h3 {
+  color: var(--text-primary, #e0e0e0);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.empty-state p {
+  color: var(--text-secondary, #aaa);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Detail Modal */
+.detail-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  overflow-y: auto;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.detail-modal-content {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 90vh;
+  overflow-y: auto;
+  animation: scaleIn 0.2s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .enhanced-glossary-page {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-header {
+    flex-direction: column;
+  }
+
+  .header-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+@media (max-width: 768px) {
+  .enhanced-glossary-page {
+    padding: 1rem 0.5rem;
+    padding-bottom: 140px; /* More space for wrapped toolbar */
+  }
+
+  .page-title {
+    font-size: 2rem;
+  }
+
+  .page-description {
+    font-size: 0.9rem;
+  }
+
+  .header-actions {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .view-mode-toggle,
+  .upload-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .detail-modal-overlay {
+    padding: 1rem;
+  }
+
+  .detail-modal-content {
+    max-height: 85vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .enhanced-glossary-page {
+    padding: 0.75rem 0.25rem;
+  }
+
+  .page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title {
+    font-size: 1.6rem;
+  }
+
+  .empty-icon {
+    font-size: 4rem;
+  }
+
+  .empty-state h3 {
+    font-size: 1.3rem;
+  }
+
+  .detail-modal-overlay {
+    padding: 0.5rem;
+  }
+}

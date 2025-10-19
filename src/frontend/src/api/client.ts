@@ -10,7 +10,7 @@ import type {
 } from '../types';
 
 class ApiClient {
-  private client: AxiosInstance;
+  public client: AxiosInstance;
 
   constructor(baseURL: string = 'http://localhost:9123') {
     this.client = axios.create({
@@ -169,21 +169,71 @@ class ApiClient {
     await this.client.delete(`/api/documents/${id}`);
   }
 
-  async updateDocument(
-    id: number,
-    data: {
-      document_number?: string;
-      document_type_id?: number;
-      document_link?: string;
-    }
-  ): Promise<UploadedDocument> {
-    const response = await this.client.put(`/api/documents/${id}`, data);
-    return response.data;
-  }
-
   // Health Check
   async healthCheck(): Promise<any> {
     const response = await this.client.get('/health');
+    return response.data;
+  }
+
+  // FTS5 Full-Text Search Endpoints
+  async searchFulltext(params: {
+    q: string;
+    language?: string;
+    domain?: string;
+    limit?: number;
+    offset?: number;
+  }): Promise<{
+    query: string;
+    total_results: number;
+    results: Array<{
+      id: number;
+      term: string;
+      definitions: any[];
+      language: string;
+      source: string;
+      domain_tags: string[];
+      relevance_score: number;
+      snippet: string | null;
+    }>;
+    filters_applied: {
+      language: string | null;
+      domain: string | null;
+      limit: number;
+      offset: number;
+    };
+  }> {
+    const response = await this.client.get('/api/search/fulltext', { params });
+    return response.data;
+  }
+
+  async searchSuggest(params: {
+    q: string;
+    language?: string;
+    limit?: number;
+  }): Promise<{
+    query: string;
+    suggestions: string[];
+  }> {
+    const response = await this.client.get('/api/search/suggest', { params });
+    return response.data;
+  }
+
+  async searchStats(): Promise<{
+    fts5_enabled: boolean;
+    total_indexed_entries: number;
+    entries_by_language: Record<string, number>;
+    top_sources: Record<string, number>;
+    search_features: {
+      porter_stemming: boolean;
+      diacritic_removal: boolean;
+      phrase_search: boolean;
+      wildcard_search: boolean;
+      boolean_operators: boolean;
+      bm25_ranking: boolean;
+      snippet_extraction: boolean;
+    };
+  }> {
+    const response = await this.client.get('/api/search/stats');
     return response.data;
   }
 

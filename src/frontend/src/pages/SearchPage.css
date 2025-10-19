@@ -1,0 +1,55 @@
+/* SearchPage Styles */
+
+.search-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  min-height: 100vh;
+}
+
+/* Page Header */
+.search-page-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.page-title {
+  color: var(--text-primary, #e0e0e0);
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+}
+
+.page-description {
+  color: var(--text-secondary, #aaa);
+  font-size: 1rem;
+  margin: 0;
+}
+
+/* Search Stats Footer */
+.search-stats-footer {
+  text-align: center;
+  padding: 2rem 1rem;
+  margin-top: 2rem;
+  border-top: 1px solid var(--border-color, #333);
+}
+
+.search-stats-footer small {
+  color: var(--text-muted, #888);
+  font-size: 0.85rem;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .search-page {
+    padding: 1rem 0.5rem;
+  }
+
+  .page-title {
+    font-size: 1.8rem;
+  }
+
+  .page-description {
+    font-size: 0.9rem;
+  }
+}

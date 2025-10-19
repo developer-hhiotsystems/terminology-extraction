@@ -66,7 +66,7 @@ export default function DocumentUpload() {
       return {
         title: 'File Too Large',
         message: 'The selected file exceeds the maximum allowed size.',
-        details: ['Maximum file size: 50MB', `Your file: ${(file!.size / 1024 / 1024).toFixed(2)}MB`],
+        details: ['Maximum file size: 50MB', `Your file: ${(files[0]?.size / 1024 / 1024).toFixed(2)}MB`],
         suggestion: 'Try compressing the PDF or splitting it into smaller files.',
         canRetry: false
       }
