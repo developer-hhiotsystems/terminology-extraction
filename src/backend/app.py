@@ -3,6 +3,7 @@ Glossary Extraction & Validation API
 Main FastAPI application entry point
 """
 import sys
+import logging
 from pathlib import Path
 
 # Add project root to Python path
@@ -15,6 +16,10 @@ from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 import os
 from dotenv import load_dotenv
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 from src.backend.database import get_db, initialize_database, check_database_connection
 from src.backend.config import config
@@ -31,15 +36,15 @@ app = FastAPI(
 )
 
 # Include routers (order matters for route resolution)
-print(f"Loading glossary router: {glossary.router}")
+logger.info(f"Loading glossary router: {glossary.router}")
 app.include_router(glossary.router)
-print(f"Loading documents router: {documents.router}")
+logger.info(f"Loading documents router: {documents.router}")
 app.include_router(documents.router)
-print(f"Loading admin router: {admin.router}")
+logger.info(f"Loading admin router: {admin.router}")
 app.include_router(admin.router)  # Admin operations
-print(f"Loading graph router: {graph.router}")
+logger.info(f"Loading graph router: {graph.router}")
 app.include_router(graph.router)  # Neo4j knowledge graph
-print(f"All routers loaded. Total routes: {len(app.routes)}")
+logger.info(f"All routers loaded. Total routes: {len(app.routes)}")
 
 # CORS middleware configuration
 # Allow both default port 3000 and alternate port 3001 for development
@@ -69,17 +74,17 @@ app.mount("/data", StaticFiles(directory=str(data_dir)), name="data")
 @app.on_event("startup")
 async def startup_event():
     """Initialize database and Neo4j on startup"""
-    print("Starting Glossary Extraction API...")
+    logger.info("Starting Glossary Extraction API...")
     initialize_database()
-    print("Database initialized successfully")
+    logger.info("Database initialized successfully")
 
     # Initialize Neo4j connection
     neo4j_service = get_neo4j_service()
     if neo4j_service.is_connected():
         neo4j_service.init_schema()
-        print("Neo4j initialized successfully")
+        logger.info("Neo4j initialized successfully")
     else:
-        print("Neo4j not available - graph features disabled")
+        logger.warning("Neo4j not available - graph features disabled")
 
 @app.get("/")
 async def root():

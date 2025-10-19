@@ -54,7 +54,8 @@ async def reset_database(db: Session = Depends(get_db)):
                         file_path.unlink()
                         files_deleted += 1
                     except Exception as e:
-                        print(f"Warning: Failed to delete file {file_path}: {e}")
+                        import logging
+                        logging.getLogger(__name__).warning(f"Failed to delete file {file_path}: {e}")
 
         # Delete all database records
         db.query(GlossaryEntry).delete()
@@ -70,7 +71,8 @@ async def reset_database(db: Session = Depends(get_db)):
             db.commit()
         except Exception as e:
             # This is not critical, so just log it
-            print(f"Note: Could not reset auto-increment: {e}")
+            import logging
+            logging.getLogger(__name__).debug(f"Could not reset auto-increment: {e}")
 
         return MessageResponse(
             message=f"Database reset successful. Deleted {glossary_count} glossary entries, "

@@ -23,6 +23,49 @@ except ImportError:
 class TermExtractor:
     """Service for extracting technical terms from text"""
 
+    # Article lists for English and German
+    ENGLISH_ARTICLES = {'the', 'a', 'an'}
+    GERMAN_ARTICLES = {'der', 'die', 'das', 'ein', 'eine', 'einer', 'eines', 'einem', 'einen'}
+
+    @staticmethod
+    def strip_leading_articles(term: str, language: str = 'en') -> str:
+        """
+        Strip leading articles from terms
+
+        This prevents terms like "The Sensor" or "Die Temperatur" from being
+        extracted. Articles are removed DURING extraction to prevent bad data.
+
+        Args:
+            term: Term that may start with article
+            language: 'en' for English or 'de' for German
+
+        Returns:
+            Term with leading article removed
+
+        Examples:
+            >>> TermExtractor.strip_leading_articles("The Sensor", "en")
+            "Sensor"
+            >>> TermExtractor.strip_leading_articles("Die Temperatur", "de")
+            "Temperatur"
+            >>> TermExtractor.strip_leading_articles("A Process Flow", "en")
+            "Process Flow"
+        """
+        if not term:
+            return term
+
+        # Select article set based on language
+        articles = (TermExtractor.ENGLISH_ARTICLES if language == 'en'
+                   else TermExtractor.GERMAN_ARTICLES)
+
+        # Split into words
+        words = term.split()
+
+        # If first word is an article and there's more than one word, remove it
+        if len(words) > 1 and words[0].lower() in articles:
+            return ' '.join(words[1:])
+
+        return term
+
     @staticmethod
     def clean_term(term: str) -> str:
         """
@@ -124,12 +167,16 @@ class TermExtractor:
         # Noun phrases
         for chunk in doc.noun_chunks:
             term = self.clean_term(chunk.text)
+            # ✅ STRIP ARTICLES DURING EXTRACTION
+            term = self.strip_leading_articles(term, self.language)
             if term and min_term_length <= len(term) <= max_term_length:
                 candidates.add(term.lower())
 
         # Named entities (technical terms often appear as entities)
         for ent in doc.ents:
             term = self.clean_term(ent.text)
+            # ✅ STRIP ARTICLES DURING EXTRACTION
+            term = self.strip_leading_articles(term, self.language)
             if term and min_term_length <= len(term) <= max_term_length:
                 candidates.add(term.lower())
 
@@ -201,6 +248,8 @@ class TermExtractor:
             matches = re.findall(pattern, text)
             for match in matches:
                 cleaned_match = self.clean_term(match)
+                # ✅ STRIP ARTICLES DURING EXTRACTION (pattern-based too)
+                cleaned_match = self.strip_leading_articles(cleaned_match, self.language)
                 if cleaned_match and min_term_length <= len(cleaned_match) <= max_term_length:
                     candidates.add(cleaned_match)
 

@@ -148,6 +148,11 @@ class TermValidator:
             self._validate_not_stop_word,
             self._validate_word_count,
             self._validate_not_fragment,
+            # ✅ NEW: PDF artifact rejection
+            self._validate_no_pdf_artifacts,
+            self._validate_no_citations,
+            self._validate_no_broken_hyphens,
+            self._validate_no_ocr_corruption,
             self._validate_capitalization,
         ]
 
@@ -183,6 +188,11 @@ class TermValidator:
             self._validate_word_count,
             self._validate_not_fragment,
             self._validate_no_leading_article,
+            # ✅ NEW: PDF artifact rejection
+            self._validate_no_pdf_artifacts,
+            self._validate_no_citations,
+            self._validate_no_broken_hyphens,
+            self._validate_no_ocr_corruption,
             self._validate_capitalization,
         ]
 
@@ -232,6 +242,10 @@ class TermValidator:
             "word_count": self._validate_word_count,
             "not_fragment": self._validate_not_fragment,
             "no_leading_article": self._validate_no_leading_article,
+            "no_pdf_artifacts": self._validate_no_pdf_artifacts,
+            "no_citations": self._validate_no_citations,
+            "no_broken_hyphens": self._validate_no_broken_hyphens,
+            "no_ocr_corruption": self._validate_no_ocr_corruption,
             "capitalization": self._validate_capitalization,
         }
 
@@ -405,6 +419,112 @@ class TermValidator:
         # Check for leading articles
         if term_lower.startswith(('the ', 'a ', 'an ')):
             return False, "Starts with article (the/a/an) - terms should be in base form"
+
+        return True, ""
+
+    def _validate_no_pdf_artifacts(self, term: str) -> Tuple[bool, str]:
+        """
+        Reject PDF encoding artifacts and technical junk from PDF extraction
+
+        PDFs sometimes contain encoding artifacts that shouldn't be terms.
+
+        Args:
+            term: The term to validate
+
+        Returns:
+            (is_valid, rejection_reason)
+        """
+        term_lower = term.lower().strip()
+
+        # PDF font encoding references (cid:31, cid:128, etc.)
+        if re.match(r'^cid:\d+$', term_lower) or 'cid:' in term_lower:
+            return False, "PDF encoding artifact (cid:XX)"
+
+        # PDF internal references
+        if term_lower.startswith(('obj', 'endobj', 'stream', 'endstream')):
+            return False, "PDF internal reference"
+
+        return True, ""
+
+    def _validate_no_citations(self, term: str) -> Tuple[bool, str]:
+        """
+        Reject bibliographic citations that aren't glossary terms
+
+        Args:
+            term: The term to validate
+
+        Returns:
+            (is_valid, rejection_reason)
+        """
+        term_lower = term.lower().strip()
+
+        # Common citation patterns
+        citation_patterns = [
+            r'\bet\s*al\.?$',  # "et al", "et al."
+            r'^etal$',          # "etal"
+            r'\bibid\.?$',      # "ibid", "ibid."
+            r'^\d{4}$',         # Year only: "2023"
+            r'^pp?\.\s*\d+',    # Page numbers: "p. 5", "pp. 10-15"
+        ]
+
+        for pattern in citation_patterns:
+            if re.search(pattern, term_lower):
+                return False, "Bibliographic citation (et al/ibid/page ref)"
+
+        return True, ""
+
+    def _validate_no_broken_hyphens(self, term: str) -> Tuple[bool, str]:
+        """
+        Reject words broken by hyphens from PDF line breaks
+
+        PDFs often break words across lines with hyphens, resulting in fragments.
+
+        Examples to reject:
+            "-tion" (end of "calculation" from previous line)
+            "comple-" (beginning of "complete" continued on next line)
+
+        Args:
+            term: The term to validate
+
+        Returns:
+            (is_valid, rejection_reason)
+        """
+        # Starts with hyphen (likely end of previous line's word)
+        if term.startswith('-') and len(term) > 1:
+            return False, "Broken word fragment (starts with hyphen)"
+
+        # Ends with hyphen (likely beginning of next line's word)
+        if term.endswith('-') and len(term) > 1:
+            return False, "Broken word fragment (ends with hyphen)"
+
+        return True, ""
+
+    def _validate_no_ocr_corruption(self, term: str) -> Tuple[bool, str]:
+        """
+        Reject terms with excessive OCR corruption patterns
+
+        This is a backup check in case PDF normalization missed something.
+        OCR errors often result in excessive character duplication.
+
+        Examples to reject:
+            "Pplloottttiinngg" (should be "Plotting")
+            "Oonn" (should be "On")
+
+        Args:
+            term: The term to validate
+
+        Returns:
+            (is_valid, rejection_reason)
+        """
+        # Check for excessive duplicate characters (4+ in a row)
+        # This indicates OCR corruption that wasn't normalized
+        if re.search(r'([a-z])\1{3,}', term, re.IGNORECASE):
+            return False, "OCR corruption (excessive duplicate characters)"
+
+        # Check for alternating duplicate pattern (aabbccdd)
+        # Pattern: at least 3 different characters each duplicated
+        if re.search(r'([a-z])\1([a-z])\2([a-z])\3', term, re.IGNORECASE):
+            return False, "OCR corruption (alternating duplicates)"
 
         return True, ""
 

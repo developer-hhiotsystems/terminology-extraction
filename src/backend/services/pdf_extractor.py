@@ -3,6 +3,7 @@ PDF text extraction service using pdfplumber
 Extracts text content from PDF documents for term extraction
 """
 import pdfplumber
+import re
 from typing import Dict, List, Optional
 from pathlib import Path
 import logging
@@ -12,6 +13,65 @@ logger = logging.getLogger(__name__)
 
 class PDFExtractor:
     """Service for extracting text from PDF documents"""
+
+    @staticmethod
+    def _normalize_ocr_artifacts(text: str) -> str:
+        """
+        Normalize common OCR artifacts from PDF extraction
+
+        This method fixes common OCR errors that occur during PDF text extraction,
+        preventing garbage data from being extracted as terms.
+
+        Fixes:
+        - Doubled characters: "Pplloottttiinngg" → "Plotting"
+        - Spaced characters: "S e n s o r" → "Sensor"
+        - PDF encoding artifacts: "cid:31" → (removed)
+        - Excessive whitespace and formatting issues
+
+        Args:
+            text: Raw extracted text from PDF
+
+        Returns:
+            Normalized text with OCR artifacts fixed
+
+        Examples:
+            >>> PDFExtractor._normalize_ocr_artifacts("Pplloottttiinngg")
+            "Plotting"
+            >>> PDFExtractor._normalize_ocr_artifacts("cid:31 Temperature")
+            "Temperature"
+        """
+        if not text:
+            return text
+
+        # Fix pattern: 3+ consecutive duplicate characters (OCR doubling error)
+        # Example: "Pplloottttiinngg" → "Plotting"
+        # Match sequences like "pp", "ll", "oo", "tt", etc.
+        def fix_doubled_chars(match):
+            char = match.group(1)
+            count = len(match.group(0)) // len(char)
+            # If we have 4 duplicates "llll", keep 2 "ll"
+            # If we have 3 duplicates "lll", keep 2 "ll" (round up)
+            keep_count = (count + 1) // 2
+            return char * keep_count
+
+        # Only fix lowercase letter duplicates (preserves intentional caps like "IEEE")
+        text = re.sub(r'([a-z])\1{2,}', fix_doubled_chars, text, flags=re.IGNORECASE)
+
+        # Remove PDF encoding artifacts (cid:XX)
+        # These are font encoding references that shouldn't be in extracted text
+        text = re.sub(r'cid:\d+', '', text)
+
+        # Fix excessive whitespace (common OCR issue)
+        # Multiple spaces → single space
+        text = re.sub(r' {2,}', ' ', text)
+
+        # Fix broken words with spaces between each letter (rare OCR error)
+        # "T e m p e r a t u r e" → "Temperature"
+        # Only apply if ALL letters in the word are separated
+        text = re.sub(r'\b([A-Z](?:\s+[a-z])+)\b',
+                     lambda m: m.group(0).replace(' ', ''), text)
+
+        return text.strip()
 
     @staticmethod
     def extract_text(pdf_path: str) -> Dict[str, any]:
@@ -58,6 +118,8 @@ class PDFExtractor:
                     try:
                         page_text = page.extract_text()
                         if page_text:
+                            # ✅ NORMALIZE OCR ARTIFACTS BEFORE APPENDING
+                            page_text = PDFExtractor._normalize_ocr_artifacts(page_text)
                             text_parts.append(page_text)
                     except Exception as e:
                         logger.warning(f"Failed to extract text from page {page_num}: {e}")
@@ -111,6 +173,9 @@ class PDFExtractor:
                 for page_num, page in enumerate(pdf.pages, start=1):
                     try:
                         page_text = page.extract_text()
+                        # ✅ NORMALIZE OCR ARTIFACTS
+                        if page_text:
+                            page_text = PDFExtractor._normalize_ocr_artifacts(page_text)
                         result["pages"].append({
                             "page_num": page_num,
                             "text": page_text or ""

@@ -7,9 +7,12 @@ from sqlalchemy.orm import sessionmaker, Session
 from contextlib import contextmanager
 from typing import Generator
 import os
+import logging
 
 from src.backend.config import config
 from src.backend.models import Base, init_db
+
+logger = logging.getLogger(__name__)
 
 
 # Create SQLAlchemy engine
@@ -75,7 +78,7 @@ def initialize_database():
 
     # Create all tables
     init_db(engine)
-    print(f"[OK] Database initialized: {config.DATABASE_URL}")
+    logger.info(f"Database initialized: {config.DATABASE_URL}")
 
 
 def reset_database():
@@ -86,7 +89,7 @@ def reset_database():
     """
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
-    print("[OK] Database reset complete")
+    logger.info("Database reset complete")
 
 
 def check_database_connection() -> bool:
@@ -103,5 +106,5 @@ def check_database_connection() -> bool:
             db.commit()
         return True
     except Exception as e:
-        print(f"[ERROR] Database connection failed: {e}")
+        logger.error(f"Database connection failed: {e}")
         return False

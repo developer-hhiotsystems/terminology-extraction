@@ -536,7 +536,8 @@ async def delete_document(
             file_path.unlink()
     except Exception as e:
         # Log error but continue with database deletion
-        print(f"Warning: Failed to delete file {document.file_path}: {e}")
+        import logging
+        logging.getLogger(__name__).warning(f"Failed to delete file {document.file_path}: {e}")
 
     # Delete database record
     db.delete(document)

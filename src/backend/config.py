@@ -15,7 +15,7 @@ class Config:
     # Neo4j
     NEO4J_URI = os.getenv("NEO4J_URI", "bolt://localhost:7687")
     NEO4J_USER = os.getenv("NEO4J_USER", "neo4j")
-    NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD", "devpassword")
+    NEO4J_PASSWORD = os.getenv("NEO4J_PASSWORD")  # Must be set in .env file
 
     # DeepL
     DEEPL_API_KEY = os.getenv("DEEPL_API_KEY", "")
@@ -38,7 +38,7 @@ class Config:
     FRONTEND_URL = os.getenv("FRONTEND_URL", "http://localhost:3000")
 
     # Development
-    DEBUG = os.getenv("DEBUG", "True").lower() == "true"
+    DEBUG = os.getenv("DEBUG", "False").lower() == "true"  # Default to False for security
     LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
 
 config = Config()

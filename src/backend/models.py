@@ -422,4 +422,5 @@ def seed_document_types(session):
             session.add(doc_type)
 
     session.commit()
-    print(f"[OK] Seeded {len(default_types)} document types")
+    import logging
+    logging.getLogger(__name__).info(f"Seeded {len(default_types)} document types")
