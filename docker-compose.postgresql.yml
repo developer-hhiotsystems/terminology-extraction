@@ -1,0 +1,51 @@
+# Docker Compose for PostgreSQL Development
+# Quick start: docker-compose -f docker-compose.postgresql.yml up -d
+
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: glossary-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: glossary
+      POSTGRES_USER: glossary_user
+      POSTGRES_PASSWORD: glossary_password
+      POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=en_US.UTF-8 --lc-ctype=en_US.UTF-8"
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/postgresql:/docker-entrypoint-initdb.d  # Init scripts
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U glossary_user -d glossary"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Optional: pgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: glossary-pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@glossary.local
+      PGADMIN_DEFAULT_PASSWORD: admin
+      PGADMIN_LISTEN_PORT: 80
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+
+volumes:
+  postgres_data:
+    name: glossary_postgres_data
+  pgadmin_data:
+    name: glossary_pgadmin_data
+
+networks:
+  default:
+    name: glossary_network

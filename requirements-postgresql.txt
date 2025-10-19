@@ -1,0 +1,20 @@
+# PostgreSQL Dependencies for Glossary Application
+# Install with: pip install -r requirements-postgresql.txt
+
+# PostgreSQL adapter for Python
+psycopg2-binary==2.9.9  # Binary version (no compilation required)
+# OR use psycopg2==2.9.9 if you prefer to compile
+
+# Database migrations
+alembic==1.13.1
+
+# For improved PostgreSQL performance
+psycopg2-pool==1.1  # Connection pooling
+
+# Optional: PostgreSQL-specific utilities
+pg8000==1.31.1  # Pure Python PostgreSQL driver (alternative to psycopg2)
+
+# Note: These are in addition to the base requirements.txt
+# Make sure to install base requirements first:
+# pip install -r requirements.txt
+# pip install -r requirements-postgresql.txt

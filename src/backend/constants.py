@@ -189,12 +189,44 @@ REL_DERIVED_FROM = "DERIVED_FROM"
 # DATABASE CONSTANTS
 # =============================================================================
 
+# Database URLs
 DATABASE_URL_SQLITE = "sqlite:///./data/glossary.db"
+DATABASE_URL_POSTGRESQL = "postgresql://glossary_user:glossary_password@localhost:5432/glossary"
+
+# Database types
+DB_TYPE_SQLITE = "sqlite"
+DB_TYPE_POSTGRESQL = "postgresql"
+
+# PostgreSQL connection settings
+POSTGRES_HOST = "localhost"
+POSTGRES_PORT = 5432
+POSTGRES_DB = "glossary"
+POSTGRES_USER = "glossary_user"
+POSTGRES_PASSWORD = "glossary_password"  # Change in production!
+
+# Connection pool settings (PostgreSQL)
+POSTGRES_POOL_SIZE = 5
+POSTGRES_MAX_OVERFLOW = 10
+POSTGRES_POOL_TIMEOUT = 30
+POSTGRES_POOL_RECYCLE = 3600
 
 # Index names (for reference)
 IDX_GLOSSARY_TERM = "idx_glossary_term"
 IDX_GLOSSARY_LANGUAGE = "idx_glossary_language"
 IDX_GLOSSARY_SOURCE = "idx_glossary_source"
+IDX_GLOSSARY_FTS_EN = "idx_glossary_fts_en"  # Full-text search English
+IDX_GLOSSARY_FTS_DE = "idx_glossary_fts_de"  # Full-text search German
+IDX_GLOSSARY_VALIDATION_STATUS = "idx_glossary_validation_status"
+IDX_GLOSSARY_CREATED_AT = "idx_glossary_created_at"
+
+# PostgreSQL-specific index names
+IDX_DEFINITIONS_ENTRY_ID = "idx_definitions_entry_id"
+IDX_DEFINITIONS_IS_PRIMARY = "idx_definitions_is_primary"
+IDX_DOCUMENTS_UPLOAD_STATUS = "idx_documents_upload_status"
+IDX_DOCUMENTS_UPLOADED_AT = "idx_documents_uploaded_at"
+IDX_DOCUMENTS_METADATA = "idx_documents_metadata"  # GIN index on JSONB
+IDX_REFERENCES_ENTRY_ID = "idx_references_entry_id"
+IDX_REFERENCES_DOCUMENT_ID = "idx_references_document_id"
 
 
 # =============================================================================
