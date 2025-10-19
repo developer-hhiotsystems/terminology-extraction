@@ -71,3 +71,7 @@ Thumbs.db
 build/
 dist/
 *.pyc
+
+# Agent Workspace (temporary working directory for multi-agent tasks)
+.agent-workspace/
+nul
