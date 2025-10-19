@@ -35,7 +35,7 @@ class TestGlossaryEntry:
 
         entry = GlossaryEntry(
             term="Sensor",
-            definition="A device that detects or measures a physical property",
+            definitions=[{"text": "A device that detects or measures a physical property", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal",
             source_document="manual.pdf"
@@ -57,7 +57,7 @@ class TestGlossaryEntry:
 
         entry1 = GlossaryEntry(
             term="Sensor",
-            definition="First definition",
+            definitions=[{"text": "First definition", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal"
         )
@@ -67,7 +67,7 @@ class TestGlossaryEntry:
         # Try to add duplicate
         entry2 = GlossaryEntry(
             term="Sensor",
-            definition="Second definition",
+            definitions=[{"text": "Second definition", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal"
         )
@@ -82,13 +82,13 @@ class TestGlossaryEntry:
 
         entry_en = GlossaryEntry(
             term="Sensor",
-            definition="A device that detects",
+            definitions=[{"text": "A device that detects", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal"
         )
         entry_de = GlossaryEntry(
             term="Sensor",
-            definition="Ein Gerät, das erkennt",
+            definitions=[{"text": "Ein Gerät, das erkennt", "source_doc_id": None, "is_primary": True}],
             language="de",
             source="internal"
         )
@@ -105,7 +105,7 @@ class TestGlossaryEntry:
 
         entry = GlossaryEntry(
             term="Sensor",
-            definition="A device",
+            definitions=[{"text": "A device", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal",
             validation_status="invalid_status"  # Should fail
@@ -122,7 +122,7 @@ class TestGlossaryEntry:
 
         entry = GlossaryEntry(
             term="Sensor",
-            definition="Original definition",
+            definitions=[{"text": "Original definition", "source_doc_id": None, "is_primary": True}],
             language="en",
             source="internal"
         )

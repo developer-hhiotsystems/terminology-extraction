@@ -59,7 +59,7 @@ class TestGlossaryCRUD:
         """Test creating a new glossary entry"""
         entry_data = {
             "term": "Test Term",
-            "definition": "Test definition",
+            "definitions": [{"text": "Test definition", "source_doc_id": None, "is_primary": True}],
             "language": "en",
             "source": "internal",
         }
@@ -78,7 +78,7 @@ class TestGlossaryCRUD:
         # Create entry first
         create_resp = client.post("/api/glossary", json={
             "term": "Delete Me",
-            "definition": "Will be deleted",
+            "definitions": [{"text": "Will be deleted", "source_doc_id": None, "is_primary": True}],
             "language": "en",
             "source": "internal"
         })
