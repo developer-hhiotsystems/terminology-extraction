@@ -5,6 +5,7 @@ Main FastAPI application entry point
 import sys
 import logging
 from pathlib import Path
+from contextlib import asynccontextmanager
 
 # Add project root to Python path
 project_root = Path(__file__).parent.parent.parent
@@ -29,10 +30,42 @@ from src.backend.services.neo4j_service import get_neo4j_service
 # Load environment variables
 load_dotenv()
 
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """
+    Application lifespan handler for startup and shutdown events
+
+    Replaces deprecated @app.on_event("startup") and @app.on_event("shutdown")
+    """
+    # Startup: Initialize database and Neo4j
+    logger.info("Starting Glossary Extraction API...")
+    initialize_database()
+    logger.info("Database initialized successfully")
+
+    # Initialize Neo4j connection
+    neo4j_service = get_neo4j_service()
+    if neo4j_service.is_connected():
+        neo4j_service.init_schema()
+        logger.info("Neo4j initialized successfully")
+    else:
+        logger.warning("Neo4j not available - graph features disabled")
+
+    yield  # Application runs here
+
+    # Shutdown: Cleanup resources
+    logger.info("Shutting down Glossary Extraction API...")
+    if neo4j_service.is_connected():
+        await neo4j_service.close()
+        logger.info("Neo4j connection closed")
+    logger.info("Shutdown complete")
+
+
 app = FastAPI(
     title="Glossary Extraction & Validation API",
     version="2.0.0",
-    description="API for extracting terminology from PDFs and validating against IATE"
+    description="API for extracting terminology from PDFs and validating against IATE",
+    lifespan=lifespan  # Use modern lifespan handler
 )
 
 # Include routers (order matters for route resolution)
@@ -70,21 +103,6 @@ if not data_dir.exists():
     data_dir.mkdir(parents=True, exist_ok=True)
 app.mount("/data", StaticFiles(directory=str(data_dir)), name="data")
 
-
-@app.on_event("startup")
-async def startup_event():
-    """Initialize database and Neo4j on startup"""
-    logger.info("Starting Glossary Extraction API...")
-    initialize_database()
-    logger.info("Database initialized successfully")
-
-    # Initialize Neo4j connection
-    neo4j_service = get_neo4j_service()
-    if neo4j_service.is_connected():
-        neo4j_service.init_schema()
-        logger.info("Neo4j initialized successfully")
-    else:
-        logger.warning("Neo4j not available - graph features disabled")
 
 @app.get("/")
 async def root():

@@ -7,6 +7,13 @@ from typing import List, Dict, Set, Optional
 from collections import Counter
 import logging
 
+from src.backend.constants import (
+    LANG_ENGLISH,
+    LANG_GERMAN,
+    SPACY_MODEL_ENGLISH,
+    SPACY_MODEL_GERMAN,
+    get_spacy_model
+)
 from .term_validator import TermValidator, ValidationConfig, create_default_validator
 
 logger = logging.getLogger(__name__)
@@ -54,7 +61,7 @@ class TermExtractor:
             return term
 
         # Select article set based on language
-        articles = (TermExtractor.ENGLISH_ARTICLES if language == 'en'
+        articles = (TermExtractor.ENGLISH_ARTICLES if language == LANG_ENGLISH
                    else TermExtractor.GERMAN_ARTICLES)
 
         # Split into words
@@ -96,7 +103,7 @@ class TermExtractor:
 
         return term.strip()
 
-    def __init__(self, language: str = "en", validator: Optional[TermValidator] = None):
+    def __init__(self, language: str = LANG_ENGLISH, validator: Optional[TermValidator] = None):
         """
         Initialize term extractor
 

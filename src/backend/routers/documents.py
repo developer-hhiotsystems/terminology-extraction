@@ -10,6 +10,17 @@ import time
 import shutil
 from datetime import datetime
 
+from src.backend.constants import (
+    UPLOAD_DIR as CONST_UPLOAD_DIR,
+    ALLOWED_EXTENSIONS as CONST_ALLOWED_EXTENSIONS,
+    MAX_UPLOAD_SIZE,
+    MAX_BATCH_SIZE as CONST_MAX_BATCH_SIZE,
+    UPLOAD_STATUS_PENDING,
+    UPLOAD_STATUS_PROCESSING,
+    UPLOAD_STATUS_COMPLETED,
+    UPLOAD_STATUS_FAILED,
+    MIME_TYPE_PDF
+)
 from src.backend.database import get_db
 from src.backend.models import UploadedDocument, GlossaryEntry, TermDocumentReference
 from src.backend.schemas import (
@@ -30,12 +41,12 @@ from src.backend.services.term_validator import create_strict_validator
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
 # Upload directory configuration
-UPLOAD_DIR = Path("./data/uploads")
+UPLOAD_DIR = Path(CONST_UPLOAD_DIR)
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
-# Allowed file types
-ALLOWED_EXTENSIONS = {".pdf"}
-MAX_FILE_SIZE = 50 * 1024 * 1024  # 50MB
+# Use constants for validation
+ALLOWED_EXTENSIONS = set(CONST_ALLOWED_EXTENSIONS)
+MAX_FILE_SIZE = MAX_UPLOAD_SIZE
 
 
 @router.post("/upload", response_model=DocumentUploadResponse, status_code=status.HTTP_201_CREATED)
@@ -88,8 +99,8 @@ async def upload_document(
         filename=file.filename,
         file_path=str(file_path),
         file_size=file_size,
-        file_type=file.content_type or "application/pdf",
-        upload_status="pending",
+        file_type=file.content_type or MIME_TYPE_PDF,
+        upload_status=UPLOAD_STATUS_PENDING,
         processing_metadata={"original_filename": file.filename}
     )
 
@@ -112,12 +123,10 @@ async def upload_documents_batch(
 
     Returns results for all uploaded files (success/failure for each)
     """
-    MAX_BATCH_SIZE = 20
-
-    if len(files) > MAX_BATCH_SIZE:
+    if len(files) > CONST_MAX_BATCH_SIZE:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Too many files. Maximum batch size: {MAX_BATCH_SIZE}"
+            detail=f"Too many files. Maximum batch size: {CONST_MAX_BATCH_SIZE}"
         )
 
     results = []

@@ -5,17 +5,20 @@ Manages connection and operations with Neo4j for term relationships
 from typing import List, Dict, Optional, Any
 from contextlib import contextmanager
 import os
+import logging
 from dotenv import load_dotenv
 
 # Load environment variables
 load_dotenv()
+
+logger = logging.getLogger(__name__)
 
 try:
     from neo4j import GraphDatabase, Driver
     NEO4J_AVAILABLE = True
 except ImportError:
     NEO4J_AVAILABLE = False
-    print("Warning: Neo4j driver not installed. Run: pip install neo4j")
+    logger.warning("Neo4j driver not installed. Run: pip install neo4j")
 
 
 class Neo4jService:
@@ -24,7 +27,7 @@ class Neo4jService:
     def __init__(self):
         self.uri = os.getenv("NEO4J_URI", "bolt://localhost:7687")
         self.user = os.getenv("NEO4J_USER", "neo4j")
-        self.password = os.getenv("NEO4J_PASSWORD", "devpassword")
+        self.password = os.getenv("NEO4J_PASSWORD")  # Must be set in .env file
         self.driver: Optional[Driver] = None
         self._connected = False
 
@@ -41,11 +44,11 @@ class Neo4jService:
             # Test connection
             self.driver.verify_connectivity()
             self._connected = True
-            print(f"✓ Connected to Neo4j at {self.uri}")
+            logger.info(f"Connected to Neo4j at {self.uri}")
         except Exception as e:
             self._connected = False
-            print(f"⚠ Neo4j connection failed: {str(e)}")
-            print("  Neo4j features will be disabled")
+            logger.warning(f"Neo4j connection failed: {str(e)}")
+            logger.warning("Neo4j features will be disabled")
 
     @contextmanager
     def get_session(self):
@@ -68,7 +71,7 @@ class Neo4jService:
         if self.driver:
             self.driver.close()
             self._connected = False
-            print("✓ Neo4j connection closed")
+            logger.info("Neo4j connection closed")
 
     # ===== SCHEMA SETUP =====
 
@@ -102,7 +105,7 @@ class Neo4jService:
                 FOR (t:Term) ON (t.language)
             """)
 
-            print("✓ Neo4j schema initialized")
+            logger.info("Neo4j schema initialized")
             return True
 
     # ===== TERM OPERATIONS =====

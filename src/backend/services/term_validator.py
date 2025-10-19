@@ -16,6 +16,45 @@ from typing import Optional, Dict, List, Tuple
 from dataclasses import dataclass
 import logging
 
+from src.backend.constants import (
+    MIN_TERM_LENGTH,
+    MAX_TERM_LENGTH,
+    MIN_WORD_COUNT,
+    MAX_WORD_COUNT,
+    MAX_SYMBOL_RATIO,
+    MIN_ACRONYM_LENGTH,
+    MAX_ACRONYM_LENGTH,
+    REJECT_PURE_NUMBERS,
+    REJECT_PERCENTAGES,
+    ALLOW_ALL_UPPERCASE,
+    LANG_ENGLISH,
+    LANG_GERMAN,
+    PATTERN_DUPLICATE_CHARS,
+    PATTERN_ALTERNATING_DUPLICATES,
+    PATTERN_PDF_ENCODING,
+    PATTERN_ET_AL,
+    PATTERN_IBID,
+    PATTERN_YEAR_ONLY,
+    PATTERN_PAGE_REF,
+    PATTERN_SCIENTIFIC_NOTATION,
+    # Strict validator constants
+    STRICT_MIN_TERM_LENGTH,
+    STRICT_MAX_TERM_LENGTH,
+    STRICT_MIN_WORD_COUNT,
+    STRICT_MAX_WORD_COUNT,
+    STRICT_MAX_SYMBOL_RATIO,
+    STRICT_MIN_ACRONYM_LENGTH,
+    STRICT_MAX_ACRONYM_LENGTH,
+    # Lenient validator constants
+    LENIENT_MIN_TERM_LENGTH,
+    LENIENT_MAX_TERM_LENGTH,
+    LENIENT_MIN_WORD_COUNT,
+    LENIENT_MAX_WORD_COUNT,
+    LENIENT_MAX_SYMBOL_RATIO,
+    LENIENT_MIN_ACRONYM_LENGTH,
+    LENIENT_MAX_ACRONYM_LENGTH
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -24,30 +63,30 @@ class ValidationConfig:
     """Configuration for term validation rules"""
 
     # Length constraints
-    min_term_length: int = 3
-    max_term_length: int = 100
+    min_term_length: int = MIN_TERM_LENGTH
+    max_term_length: int = MAX_TERM_LENGTH
 
     # Word count constraints (for compound terms)
-    min_word_count: int = 1
-    max_word_count: int = 4
+    min_word_count: int = MIN_WORD_COUNT
+    max_word_count: int = MAX_WORD_COUNT
 
     # Symbol/punctuation constraints
-    max_symbol_ratio: float = 0.3  # Max 30% symbols
+    max_symbol_ratio: float = MAX_SYMBOL_RATIO
 
     # Capitalization rules
-    allow_all_uppercase: bool = True  # For acronyms like "API", "SQL"
-    min_acronym_length: int = 2
-    max_acronym_length: int = 8
+    allow_all_uppercase: bool = ALLOW_ALL_UPPERCASE
+    min_acronym_length: int = MIN_ACRONYM_LENGTH
+    max_acronym_length: int = MAX_ACRONYM_LENGTH
 
     # Number filtering
-    reject_pure_numbers: bool = True
-    reject_percentages: bool = True
+    reject_pure_numbers: bool = REJECT_PURE_NUMBERS
+    reject_percentages: bool = REJECT_PERCENTAGES
 
     # Stop words - common English words that shouldn't be glossary terms
     stop_words: set = None
 
     # Language-specific settings
-    language: str = "en"
+    language: str = LANG_ENGLISH
 
     def __post_init__(self):
         """Initialize stop words if not provided"""
@@ -56,7 +95,7 @@ class ValidationConfig:
 
     def _get_default_stop_words(self) -> set:
         """Get default stop words based on language"""
-        if self.language == "en":
+        if self.language == LANG_ENGLISH:
             return {
                 # Articles
                 "a", "an", "the",
@@ -82,7 +121,7 @@ class ValidationConfig:
                 "one", "two", "three", "four", "five", "six", "seven",
                 "eight", "nine", "ten",
             }
-        elif self.language == "de":
+        elif self.language == LANG_GERMAN:
             return {
                 # German articles
                 "der", "die", "das", "den", "dem", "des",
@@ -297,7 +336,7 @@ class TermValidator:
             return False, "Term is a pure number"
 
         # Check for scientific notation (e.g., "1.5e10")
-        if re.match(r'^-?\d+\.?\d*e[+-]?\d+$', term.strip().lower()):
+        if re.match(PATTERN_SCIENTIFIC_NOTATION, term.strip().lower()):
             return False, "Term is a number in scientific notation"
 
         return True, ""
@@ -437,7 +476,7 @@ class TermValidator:
         term_lower = term.lower().strip()
 
         # PDF font encoding references (cid:31, cid:128, etc.)
-        if re.match(r'^cid:\d+$', term_lower) or 'cid:' in term_lower:
+        if re.match(PATTERN_PDF_ENCODING, term_lower) or 'cid:' in term_lower:
             return False, "PDF encoding artifact (cid:XX)"
 
         # PDF internal references
@@ -460,11 +499,11 @@ class TermValidator:
 
         # Common citation patterns
         citation_patterns = [
-            r'\bet\s*al\.?$',  # "et al", "et al."
+            PATTERN_ET_AL,
             r'^etal$',          # "etal"
-            r'\bibid\.?$',      # "ibid", "ibid."
-            r'^\d{4}$',         # Year only: "2023"
-            r'^pp?\.\s*\d+',    # Page numbers: "p. 5", "pp. 10-15"
+            PATTERN_IBID,
+            PATTERN_YEAR_ONLY,
+            PATTERN_PAGE_REF,
         ]
 
         for pattern in citation_patterns:
@@ -518,12 +557,12 @@ class TermValidator:
         """
         # Check for excessive duplicate characters (4+ in a row)
         # This indicates OCR corruption that wasn't normalized
-        if re.search(r'([a-z])\1{3,}', term, re.IGNORECASE):
+        if re.search(PATTERN_DUPLICATE_CHARS, term, re.IGNORECASE):
             return False, "OCR corruption (excessive duplicate characters)"
 
         # Check for alternating duplicate pattern (aabbccdd)
         # Pattern: at least 3 different characters each duplicated
-        if re.search(r'([a-z])\1([a-z])\2([a-z])\3', term, re.IGNORECASE):
+        if re.search(PATTERN_ALTERNATING_DUPLICATES, term, re.IGNORECASE):
             return False, "OCR corruption (alternating duplicates)"
 
         return True, ""
@@ -607,7 +646,7 @@ class TermValidator:
 
 # Factory functions for common configurations
 
-def create_strict_validator(language: str = "en") -> TermValidator:
+def create_strict_validator(language: str = LANG_ENGLISH) -> TermValidator:
     """
     Create a validator with strict rules
 
@@ -618,22 +657,22 @@ def create_strict_validator(language: str = "en") -> TermValidator:
         TermValidator with strict configuration
     """
     config = ValidationConfig(
-        min_term_length=4,
-        max_term_length=80,
-        min_word_count=1,
-        max_word_count=3,
-        max_symbol_ratio=0.2,
-        reject_pure_numbers=True,
-        reject_percentages=True,
-        allow_all_uppercase=True,
-        min_acronym_length=2,
-        max_acronym_length=6,
+        min_term_length=STRICT_MIN_TERM_LENGTH,
+        max_term_length=STRICT_MAX_TERM_LENGTH,
+        min_word_count=STRICT_MIN_WORD_COUNT,
+        max_word_count=STRICT_MAX_WORD_COUNT,
+        max_symbol_ratio=STRICT_MAX_SYMBOL_RATIO,
+        reject_pure_numbers=REJECT_PURE_NUMBERS,
+        reject_percentages=REJECT_PERCENTAGES,
+        allow_all_uppercase=ALLOW_ALL_UPPERCASE,
+        min_acronym_length=STRICT_MIN_ACRONYM_LENGTH,
+        max_acronym_length=STRICT_MAX_ACRONYM_LENGTH,
         language=language
     )
     return TermValidator(config)
 
 
-def create_lenient_validator(language: str = "en") -> TermValidator:
+def create_lenient_validator(language: str = LANG_ENGLISH) -> TermValidator:
     """
     Create a validator with lenient rules
 
@@ -644,22 +683,22 @@ def create_lenient_validator(language: str = "en") -> TermValidator:
         TermValidator with lenient configuration
     """
     config = ValidationConfig(
-        min_term_length=2,
-        max_term_length=150,
-        min_word_count=1,
-        max_word_count=6,
-        max_symbol_ratio=0.4,
-        reject_pure_numbers=True,
-        reject_percentages=True,
-        allow_all_uppercase=True,
-        min_acronym_length=1,
-        max_acronym_length=10,
+        min_term_length=LENIENT_MIN_TERM_LENGTH,
+        max_term_length=LENIENT_MAX_TERM_LENGTH,
+        min_word_count=LENIENT_MIN_WORD_COUNT,
+        max_word_count=LENIENT_MAX_WORD_COUNT,
+        max_symbol_ratio=LENIENT_MAX_SYMBOL_RATIO,
+        reject_pure_numbers=REJECT_PURE_NUMBERS,
+        reject_percentages=REJECT_PERCENTAGES,
+        allow_all_uppercase=ALLOW_ALL_UPPERCASE,
+        min_acronym_length=LENIENT_MIN_ACRONYM_LENGTH,
+        max_acronym_length=LENIENT_MAX_ACRONYM_LENGTH,
         language=language
     )
     return TermValidator(config)
 
 
-def create_default_validator(language: str = "en") -> TermValidator:
+def create_default_validator(language: str = LANG_ENGLISH) -> TermValidator:
     """
     Create a validator with default balanced rules
 

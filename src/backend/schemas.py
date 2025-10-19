@@ -6,6 +6,15 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List, Dict, Any
 from datetime import datetime
 
+from src.backend.constants import (
+    LANGUAGE_PATTERN,
+    ALLOWED_SOURCES,
+    VALIDATION_STATUS_PATTERN,
+    SYNC_STATUS_PATTERN,
+    DEFAULT_SOURCE,
+    DEFAULT_LANGUAGE
+)
+
 
 class DefinitionObject(BaseModel):
     """Schema for a single definition object"""
@@ -17,9 +26,9 @@ class DefinitionObject(BaseModel):
 class GlossaryEntryBase(BaseModel):
     """Base schema for glossary entry with common fields"""
     term: str = Field(..., min_length=1, max_length=255, description="The terminology term")
-    definitions: List[DefinitionObject] = Field(..., min_items=1, description="Array of definition objects")
-    language: str = Field(..., pattern="^(de|en)$", description="Language code: 'de' or 'en'")
-    source: str = Field(default="internal", description="Source of the term")
+    definitions: List[DefinitionObject] = Field(..., min_length=1, description="Array of definition objects")
+    language: str = Field(..., pattern=LANGUAGE_PATTERN, description="Language code: 'de' or 'en'")
+    source: str = Field(default=DEFAULT_SOURCE, description="Source of the term")
     source_document: Optional[str] = Field(None, max_length=500, description="Source document path")
     domain_tags: Optional[List[str]] = Field(None, description="Domain classification tags")
 
@@ -27,9 +36,8 @@ class GlossaryEntryBase(BaseModel):
     @classmethod
     def validate_source(cls, v):
         """Validate source is one of allowed values"""
-        allowed_sources = ['internal', 'NAMUR', 'DIN', 'ASME', 'IEC', 'IATE']
-        if v not in allowed_sources:
-            raise ValueError(f"Source must be one of: {', '.join(allowed_sources)}")
+        if v not in ALLOWED_SOURCES:
+            raise ValueError(f"Source must be one of: {', '.join(ALLOWED_SOURCES)}")
         return v
 
 
@@ -41,22 +49,21 @@ class GlossaryEntryCreate(GlossaryEntryBase):
 class GlossaryEntryUpdate(BaseModel):
     """Schema for updating an existing glossary entry (all fields optional)"""
     term: Optional[str] = Field(None, min_length=1, max_length=255)
-    definitions: Optional[List[DefinitionObject]] = Field(None, min_items=1)
-    language: Optional[str] = Field(None, pattern="^(de|en)$")
+    definitions: Optional[List[DefinitionObject]] = Field(None, min_length=1)
+    language: Optional[str] = Field(None, pattern=LANGUAGE_PATTERN)
     source: Optional[str] = None
     source_document: Optional[str] = Field(None, max_length=500)
     domain_tags: Optional[List[str]] = None
-    validation_status: Optional[str] = Field(None, pattern="^(pending|validated|rejected)$")
-    sync_status: Optional[str] = Field(None, pattern="^(pending_sync|synced|sync_failed)$")
+    validation_status: Optional[str] = Field(None, pattern=VALIDATION_STATUS_PATTERN)
+    sync_status: Optional[str] = Field(None, pattern=SYNC_STATUS_PATTERN)
 
     @field_validator('source')
     @classmethod
     def validate_source(cls, v):
         """Validate source if provided"""
         if v is not None:
-            allowed_sources = ['internal', 'NAMUR', 'DIN', 'ASME', 'IEC', 'IATE']
-            if v not in allowed_sources:
-                raise ValueError(f"Source must be one of: {', '.join(allowed_sources)}")
+            if v not in ALLOWED_SOURCES:
+                raise ValueError(f"Source must be one of: {', '.join(ALLOWED_SOURCES)}")
         return v
 
 
@@ -109,16 +116,15 @@ class DocumentProcessRequest(BaseModel):
     """Schema for document processing request"""
     extract_terms: bool = Field(default=True, description="Extract terms using NLP")
     auto_validate: bool = Field(default=False, description="Auto-validate extracted terms")
-    language: str = Field(default="en", pattern="^(de|en)$", description="Document language")
-    source: str = Field(default="internal", description="Source classification")
+    language: str = Field(default=DEFAULT_LANGUAGE, pattern=LANGUAGE_PATTERN, description="Document language")
+    source: str = Field(default=DEFAULT_SOURCE, description="Source classification")
 
     @field_validator('source')
     @classmethod
     def validate_source(cls, v):
         """Validate source if provided"""
-        allowed_sources = ['internal', 'NAMUR', 'DIN', 'ASME', 'IEC', 'IATE']
-        if v not in allowed_sources:
-            raise ValueError(f"Source must be one of: {', '.join(allowed_sources)}")
+        if v not in ALLOWED_SOURCES:
+            raise ValueError(f"Source must be one of: {', '.join(ALLOWED_SOURCES)}")
         return v
 
 

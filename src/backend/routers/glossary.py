@@ -207,7 +207,7 @@ async def get_glossary_count(
     summary="Export glossary entries to CSV, Excel, or JSON"
 )
 async def export_glossary(
-    format: str = Query(..., regex="^(csv|excel|json)$", description="Export format: csv, excel, or json"),
+    format: str = Query(..., pattern="^(csv|excel|json)$", description="Export format: csv, excel, or json"),
     language: Optional[str] = Query(None, pattern="^(de|en)$", description="Filter by language"),
     source: Optional[str] = Query(None, description="Filter by source"),
     validation_status: Optional[str] = Query(None, description="Filter by validation status"),
@@ -409,7 +409,7 @@ async def delete_glossary_entry(
 )
 async def bulk_update_entries(
     entry_ids: List[int] = Query(..., description="List of entry IDs to update"),
-    validation_status: str = Query(..., regex="^(pending|validated|rejected)$", description="New validation status"),
+    validation_status: str = Query(..., pattern="^(pending|validated|rejected)$", description="New validation status"),
     db: Session = Depends(get_db)
 ):
     """

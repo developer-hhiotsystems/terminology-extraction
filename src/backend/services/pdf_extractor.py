@@ -8,6 +8,12 @@ from typing import Dict, List, Optional
 from pathlib import Path
 import logging
 
+from src.backend.constants import (
+    PATTERN_DUPLICATE_CHARS,
+    PATTERN_PDF_ENCODING,
+    PATTERN_SPACED_CHARS
+)
+
 logger = logging.getLogger(__name__)
 
 
@@ -55,11 +61,11 @@ class PDFExtractor:
             return char * keep_count
 
         # Only fix lowercase letter duplicates (preserves intentional caps like "IEEE")
-        text = re.sub(r'([a-z])\1{2,}', fix_doubled_chars, text, flags=re.IGNORECASE)
+        text = re.sub(PATTERN_DUPLICATE_CHARS, fix_doubled_chars, text, flags=re.IGNORECASE)
 
         # Remove PDF encoding artifacts (cid:XX)
         # These are font encoding references that shouldn't be in extracted text
-        text = re.sub(r'cid:\d+', '', text)
+        text = re.sub(PATTERN_PDF_ENCODING, '', text)
 
         # Fix excessive whitespace (common OCR issue)
         # Multiple spaces → single space
@@ -68,7 +74,7 @@ class PDFExtractor:
         # Fix broken words with spaces between each letter (rare OCR error)
         # "T e m p e r a t u r e" → "Temperature"
         # Only apply if ALL letters in the word are separated
-        text = re.sub(r'\b([A-Z](?:\s+[a-z])+)\b',
+        text = re.sub(PATTERN_SPACED_CHARS,
                      lambda m: m.group(0).replace(' ', ''), text)
 
         return text.strip()
