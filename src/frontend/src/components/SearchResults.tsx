@@ -263,7 +263,7 @@ export default function SearchResults({
               <div className="result-definitions">
                 {result.definitions.slice(0, isExpanded ? undefined : 1).map((def: any, index: number) => (
                   <div key={index} className="definition-item">
-                    <span className="definition-text">{def.definition_text || def}</span>
+                    <span className="definition-text">{typeof def === 'string' ? def : (def.text || def.definition_text || '')}</span>
                   </div>
                 ))}
 
