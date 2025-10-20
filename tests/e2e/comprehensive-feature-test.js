@@ -318,10 +318,13 @@ class ComprehensiveFeatureTest {
       async () => {
         await this.page.goto(`${FRONTEND_URL}/search`, { waitUntil: 'networkidle2' });
 
-        const searchButton = await elementExists(
-          this.page,
-          'button[type="submit"], button:has-text("Search")'
-        );
+        let searchButton = await elementExists(this.page, 'button[type="submit"]');
+        if (!searchButton) {
+          searchButton = await this.page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.some(btn => btn.textContent.includes('Search'));
+          });
+        }
 
         // Button might not exist if it's auto-search
         if (!searchButton) {
@@ -361,10 +364,13 @@ class ComprehensiveFeatureTest {
       async () => {
         await this.page.goto(`${FRONTEND_URL}/enhanced-glossary`, { waitUntil: 'networkidle2' });
 
-        const hasBulkOps = await elementExists(
-          this.page,
-          '.bulk-operations, [class*="bulk"], button:has-text("Bulk")'
-        );
+        let hasBulkOps = await elementExists(this.page, '.bulk-operations, [class*="bulk"]');
+        if (!hasBulkOps) {
+          hasBulkOps = await this.page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.some(btn => btn.textContent.includes('Bulk'));
+          });
+        }
 
         if (!hasBulkOps) {
           console.warn('⚠️  No bulk operations UI found');
@@ -472,10 +478,13 @@ class ComprehensiveFeatureTest {
       async () => {
         await this.page.goto(`${FRONTEND_URL}/`, { waitUntil: 'networkidle2' });
 
-        const hasButton = await elementExists(
-          this.page,
-          '.shortcuts-help-btn, button:has-text("Keyboard")'
-        );
+        let hasButton = await elementExists(this.page, '.shortcuts-help-btn');
+        if (!hasButton) {
+          hasButton = await this.page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.some(btn => btn.textContent.includes('Keyboard'));
+          });
+        }
 
         assert(hasButton, 'Keyboard shortcuts button not found');
       }

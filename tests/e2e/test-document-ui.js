@@ -99,9 +99,9 @@ async function testDocumentUI() {
       return {
         html: firstDoc.outerHTML.substring(0, 500),
         hasCheckbox: !!firstDoc.querySelector('input[type="checkbox"]'),
-        hasEditBtn: !!firstDoc.querySelector('button[class*="edit"], button:has([class*="edit"])'),
-        hasDeleteBtn: !!firstDoc.querySelector('button[class*="delete"], button:has([class*="delete"])'),
-        hasProcessBtn: !!firstDoc.querySelector('button:has-text("Process"), button:contains("Process")'),
+        hasEditBtn: !!firstDoc.querySelector('button[class*="edit"]') || Array.from(firstDoc.querySelectorAll('button')).some(b => b.className.includes('edit')),
+        hasDeleteBtn: !!firstDoc.querySelector('button[class*="delete"]') || Array.from(firstDoc.querySelectorAll('button')).some(b => b.className.includes('delete')),
+        hasProcessBtn: Array.from(firstDoc.querySelectorAll('button')).some(b => b.textContent.includes('Process')),
         hasViewBtn: !!firstDoc.querySelector('a[href*="/documents/"]'),
       };
     });

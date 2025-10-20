@@ -224,7 +224,14 @@ class EnhancedGlossaryTest {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         // Look for "Select All" checkbox or button
-        const selectAll = await this.page.$('input[id*="select-all" i], button:has-text("Select All")');
+        let selectAll = await this.page.$('input[type="checkbox"]').catch(() => null);
+        if (!selectAll) {
+          selectAll = await this.page.evaluateHandle(() => {
+            const labels = Array.from(document.querySelectorAll('label'));
+            const selectAllLabel = labels.find(l => l.textContent.includes('Select All'));
+            return selectAllLabel ? selectAllLabel.querySelector('input') : null;
+          }).then(handle => handle.asElement());
+        }
 
         if (selectAll) {
           await selectAll.click();
@@ -324,10 +331,13 @@ class EnhancedGlossaryTest {
         await this.page.goto(`${FRONTEND_URL}/enhanced-glossary`, { waitUntil: 'networkidle2' });
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        const hasPagination = await elementExists(
-          this.page,
-          '.pagination, nav[aria-label*="pagination" i], button:has-text("Next")'
-        );
+        let hasPagination = await elementExists(this.page, '.pagination, .pagination-controls, nav[aria-label="pagination"]');
+        if (!hasPagination) {
+          hasPagination = await this.page.evaluate(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.some(btn => btn.textContent.includes('Next') || btn.textContent.includes('›'));
+          });
+        }
 
         if (hasPagination) {
           console.log('✓ Pagination controls exist');
@@ -346,7 +356,15 @@ class EnhancedGlossaryTest {
         await this.page.goto(`${FRONTEND_URL}/enhanced-glossary`, { waitUntil: 'networkidle2' });
         await new Promise(resolve => setTimeout(resolve, 2000));
 
-        const nextButton = await this.page.$('button:has-text("Next"), button[aria-label*="next" i]');
+        let nextButton = await this.page.$('.btn-pagination[title="Next page"]');
+        if (!nextButton) {
+          nextButton = await this.page.evaluateHandle(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.find(btn => btn.textContent.includes('›') ||
+                              btn.textContent.includes('Next') ||
+                              (btn.title && btn.title.toLowerCase().includes('next')));
+          }).then(handle => handle.asElement());
+        }
 
         if (nextButton) {
           await nextButton.click();
@@ -429,7 +447,14 @@ class EnhancedGlossaryTest {
         await new Promise(resolve => setTimeout(resolve, 2000));
 
         // Look for detail button or clickable card
-        const detailButton = await this.page.$('button:has-text("Details"), button[aria-label*="detail" i], .card');
+        let detailButton = await this.page.$('.card, .bilingual-card');
+        if (!detailButton) {
+          detailButton = await this.page.evaluateHandle(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            const detailBtn = buttons.find(btn => btn.textContent.includes('Details') || btn.textContent.includes('View'));
+            return detailBtn || document.querySelector('.card');
+          }).then(handle => handle.asElement());
+        }
 
         if (detailButton) {
           await detailButton.click();

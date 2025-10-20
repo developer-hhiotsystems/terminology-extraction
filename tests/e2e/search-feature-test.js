@@ -128,7 +128,11 @@ class SearchFeatureTest {
         await new Promise(resolve => setTimeout(resolve, 1000));
 
         // Look for search button or auto-search results
-        const searchButton = await this.page.$('button[type="submit"], button:has-text("Search")');
+        const searchButton = await this.page.$('button[type="submit"]') ||
+          await this.page.evaluateHandle(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.find(btn => btn.textContent.includes('Search'));
+          }).then(handle => handle.asElement());
 
         if (searchButton) {
           await searchButton.click();

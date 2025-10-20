@@ -469,7 +469,14 @@ class RelationshipFeatureTest {
         await this.page.goto(`${FRONTEND_URL}/relationships`, { waitUntil: 'networkidle2' });
         await new Promise(resolve => setTimeout(resolve, 3000));
 
-        const exportButton = await this.page.$('button[aria-label*="export" i], button[title*="export" i], button:has-text("Export")');
+        let exportButton = await this.page.$('.export-button');
+        if (!exportButton) {
+          exportButton = await this.page.evaluateHandle(() => {
+            const buttons = Array.from(document.querySelectorAll('button'));
+            return buttons.find(btn => btn.textContent.includes('Export') ||
+                              (btn.getAttribute('aria-label') && btn.getAttribute('aria-label').toLowerCase().includes('export')));
+          }).then(handle => handle.asElement());
+        }
 
         if (exportButton) {
           console.log('✓ Export button exists');
