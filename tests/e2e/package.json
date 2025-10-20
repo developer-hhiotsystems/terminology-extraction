@@ -1,13 +1,26 @@
 {
-  "name": "tests",
-  "version": "1.0.0",
-  "description": "",
-  "main": "ui-review-puppeteer.js",
+  "name": "glossary-app-e2e-tests",
+  "version": "2.0.0",
+  "description": "Comprehensive E2E test suite for Glossary APP",
+  "main": "run-all-tests.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node run-all-tests.js",
+    "test:all": "node run-all-tests.js",
+    "test:comprehensive": "node comprehensive-feature-test.js",
+    "test:api": "node api-integration-test.js",
+    "test:search": "node search-feature-test.js",
+    "test:relationship": "node relationship-feature-test.js",
+    "test:enhanced": "node enhanced-glossary-test.js",
+    "clean": "rm -rf test-screenshots/* test-results-*.json"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "e2e",
+    "puppeteer",
+    "testing",
+    "glossary",
+    "automation"
+  ],
+  "author": "Glossary APP Team",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {

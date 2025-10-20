@@ -1,0 +1,183 @@
+{
+  "testDate": "2025-10-20T04:12:43.415Z",
+  "endTime": "2025-10-20T04:16:31.956Z",
+  "duration": "228.54s",
+  "summary": {
+    "totalSuites": 5,
+    "totalTests": 73,
+    "passed": 64,
+    "failed": 9,
+    "passRate": "87.67"
+  },
+  "suites": [
+    {
+      "suite": "Comprehensive Features",
+      "priority": "HIGH",
+      "total": 21,
+      "passed": 18,
+      "failed": 3,
+      "passRate": "85.71",
+      "error": null
+    },
+    {
+      "suite": "API Integration",
+      "priority": "HIGH",
+      "total": 9,
+      "passed": 9,
+      "failed": 0,
+      "passRate": "100.00",
+      "error": null
+    },
+    {
+      "suite": "Search Features",
+      "priority": "HIGH",
+      "total": 13,
+      "passed": 12,
+      "failed": 1,
+      "passRate": "92.31",
+      "error": null
+    },
+    {
+      "suite": "Relationship Explorer",
+      "priority": "MEDIUM",
+      "total": 15,
+      "passed": 13,
+      "failed": 2,
+      "passRate": "86.67",
+      "error": null
+    },
+    {
+      "suite": "Enhanced Glossary",
+      "priority": "MEDIUM",
+      "total": 15,
+      "passed": 12,
+      "failed": 3,
+      "passRate": "80.00",
+      "error": null
+    }
+  ],
+  "brokenFeatures": [
+    {
+      "feature": "Comprehensive Features - Glossary Page Loads",
+      "suite": "Comprehensive Features",
+      "testName": "Glossary Page Loads",
+      "errors": [
+        {
+          "message": "Assertion failed: No glossary items or message displayed",
+          "stack": "Error: Assertion failed: No glossary items or message displayed\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:244:9\n    at async ComprehensiveFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:63:7)\n    at async ComprehensiveFeatureTest.testGlossaryPageLoads (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:233:5)\n    at async ComprehensiveFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:533:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
+        }
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "feature": "Search Features - Simple Search - Basic Query",
+      "suite": "Search Features",
+      "testName": "Simple Search - Basic Query",
+      "errors": [
+        {
+          "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'button[type=\"submit\"], button:has-text(\"Search\")' is not a valid selector.",
+          "stack": "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': 'button[type=\"submit\"], button:has-text(\"Search\")' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:73), <anonymous>:1:15)\n    at #evaluate (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:391:56)\n    at async ExecutionContext.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:329:16)\n    at async IsolatedWorld.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\IsolatedWorld.js:89:16)\n    at async CdpJSHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\JSHandle.js:157:20)\n    at async CdpElementHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:354:20)\n    at async CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:59)\n    at async CdpElementHandle.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:409:21)\n    at async CdpElementHandle.<anonymous> (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:133:24)\n    at async CdpFrame.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\Frame.js:400:20)"
+        }
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "feature": "Enhanced Glossary - Page Navigation",
+      "suite": "Enhanced Glossary",
+      "testName": "Page Navigation",
+      "errors": [
+        {
+          "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'button:has-text(\"Next\"), button[aria-label*=\"next\" i]' is not a valid selector.",
+          "stack": "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': 'button:has-text(\"Next\"), button[aria-label*=\"next\" i]' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:73), <anonymous>:1:15)\n    at #evaluate (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:391:56)\n    at async ExecutionContext.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:329:16)\n    at async IsolatedWorld.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\IsolatedWorld.js:89:16)\n    at async CdpJSHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\JSHandle.js:157:20)\n    at async CdpElementHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:354:20)\n    at async CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:59)\n    at async CdpElementHandle.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:409:21)\n    at async CdpElementHandle.<anonymous> (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:133:24)\n    at async CdpFrame.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\Frame.js:400:20)"
+        }
+      ],
+      "priority": "HIGH"
+    },
+    {
+      "feature": "Comprehensive Features - Relationship Graph Exists",
+      "suite": "Comprehensive Features",
+      "testName": "Relationship Graph Exists",
+      "errors": [
+        {
+          "message": "Assertion failed: No graph visualization found",
+          "stack": "Error: Assertion failed: No graph visualization found\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:393:9\n    at async ComprehensiveFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:63:7)\n    at async ComprehensiveFeatureTest.testRelationshipGraphExists (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:381:5)\n    at async ComprehensiveFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:549:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "feature": "Relationship Explorer - Graph Visualization Exists",
+      "suite": "Relationship Explorer",
+      "testName": "Graph Visualization Exists",
+      "errors": [
+        {
+          "message": "Assertion failed: No graph visualization element (SVG or Canvas) found",
+          "stack": "Error: Assertion failed: No graph visualization element (SVG or Canvas) found\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:103:9\n    at async RelationshipFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:57:7)\n    at async RelationshipFeatureTest.testGraphExists (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:92:5)\n    at async RelationshipFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:496:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "feature": "Enhanced Glossary - Bulk Select All",
+      "suite": "Enhanced Glossary",
+      "testName": "Bulk Select All",
+      "errors": [
+        {
+          "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'input[id*=\"select-all\" i], button:has-text(\"Select All\")' is not a valid selector.",
+          "stack": "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': 'input[id*=\"select-all\" i], button:has-text(\"Select All\")' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:73), <anonymous>:1:15)\n    at #evaluate (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:391:56)\n    at async ExecutionContext.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:329:16)\n    at async IsolatedWorld.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\IsolatedWorld.js:89:16)\n    at async CdpJSHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\JSHandle.js:157:20)\n    at async CdpElementHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:354:20)\n    at async CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:59)\n    at async CdpElementHandle.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:409:21)\n    at async CdpElementHandle.<anonymous> (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:133:24)\n    at async CdpFrame.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\Frame.js:400:20)"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "feature": "Enhanced Glossary - Card Detail View",
+      "suite": "Enhanced Glossary",
+      "testName": "Card Detail View",
+      "errors": [
+        {
+          "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'button:has-text(\"Details\"), button[aria-label*=\"detail\" i], .card' is not a valid selector.",
+          "stack": "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': 'button:has-text(\"Details\"), button[aria-label*=\"detail\" i], .card' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:73), <anonymous>:1:15)\n    at #evaluate (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:391:56)\n    at async ExecutionContext.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:329:16)\n    at async IsolatedWorld.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\IsolatedWorld.js:89:16)\n    at async CdpJSHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\JSHandle.js:157:20)\n    at async CdpElementHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:354:20)\n    at async CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:59)\n    at async CdpElementHandle.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:409:21)\n    at async CdpElementHandle.<anonymous> (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:133:24)\n    at async CdpFrame.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\Frame.js:400:20)"
+        }
+      ],
+      "priority": "MEDIUM"
+    },
+    {
+      "feature": "Comprehensive Features - Keyboard Shortcuts Button",
+      "suite": "Comprehensive Features",
+      "testName": "Keyboard Shortcuts Button",
+      "errors": [
+        {
+          "message": "Assertion failed: Keyboard shortcuts button not found",
+          "stack": "Error: Assertion failed: Keyboard shortcuts button not found\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:480:9\n    at async ComprehensiveFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:63:7)\n    at async ComprehensiveFeatureTest.testKeyboardShortcutsButton (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:469:5)\n    at async ComprehensiveFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:559:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
+        }
+      ],
+      "priority": "LOW"
+    },
+    {
+      "feature": "Relationship Explorer - Graph Export Feature",
+      "suite": "Relationship Explorer",
+      "testName": "Graph Export Feature",
+      "errors": [
+        {
+          "message": "SyntaxError: Failed to execute 'querySelector' on 'Document': 'button[aria-label*=\"export\" i], button[title*=\"export\" i], button:has-text(\"Export\")' is not a valid selector.",
+          "stack": "DOMException: SyntaxError: Failed to execute 'querySelector' on 'Document': 'button[aria-label*=\"export\" i], button[title*=\"export\" i], button:has-text(\"Export\")' is not a valid selector.\n    at evaluateHandle (evaluateHandle at CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:73), <anonymous>:1:15)\n    at #evaluate (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:391:56)\n    at async ExecutionContext.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\ExecutionContext.js:329:16)\n    at async IsolatedWorld.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\cdp\\IsolatedWorld.js:89:16)\n    at async CdpJSHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\JSHandle.js:157:20)\n    at async CdpElementHandle.evaluateHandle (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:354:20)\n    at async CSSQueryHandler.queryOne (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\common\\QueryHandler.js:138:59)\n    at async CdpElementHandle.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:409:21)\n    at async CdpElementHandle.<anonymous> (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\ElementHandle.js:133:24)\n    at async CdpFrame.$ (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\node_modules\\puppeteer-core\\lib\\cjs\\puppeteer\\api\\Frame.js:400:20)"
+        }
+      ],
+      "priority": "LOW"
+    }
+  ],
+  "recommendations": [
+    {
+      "category": "Search",
+      "severity": "HIGH",
+      "issue": "1 search feature test(s) failed",
+      "action": "Review FTS5 search implementation and autocomplete functionality"
+    },
+    {
+      "category": "Relationships",
+      "severity": "MEDIUM",
+      "issue": "2 relationship test(s) failed",
+      "action": "Check graph visualization library and relationship API endpoints"
+    }
+  ]
+}
