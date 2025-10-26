@@ -295,7 +295,7 @@ export default function RelationshipExplorer({
       </div>
 
       {/* Graph Display */}
-      <div className="graph-container">
+      <div id="graph-container" className="graph-container">
         {loading ? (
           <div className="graph-loading">
             <div className="loading-spinner"></div>

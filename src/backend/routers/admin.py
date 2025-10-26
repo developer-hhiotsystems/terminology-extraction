@@ -57,9 +57,99 @@ async def reset_database(db: Session = Depends(get_db)):
                         import logging
                         logging.getLogger(__name__).warning(f"Failed to delete file {file_path}: {e}")
 
-        # Delete all database records
-        db.query(GlossaryEntry).delete()
-        db.query(UploadedDocument).delete()
+        # Delete all database records using raw SQL to avoid trigger issues
+        # First, disable foreign key checks temporarily
+        db.execute(text("PRAGMA foreign_keys = OFF"))
+
+        # Drop FTS triggers to avoid conflicts
+        db.execute(text("DROP TRIGGER IF EXISTS glossary_fts_insert"))
+        db.execute(text("DROP TRIGGER IF EXISTS glossary_fts_update"))
+        db.execute(text("DROP TRIGGER IF EXISTS glossary_fts_delete"))
+
+        # Drop and recreate FTS table
+        db.execute(text("DROP TABLE IF EXISTS glossary_fts"))
+
+        # Delete main tables
+        db.execute(text("DELETE FROM glossary_entries"))
+        db.execute(text("DELETE FROM uploaded_documents"))
+        db.execute(text("DELETE FROM term_relationships"))
+
+        # Recreate FTS table
+        db.execute(text("""
+            CREATE VIRTUAL TABLE glossary_fts USING fts5(
+                term,
+                definition_text,
+                language UNINDEXED,
+                domain_tags UNINDEXED,
+                source UNINDEXED,
+                content='glossary_entries',
+                content_rowid='id',
+                tokenize='porter unicode61 remove_diacritics 2'
+            )
+        """))
+
+        # Recreate FTS triggers
+        db.execute(text("""
+            CREATE TRIGGER glossary_fts_insert AFTER INSERT ON glossary_entries BEGIN
+                INSERT INTO glossary_fts(
+                    rowid, term, definition_text, language, domain_tags, source
+                )
+                VALUES (
+                    new.id,
+                    new.term,
+                    (
+                        SELECT GROUP_CONCAT(json_extract(value, '$.text'), ' | ')
+                        FROM json_each(new.definitions)
+                        WHERE json_extract(value, '$.text') IS NOT NULL
+                    ),
+                    new.language,
+                    COALESCE(
+                        (
+                            SELECT GROUP_CONCAT(value, ',')
+                            FROM json_each(new.domain_tags)
+                        ),
+                        ''
+                    ),
+                    new.source
+                );
+            END
+        """))
+
+        db.execute(text("""
+            CREATE TRIGGER glossary_fts_update AFTER UPDATE ON glossary_entries BEGIN
+                DELETE FROM glossary_fts WHERE rowid = old.id;
+                INSERT INTO glossary_fts(
+                    rowid, term, definition_text, language, domain_tags, source
+                )
+                VALUES (
+                    new.id,
+                    new.term,
+                    (
+                        SELECT GROUP_CONCAT(json_extract(value, '$.text'), ' | ')
+                        FROM json_each(new.definitions)
+                        WHERE json_extract(value, '$.text') IS NOT NULL
+                    ),
+                    new.language,
+                    COALESCE(
+                        (
+                            SELECT GROUP_CONCAT(value, ',')
+                            FROM json_each(new.domain_tags)
+                        ),
+                        ''
+                    ),
+                    new.source
+                );
+            END
+        """))
+
+        db.execute(text("""
+            CREATE TRIGGER glossary_fts_delete AFTER DELETE ON glossary_entries BEGIN
+                DELETE FROM glossary_fts WHERE rowid = old.id;
+            END
+        """))
+
+        # Re-enable foreign key checks
+        db.execute(text("PRAGMA foreign_keys = ON"))
 
         # Commit the changes
         db.commit()
@@ -68,6 +158,7 @@ async def reset_database(db: Session = Depends(get_db)):
         try:
             db.execute(text("DELETE FROM sqlite_sequence WHERE name='glossary_entries'"))
             db.execute(text("DELETE FROM sqlite_sequence WHERE name='uploaded_documents'"))
+            db.execute(text("DELETE FROM sqlite_sequence WHERE name='term_relationships'"))
             db.commit()
         except Exception as e:
             # This is not critical, so just log it

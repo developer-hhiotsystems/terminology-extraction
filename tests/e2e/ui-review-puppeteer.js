@@ -173,7 +173,7 @@ class UIReviewer {
 
       if (glossaryLink) {
         await glossaryLink.click();
-        await this.page.waitForTimeout(2000);
+        await new Promise(resolve => setTimeout(resolve, 2000));
         await this.takeScreenshot('03-glossary-page', 'Glossary page view');
         console.log('✓ Navigated to Glossary page');
       } else {
@@ -213,7 +213,7 @@ class UIReviewer {
 
         // Try typing in search
         await searchInput.type('bio', { delay: 100 });
-        await this.page.waitForTimeout(1000);
+        await new Promise(resolve => setTimeout(resolve, 1000));
 
         await this.takeScreenshot('04-search-test', 'Search with "bio" query');
         console.log('✓ Typed search query');
@@ -258,7 +258,7 @@ class UIReviewer {
 
       // Reload page to trigger API calls
       await this.page.reload({ waitUntil: 'networkidle2' });
-      await this.page.waitForTimeout(2000);
+      await new Promise(resolve => setTimeout(resolve, 2000));
 
       console.log(`✓ Captured ${apiRequests.length} API requests`);
 
@@ -282,19 +282,19 @@ class UIReviewer {
     try {
       // Test mobile viewport
       await this.page.setViewport({ width: 375, height: 667 }); // iPhone SE
-      await this.page.waitForTimeout(1000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await this.takeScreenshot('05-mobile-view', 'Mobile viewport (375x667)');
       console.log('✓ Mobile viewport tested');
 
       // Test tablet viewport
       await this.page.setViewport({ width: 768, height: 1024 }); // iPad
-      await this.page.waitForTimeout(1000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await this.takeScreenshot('06-tablet-view', 'Tablet viewport (768x1024)');
       console.log('✓ Tablet viewport tested');
 
       // Restore desktop viewport
       await this.page.setViewport({ width: 1920, height: 1080 });
-      await this.page.waitForTimeout(1000);
+      await new Promise(resolve => setTimeout(resolve, 1000));
       await this.takeScreenshot('07-desktop-view', 'Desktop viewport restored');
       console.log('✓ Desktop viewport restored');
 

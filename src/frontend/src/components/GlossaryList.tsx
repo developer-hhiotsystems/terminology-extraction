@@ -711,14 +711,14 @@ export default function GlossaryList() {
       {totalCount > 0 && <PaginationControls />}
 
       {entries.length === 0 ? (
-        <div className="empty-state">
+        <div className="empty-state no-terms-message">
           <p>No glossary entries found.</p>
           <p>Upload a PDF or create an entry manually.</p>
         </div>
       ) : (
         <div className="entries-grid">
           {entries.map((entry) => (
-            <div key={entry.id} className={`entry-card ${selectedIds.has(entry.id) ? 'selected' : ''}`}>
+            <div key={entry.id} className={`entry-card glossary-item ${selectedIds.has(entry.id) ? 'selected' : ''}`}>
               <div className="entry-header">
                 <label className="entry-checkbox">
                   <input

@@ -335,7 +335,7 @@ async function clickElementByText(page, text, tagName = '*') {
   }
 
   await elements[0].click();
-  await page.waitForTimeout(300);
+  await new Promise(resolve => setTimeout(resolve, 300));
   return true;
 }
 

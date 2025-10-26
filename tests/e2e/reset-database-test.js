@@ -5,7 +5,7 @@
 const puppeteer = require('puppeteer');
 const path = require('path');
 
-const FRONTEND_URL = 'http://localhost:3001';
+const FRONTEND_URL = 'http://localhost:3000';
 const BACKEND_URL = 'http://localhost:9123';
 const SCREENSHOT_DIR = path.join(__dirname, 'test-screenshots');
 

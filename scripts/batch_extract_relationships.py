@@ -28,8 +28,7 @@ sys.path.insert(0, str(project_root))
 import argparse
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from src.backend.models.base import Base
-from src.backend.models.glossary_entry import GlossaryEntry
+from src.backend.base_models import GlossaryEntry
 from src.backend.models.relationship import TermRelationship
 from src.backend.nlp.relationship_extractor import RelationshipExtractor
 from datetime import datetime
@@ -115,7 +114,7 @@ def batch_extract_relationships(
                     })
 
             if not definitions:
-                print(f"  → No definitions, skipping")
+                print(f"  - No definitions, skipping")
                 continue
 
             # Extract relationships
@@ -130,10 +129,10 @@ def batch_extract_relationships(
             stats["relationships_extracted"] += len(extracted)
 
             if not extracted:
-                print(f"  → No relationships found")
+                print(f"  - No relationships found")
                 continue
 
-            print(f"  → Found {len(extracted)} relationships:")
+            print(f"  - Found {len(extracted)} relationships:")
 
             # Save relationships
             for rel in extracted:
@@ -177,10 +176,10 @@ def batch_extract_relationships(
             # Commit every 10 entries
             if not dry_run and i % 10 == 0:
                 session.commit()
-                print(f"  → Committed batch (total: {stats['relationships_created']} relationships)")
+                print(f"  - Committed batch (total: {stats['relationships_created']} relationships)")
 
         except Exception as e:
-            print(f"  → ERROR: {e}")
+            print(f"  - ERROR: {e}")
             stats["errors"] += 1
             continue
 
@@ -202,7 +201,7 @@ def batch_extract_relationships(
     if dry_run:
         print("\nDRY RUN - No changes were saved to the database")
     else:
-        print(f"\n✓ Successfully created {stats['relationships_created']} relationships!")
+        print(f"\n[OK] Successfully created {stats['relationships_created']} relationships!")
 
     session.close()
 

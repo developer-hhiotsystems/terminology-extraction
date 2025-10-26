@@ -1,22 +1,22 @@
 {
-  "testDate": "2025-10-20T04:54:33.652Z",
-  "endTime": "2025-10-20T04:58:36.372Z",
-  "duration": "242.72s",
+  "testDate": "2025-10-26T11:08:08.892Z",
+  "endTime": "2025-10-26T11:11:57.048Z",
+  "duration": "228.16s",
   "summary": {
     "totalSuites": 5,
     "totalTests": 73,
-    "passed": 70,
-    "failed": 3,
-    "passRate": "95.89"
+    "passed": 73,
+    "failed": 0,
+    "passRate": "100.00"
   },
   "suites": [
     {
       "suite": "Comprehensive Features",
       "priority": "HIGH",
       "total": 21,
-      "passed": 19,
-      "failed": 2,
-      "passRate": "90.48",
+      "passed": 21,
+      "failed": 0,
+      "passRate": "100.00",
       "error": null
     },
     {
@@ -41,9 +41,9 @@
       "suite": "Relationship Explorer",
       "priority": "MEDIUM",
       "total": 15,
-      "passed": 14,
-      "failed": 1,
-      "passRate": "93.33",
+      "passed": 15,
+      "failed": 0,
+      "passRate": "100.00",
       "error": null
     },
     {
@@ -56,50 +56,6 @@
       "error": null
     }
   ],
-  "brokenFeatures": [
-    {
-      "feature": "Comprehensive Features - Glossary Page Loads",
-      "suite": "Comprehensive Features",
-      "testName": "Glossary Page Loads",
-      "errors": [
-        {
-          "message": "Assertion failed: No glossary items or message displayed",
-          "stack": "Error: Assertion failed: No glossary items or message displayed\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:244:9\n    at async ComprehensiveFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:63:7)\n    at async ComprehensiveFeatureTest.testGlossaryPageLoads (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:233:5)\n    at async ComprehensiveFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:542:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
-        }
-      ],
-      "priority": "HIGH"
-    },
-    {
-      "feature": "Comprehensive Features - Relationship Graph Exists",
-      "suite": "Comprehensive Features",
-      "testName": "Relationship Graph Exists",
-      "errors": [
-        {
-          "message": "Assertion failed: No graph visualization found",
-          "stack": "Error: Assertion failed: No graph visualization found\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:399:9\n    at async ComprehensiveFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:63:7)\n    at async ComprehensiveFeatureTest.testRelationshipGraphExists (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:387:5)\n    at async ComprehensiveFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\comprehensive-feature-test.js:558:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
-        }
-      ],
-      "priority": "MEDIUM"
-    },
-    {
-      "feature": "Relationship Explorer - Graph Visualization Exists",
-      "suite": "Relationship Explorer",
-      "testName": "Graph Visualization Exists",
-      "errors": [
-        {
-          "message": "Assertion failed: No graph visualization element (SVG or Canvas) found",
-          "stack": "Error: Assertion failed: No graph visualization element (SVG or Canvas) found\n    at assert (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\test-utils.js:386:11)\n    at C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:103:9\n    at async RelationshipFeatureTest.runTest (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:57:7)\n    at async RelationshipFeatureTest.testGraphExists (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:92:5)\n    at async RelationshipFeatureTest.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\relationship-feature-test.js:503:7)\n    at async MasterTestRunner.runAllTests (C:\\Users\\devel\\Coding Projects\\Glossary APP\\tests\\e2e\\run-all-tests.js:42:24)"
-        }
-      ],
-      "priority": "MEDIUM"
-    }
-  ],
-  "recommendations": [
-    {
-      "category": "Relationships",
-      "severity": "MEDIUM",
-      "issue": "1 relationship test(s) failed",
-      "action": "Check graph visualization library and relationship API endpoints"
-    }
-  ]
+  "brokenFeatures": [],
+  "recommendations": []
 }

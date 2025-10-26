@@ -25,12 +25,12 @@ async function testDocumentUI() {
   try {
     console.log('📍 Navigating to application...');
     await page.goto('http://localhost:3001', { waitUntil: 'networkidle2' });
-    await page.waitForTimeout(2000);
+    await new Promise(resolve => setTimeout(resolve, 2000));
 
     // Test 1: Check "New Document" tab
     console.log('\n=== TEST 1: New Document Tab ===');
     await page.click('a[href="/upload"]');
-    await page.waitForTimeout(1000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     const newDocTitle = await page.$eval('h2', el => el.textContent);
     console.log('✓ Page title:', newDocTitle);
@@ -53,7 +53,7 @@ async function testDocumentUI() {
     // Test 2: Check "Documents" tab
     console.log('\n=== TEST 2: Documents Tab ===');
     await page.click('a[href="/documents"]');
-    await page.waitForTimeout(1000);
+    await new Promise(resolve => setTimeout(resolve, 1000));
 
     // Count documents
     const docCount = await page.evaluate(() => {
@@ -124,7 +124,7 @@ async function testDocumentUI() {
     if (checkboxes.length > 0) {
       console.log('Attempting to click first checkbox...');
       await checkboxes[0].click();
-      await page.waitForTimeout(500);
+      await new Promise(resolve => setTimeout(resolve, 500));
 
       const isChecked = await checkboxes[0].evaluate(el => el.checked);
       console.log('✓ Checkbox checked:', isChecked ? 'YES' : 'NO');
@@ -170,7 +170,7 @@ async function testDocumentUI() {
     console.error('\n❌ Error during analysis:', error.message);
     await page.screenshot({ path: 'test-screenshots/error.png', fullPage: true });
   } finally {
-    await page.waitForTimeout(2000);
+    await new Promise(resolve => setTimeout(resolve, 2000));
     await browser.close();
   }
 }

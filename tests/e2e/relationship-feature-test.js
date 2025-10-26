@@ -94,7 +94,18 @@ class RelationshipFeatureTest {
       'Verify graph SVG/Canvas element is present',
       async () => {
         await this.page.goto(`${FRONTEND_URL}/relationships`, { waitUntil: 'networkidle2' });
-        await new Promise(resolve => setTimeout(resolve, 3000)); // Graph needs time to render
+
+        // Wait for graph data to load and render (max 10 seconds)
+        try {
+          // Wait for either SVG or Canvas to appear
+          await Promise.race([
+            this.page.waitForSelector('svg', { timeout: 10000 }),
+            this.page.waitForSelector('canvas', { timeout: 10000 })
+          ]);
+        } catch (e) {
+          // If neither appears, wait a bit more and check
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
 
         // Look for SVG or Canvas
         const hasSVG = await elementExists(this.page, 'svg');
