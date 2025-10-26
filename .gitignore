@@ -28,6 +28,10 @@ coverage/
 cypress/videos/
 cypress/screenshots/
 
+# E2E Test Artifacts
+tests/e2e/test-screenshots/
+tests/e2e/tests/e2e/test-results-*.json
+
 # IDEs
 .vscode/*
 !.vscode/settings.json
