@@ -9,7 +9,9 @@ import StatsDashboard from './components/StatsDashboard'
 import AdminPanel from './components/AdminPanel'
 import KeyboardShortcutsHelp from './components/KeyboardShortcutsHelp'
 import CommandPalette from './components/CommandPalette'
+import ThemeToggle from './components/ThemeToggle'
 import { useKeyboardShortcuts } from './hooks/useKeyboardShortcuts'
+import { useTheme } from './hooks/useTheme'
 // Phase A: FTS5 Search Integration
 import SearchPage from './pages/SearchPage'
 // Phase B: Enhanced UI/UX Components
@@ -22,6 +24,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('glossary')
   const [showShortcutsHelp, setShowShortcutsHelp] = useState(false)
   const [showCommandPalette, setShowCommandPalette] = useState(false)
+  const { isDark } = useTheme()
 
   // Global keyboard shortcuts
   useKeyboardShortcuts({
@@ -46,11 +49,16 @@ function App() {
           pauseOnFocusLoss
           draggable
           pauseOnHover
-          theme="dark"
+          theme={isDark ? 'dark' : 'light'}
         />
         <header className="app-header">
-          <h1>Glossary Management System</h1>
-          <p>Terminology Extraction & Validation Platform</p>
+          <div className="header-content">
+            <div>
+              <h1>Glossary Management System</h1>
+              <p>Terminology Extraction & Validation Platform</p>
+            </div>
+            <ThemeToggle />
+          </div>
         </header>
 
         <nav className="app-nav">

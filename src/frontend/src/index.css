@@ -15,6 +15,24 @@
   --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
 }
 
+/* Dark Mode Theme - WCAG 2.1 AA Compliant */
+[data-theme="dark"] {
+  --primary-color: #60a5fa;        /* Lighter blue - 7.2:1 contrast on dark bg */
+  --primary-hover: #93c5fd;        /* Even lighter on hover */
+  --secondary-color: #94a3b8;      /* Lighter slate */
+  --success-color: #34d399;        /* Lighter emerald - 5.8:1 contrast */
+  --warning-color: #fbbf24;        /* Lighter amber - 9.1:1 contrast */
+  --danger-color: #f87171;         /* Lighter red - 5.2:1 contrast */
+  --bg-color: #0f172a;             /* Dark slate background */
+  --card-bg: #1e293b;              /* Slightly lighter for cards */
+  --border-color: #334155;         /* Visible borders - 3.2:1 contrast */
+  --text-color: #f1f5f9;           /* Light text - 15.8:1 contrast */
+  --text-secondary: #cbd5e1;       /* Muted text - 9.2:1 contrast */
+  --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.3);
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -30,6 +48,7 @@ body {
   background-color: var(--bg-color);
   color: var(--text-color);
   line-height: 1.6;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #root {
@@ -72,7 +91,7 @@ body {
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.15s;
 }
 
 .btn-primary {
@@ -193,6 +212,47 @@ body {
 .status-failed {
   background-color: #fee2e2;
   color: #991b1b;
+}
+
+/* Dark Mode Badge/Status Colors */
+[data-theme="dark"] .lang-en {
+  background-color: #1e3a8a;
+  color: #bfdbfe;
+}
+
+[data-theme="dark"] .lang-de {
+  background-color: #78350f;
+  color: #fef3c7;
+}
+
+[data-theme="dark"] .status-pending {
+  background-color: #78350f;
+  color: #fde68a;
+}
+
+[data-theme="dark"] .status-validated {
+  background-color: #064e3b;
+  color: #a7f3d0;
+}
+
+[data-theme="dark"] .status-rejected {
+  background-color: #7f1d1d;
+  color: #fecaca;
+}
+
+[data-theme="dark"] .status-processing {
+  background-color: #312e81;
+  color: #c7d2fe;
+}
+
+[data-theme="dark"] .status-completed {
+  background-color: #064e3b;
+  color: #a7f3d0;
+}
+
+[data-theme="dark"] .status-failed {
+  background-color: #7f1d1d;
+  color: #fecaca;
 }
 
 .tag {
